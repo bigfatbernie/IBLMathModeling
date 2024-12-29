@@ -1,0 +1,9 @@
+pdflatex modelling-slidessol.tex
+pdflatex modelling-slides.tex
+
+pdflatex modelling-slidessol.tex
+pdflatex modelling-slides.tex
+
+mv *.pdf dist/.
+rm -f *.aux
+rm -f *.log

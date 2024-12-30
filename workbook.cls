@@ -371,6 +371,10 @@
 		definition~color .initial:n = \c_empty_tl,
 		definition~bgcolor .tl_set:N = \l_workbook_newenv_definition_bgcolor_tl,
 		definition~bgcolor .initial:n = \c_empty_tl,
+		problem~color .tl_set:N = \l_workbook_newenv_problem_color_tl,
+		problem~color .initial:n = \c_empty_tl,
+		problem~bgcolor .tl_set:N = \l_workbook_newenv_problem_bgcolor_tl,
+		problem~bgcolor .initial:n = \c_empty_tl,
 		theorem~color .tl_set:N = \l_workbook_newenv_theorem_color_tl,
 		theorem~color .initial:n = \c_empty_tl,
 		theorem~bgcolor .tl_set:N = \l_workbook_newenv_theorem_bgcolor_tl,
@@ -424,6 +428,20 @@
 		}
 	}{
 		\prop_gput:Neo \g_workbook_environments_prop {\l_workbook_newenv_name_tl/definition~bgcolor} \l_workbook_newenv_definition_bgcolor_tl
+	}
+		\tl_if_blank:eTF \l_workbook_newenv_problem_color_tl
+	{
+		\prop_gput:Neo \g_workbook_environments_prop {\l_workbook_newenv_name_tl/problem~color} {Plum}
+	}{
+		\prop_gput:Neo \g_workbook_environments_prop {\l_workbook_newenv_name_tl/problem~color} \l_workbook_newenv_problem_color_tl
+	}
+	\tl_if_blank:eTF \l_workbook_newenv_problem_bgcolor_tl
+	{
+		\prop_gput:Nee \g_workbook_environments_prop {\l_workbook_newenv_name_tl/problem~bgcolor} {
+			\prop_item:NV \g_workbook_environments_prop {\l_workbook_newenv_name_tl/problem~color}!5!white
+		}
+	}{
+		\prop_gput:Neo \g_workbook_environments_prop {\l_workbook_newenv_name_tl/problem~bgcolor} \l_workbook_newenv_problem_bgcolor_tl
 	}
 	\tl_if_blank:eTF \l_workbook_newenv_theorem_color_tl
 	{
@@ -589,6 +607,11 @@
 		color = \prop_item:Nn \g_workbook_environments_prop {#1/definition~color},
 		bgcolor = \prop_item:Nn \g_workbook_environments_prop {#1/definition~bgcolor},
 	}
+	\_workbook_define_new_theorem_box:nn {problem} {
+		display~name = {},
+		color = \prop_item:Nn \g_workbook_environments_prop {#1/problem~color},
+		bgcolor = \prop_item:Nn \g_workbook_environments_prop {#1/problem~bgcolor},
+	}	
 	\_workbook_define_new_theorem_box:nn {emphbox} {
 		% For definitions, we just print the term being defined without the word "Definition"
 		% in front.
@@ -1292,6 +1315,12 @@
 		color = LimeGreen!70!black,
 		bgcolor = LimeGreen!10!white,
 	}
+	\_workbook_define_new_theorem_box:nn {problem} {
+		% For definitions, we just print the term being defined without the word "Definition" in front.
+		display~name = {},
+		color = Cerulean!70!black,
+		bgcolor = Cerulean!10!white,
+	}
 	\_workbook_define_new_theorem_box:nn {theorem} {
 		% For definitions, we just print the term being defined without the word "Definition" in front.
 		display~name = {Theorem},
@@ -1386,6 +1415,12 @@
 		display~name = {},
 		color = LimeGreen!70!black,
 		bgcolor = LimeGreen!10!white,
+	}
+	\_workbook_define_new_theorem_box:nn {problem} {
+		% For definitions, we just print the term being defined without the word "Definition" in front.
+		display~name = {},
+		color = Cerulean!70!black,
+		bgcolor = Cerulean!10!white,
 	}
 	\_workbook_define_new_theorem_box:nn {theorem} {
 		% For definitions, we just print the term being defined without the word "Definition" in front.
@@ -1504,6 +1539,9 @@
 	\definecolor{defcolor}{rgb}{.05,.4,.15}
 	\colorlet{defframecolor}{green!50!black}
 \declareoutlinedbox{definition}{DEFINITION}{DEF}{defframecolor}{defcolor}
+	\definecolor{pblcolor}{HTML}{008D9A}
+	\colorlet{pblframecolor}{blue!50!black}
+\declareoutlinedbox{problem}{PROBLEM}{PROB}{pblframecolor}{pblcolor}
 	\colorlet{thmcolor}{red!70!black}
 	\colorlet{thmframecolor}{red!90!black}
 \declareoutlinedbox{theorem}{THEOREM}{THM}{thmframecolor}{thmcolor}

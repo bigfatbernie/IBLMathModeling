@@ -276,34 +276,14 @@ Parameter sensitivity is a measure of how a model's response is affected by its 
 
 We quantify the \textbf{sensitivity} for the model output $x$ and model parameter $p$ by
 \[
-S(x,p) = \frac{\partial x}{\partial p} \frac{p}{x},
+S(x,p) = \frac{\partial x}{\partial p} \cdot \frac{p}{x},
 \]
 which is dimensionless.
 \end{SaveDefinition}
 
 
-\begin{SaveDefinition}[key=Robustness, title={Robustness}]
 
-How do the results depend on the assumptions?\\
-
-We assumed:
-\begin{itemize}
-	\item a linear increase in weight of the pig
-	\item a linear decrease in the price of the pig	  \\
-\end{itemize}
-%\hfill\\
-
-What happens if these were nonlinear? The prediction of prices is notoriously uncertain. \\
-
-Prices are often modelled as stochastic processes (like Brownian motion). This would necessitate a different modelling approach.  \\
-
-In particular, we might then want to maximize the expected (average) profit. But if the variance is very large, then the farmer might prefer a lower expected profit if that means lowering the risk (variance). 
-The farmer might consider maximizing the expected profit with a constraint on the variance of the profit.
-\end{SaveDefinition}
-
-
-
-\begin{SaveDefinition}[key=Newton, title={Newton's Method}]
+\begin{SaveDefinition}[key=Newton1, title={Newton's Method}]
 
 This is a method to approximate the solution of the equation
 \[
@@ -314,5 +294,42 @@ This is an iterative method, so we start with an initial approximation $x_0$.
 
 For each successive approximation, take the linear approximation of $f$ at $x_i$ and take $x_{i+1}$ to be the point where the linear approximation is 0.
 \end{SaveDefinition}
+
+
+\begin{SaveDefinition}[key=Newton, title={Newton's Method}]
+
+This is a method to approximate the solution of the equation
+\[
+f(x)=0,
+\]
+from an initial guess $x_0$.
+
+For each successive approximation, take the linear approximation of $f$ at $x_i$ and take $x_{i+1}$ to be the point where the linear approximation is 0.
+
+This means that 
+\[
+x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.
+\]
+\end{SaveDefinition}
+
+
+
+\begin{SaveDefinition}[key=LagrangeMultipliers, title={Lagrange Multipliers}]
+
+We want to minimize (or maximize) a function $f(x)$ with several constraints:
+	\begin{align*}
+		g_1(x) 	& = c_1 \\
+				& \vdots \\
+		g_k(x) 	& = c_k
+	\end{align*}
+
+\textbf{If} $x^\star \in \R^N$ is a local optimal of $f(x)$ which satisfies the above constraints, and $\nabla g_1(x^\star), \ldots, \nabla g_k(x^\star)$ are linearly independent, \textbf{then}
+\[
+\nabla f(x^\star) = \lambda_1 \nabla g_1(x^\star) + \cdots + \lambda_k \nabla g_k(x^\star),
+\tag{LM}\label{LM}
+\]
+for some scalars $\lambda_1, \ldots, \lambda_k$.
+\end{SaveDefinition}
+
 
 

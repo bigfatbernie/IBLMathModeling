@@ -27,7 +27,7 @@
 \input{common/preamble.tex}
 
 \usepackage{breqn}
-\usepackage{multirow}
+\usepackage{multirow, multicol}
 
 \usepackage{pdfrender} % For text title
 
@@ -77,6 +77,7 @@
 	\togglefalse{book}
 	\togglefalse{slides}
 	\togglefalse{slideswhite}
+	\togglefalse{slidessol}
 }
 \newcommand{\setstandard}{
 	\togglefalse{instructor}
@@ -85,6 +86,7 @@
 	\togglefalse{book}
 	\togglefalse{slides}
 	\togglefalse{slideswhite}
+	\togglefalse{slidessol}
 }
 \newcommand{\setsolutions}{
 	\togglefalse{instructor}
@@ -93,6 +95,7 @@
 	\togglefalse{book}
 	\togglefalse{slides}
 	\togglefalse{slideswhite}
+	\togglefalse{slidessol}
 }
 \newcommand{\setbook}{
 	\togglefalse{instructor}
@@ -101,6 +104,7 @@
 	\toggletrue{book}
 	\togglefalse{slides}
 	\togglefalse{slideswhite}
+	\togglefalse{slidessol}
 }
 \newcommand{\setslides}{
 	\togglefalse{instructor}
@@ -109,14 +113,16 @@
 	\togglefalse{book}
 	\toggletrue{slides}
 	\togglefalse{slideswhite}
+	\togglefalse{slidessol}
 }
 \newcommand{\setslidessol}{
 	\togglefalse{instructor}
 	\togglefalse{standard}
-	\toggletrue{solutions}
+	\togglefalse{solutions}
 	\togglefalse{book}
-	\toggletrue{slides}
+	\togglefalse{slides}
 	\togglefalse{slideswhite}
+	\toggletrue{slidessol}
 }
 \newcommand{\setslideswhite}{
 	\togglefalse{instructor}
@@ -125,6 +131,7 @@
 	\togglefalse{book}
 	\togglefalse{slides}
 	\toggletrue{slideswhite}
+	\togglefalse{slidessol}
 }
 
 
@@ -134,7 +141,7 @@
 \usepackage{xstring}
 \IfSubStr{\jobname}{\detokenize{book}}{\setbook}{
 	\IfSubStr{\jobname}{\detokenize{solutions}}{\setsolutions}{
-		\IfSubStr{\jobname}{\detokenize{solutionssol}}{\setsolutionssol}{
+		\IfSubStr{\jobname}{\detokenize{slidessol}}{\setslidessol}{
 			\IfSubStr{\jobname}{\detokenize{instructor}}{\setinstructor}{
 				\IfSubStr{\jobname}{\detokenize{slides}}{\setslides}{
 					\IfSubStr{\jobname}{\detokenize{white}}{\setslideswhite}{
@@ -245,6 +252,7 @@
 	\voidenvironment{appendix}
 	\voidenvironment{bookonly}
 	\voidenvironment{solution}
+	\voidenvironment{slidesol}
 	\voidenvironment{annotation}
 	\voidenvironment{lesson}
 	\renewcommand{\coversubtitle}{APM348 Slides}
@@ -266,6 +274,7 @@
 	\voidenvironment{appendix}
 	\voidenvironment{bookonly}
 	\voidenvironment{solution}
+	\voidenvironment{slidesol}
 	\voidenvironment{annotation}
 	\voidenvironment{lesson}
 	\renewcommand{\coversubtitle}{\hspace{-70pt}APM348 Student Slides}
@@ -366,13 +375,15 @@
 \question 
 	What is modelling?
 
-%\begin{itemize}
-%	\item A precise description of a system
-%	\item A formal summary of knowledge
-%	\item A tool that enables prediction
-%	\item An abstraction suitable for a particular purpose or question
-%	\item Modelling is a scientific method with ``hypothesis'' in a mathematical form	
-%\end{itemize}
+\begin{solution}
+	\begin{itemize}
+		\item A precise description of a system
+		\item A formal summary of knowledge
+		\item A tool that enables prediction
+		\item An abstraction suitable for a particular purpose or question
+		\item Modelling is a scientific method with ``hypothesis'' in a mathematical form	
+	\end{itemize}	
+\end{solution}
 	
 \end{slide}
 
@@ -486,7 +497,7 @@ According to the paper \href{https://www.researchgate.net/publication/289492130_
 \begin{solution}
 \begin{slide}
 
-Solution:
+\textbf{Solution:}
 
 \begin{itemize}
 \item $\theta r^2(0) = 1200 \cdot (0.15) \quad \Rightarrow \quad r(0) \approx 7.6m$
@@ -499,6 +510,7 @@ Solution:
 \item Max at $t=0$ when $|p'(t)| \approx 139.678$
 \end{itemize}
 
+\includegraphics[width=0.4\textwidth]{python/Stadium-Euler-ipynb.pdf}
 	
 \end{slide}	
 \end{solution}
@@ -612,6 +624,10 @@ Desmos with all these three methods:
     \draw[-latex, ultra thick] (1,2) -- (3,1.8);
 \end{tikzpicture}
 
+\hfill \\
+
+	\item Consider the ODE $\frac{dy}{dx} = 2x\sin(x^2)$ and $y(0)=0$. With a step $h=0.1$, find the largest interval that the approximations stay within 0.1 distance of the exact solution.
+
 \end{parts}
 
 	
@@ -626,21 +642,7 @@ Desmos with all these three methods:
 
 \textbf{Dimensional Analysis}
 
-There are seven fundamental dimensions: \\
-
-
-\begin{tabular}{cccc}
-Dimension & Symbol & SI Unit & SI Unit Symbol \\ \hline
-length & $L$ & metre & m \\
-mass & $M$ & kilogram & kg \\
-time & $T$ & second & s \\
-electric current & $I$ & ampere & A \\
-temperature & $\Theta$ & kelvin & K \\
-amount & $N$ & mole & mol \\
-light intensity & $J$ & candela & cd
-\end{tabular}
-
-\textit{Note: } Sometimes, we use charge $Q$ (SI Unit coulomb C) as a fundamental dimension instead of current.
+\SavedDefinitionRender{FundamentalDimensions}
 
 \begin{parts}
 
@@ -650,7 +652,7 @@ light intensity & $J$ & candela & cd
 
 \item When can we multiply/divide quantities? With different dimensions? With the same dimensions?
 
-\item It is convenient to define some functions as a power series (e.g. $e^x = 1 + x + \frac{x^2}{2} + \frac{x^3}{6}+ \cdots$). What conditions on the dimension of $x$ is required to be able to do this?
+\item It is convenient to define some functions as a power series (e.g. $e^x = 1 + x + \frac{x^2}{2} + \frac{x^3}{6}+ \cdots$). What condition on the dimension of $x$ is required to be able to do this?
 
 \item What are the dimensions of a derivative $\frac{dy}{dx}$? What are the dimensions of an integral $\int y \, dx$?
 	
@@ -667,7 +669,7 @@ light intensity & $J$ & candela & cd
 
 \begin{slide}
 
-\question
+\question \label{q:radioactive}
 
 Consider the model for a mass undergoing radioactive decay:
 \[ \frac{dm}{dt} = -km \]
@@ -685,7 +687,7 @@ with $m(0) = m_0$.
 
 
 \begin{slide}
-\question
+\question \label{q:budworms}
 	
 Consider the model for spruce budworm outbreak in Eastern Canada\footnote{See ``Nonlinear Dynamics and Chaos'' by Strogatz.}.
 
@@ -718,37 +720,65 @@ The first term accounts for resource-limited population growth within a tree and
 
 \question
 
+\SavedDefinitionRender{DimensionalMatrix}
+
 \SavedDefinitionRender{BuckinghamPiThm}
+	
+	\begin{center}
+		\begin{tikzpicture}[scale=0.5]
+		  \draw[fill=brown!65!black,draw=none] (-1,0.1) rectangle (1,0);
+		  \draw (-1,0) -- (1,0);
+		  \draw[ultra thick] (0,0) -- (1,-4);
+		  \draw[thick, fill=black!20!white] (1,-4) circle (0.5) node {m};
+		%  \draw[dashed, gray] (0,0) -- (0,-4);
+		%  \draw[->,gray] (0,-3) node[above] {$\quad\theta$} arc (-90:-76:3);
+		%  \draw[->] (1, -4.75) -- (1, -5.25) node[below] {\small $\vec{F}_g$};
+		%  \draw[->] (1.1, -3.3) -- (0.95, -2.7) node[right] {\small $\vec{T}$};  
+		\end{tikzpicture}
+	\end{center}	
+
+
+%\begin{minipage}{.15\textwidth}
+%	\begin{center}
+%		\begin{tikzpicture}[scale=0.6]
+%		  \draw[fill=brown!65!black,draw=none] (-1,0.1) rectangle (1,0);
+%		  \draw (-1,0) -- (1,0);
+%		  \draw[ultra thick] (0,0) -- (1,-4);
+%		  \draw[thick, fill=black!20!white] (1,-4) circle (0.5) node {m};
+%		%  \draw[dashed, gray] (0,0) -- (0,-4);
+%		%  \draw[->,gray] (0,-3) node[above] {$\quad\theta$} arc (-90:-76:3);
+%		%  \draw[->] (1, -4.75) -- (1, -5.25) node[below] {\small $\vec{F}_g$};
+%		%  \draw[->] (1.1, -3.3) -- (0.95, -2.7) node[right] {\small $\vec{T}$};  
+%		\end{tikzpicture}
+%	\end{center}	
+%\end{minipage}
+%	%
+%\begin{minipage}{.35\textwidth}
+%Consider a pendulum. We make assumptions:
+%	\begin{itemize}
+%		\item The pivot is frictionless
+%		\item The rod is massless
+%		\item Air resistance is neglected
+%%		\item The gravitational field is uniform
+%		\item The ceiling is infinitely rigid
+%		\item $\cdots$
+%	\end{itemize}
+%\end{minipage}
+%
+%\bigskip
+%\bigskip
+%\bigskip
 
 Consider a pendulum. We make assumptions:
-	
-\begin{multicols}{2}
-\begin{center}
-\begin{tikzpicture}[scale=0.75]
-  \draw[fill=brown!65!black,draw=none] (-1,0.1) rectangle (1,0);
-  \draw (-1,0) -- (1,0);
-  \draw[ultra thick] (0,0) -- (1,-4);
-  \draw[thick, fill=black!20!white] (1,-4) circle (0.5) node {m};
-%  \draw[dashed, gray] (0,0) -- (0,-4);
-%  \draw[->,gray] (0,-3) node[above] {$\quad\theta$} arc (-90:-76:3);
-%  \draw[->] (1, -4.75) -- (1, -5.25) node[below] {\small $\vec{F}_g$};
-%  \draw[->] (1.1, -3.3) -- (0.95, -2.7) node[right] {\small $\vec{T}$};  
-\end{tikzpicture}
-\end{center}
+	\begin{itemize}
+		\item The pivot is frictionless
+		\item The rod is massless
+		\item Air resistance is neglected
+%		\item The gravitational field is uniform
+		\item The ceiling is infinitely rigid
+		\item $\cdots$
+	\end{itemize}
 
-\columnbreak
-\begin{itemize}
-	\item The pivot is frictionless
-	\item The rod is massless
-	\item Air resistance is neglected
-	\item The gravitational field is uniform
-	\item The ceiling is infinitely rigid
-	\item $\cdots$
-\end{itemize}
-\end{multicols}
-
-\bigskip
-\bigskip
 
 \begin{parts}
 	\item What are the units of the following variables of interest?
@@ -813,7 +843,7 @@ F(\Pi_1,\Pi_2)=0 \quad \text{ or } \quad \Pi_1 = f(\Pi_2) \quad \Leftrightarrow 
 \]
 which implies that
 \[ 
-P = \sqrt{\frac{l}{g}} g(\Theta),
+P = \sqrt{\frac{l}{g}} \cdot \overline{f}(\Theta),
 \]
 or in other words, the fact that the \textit{period of the pendulum is proportional to the square root of its length} is a consequence of a pure dimensional analysis of the variables in the problem.
 
@@ -845,7 +875,7 @@ We want to understand how the drag force depends on the stream velocity.
 \question
 
 \begin{parts}
-	\item We choose the variables of interest. What are their units?
+	\item What are the units of the variables of interest\footnote{This choice is part of the modelling process.}?
 	\begin{enumerate}
 		\item drag force $[F]=$
 		\item upstream velocity $[v]=$
@@ -868,7 +898,7 @@ We want to understand how the drag force depends on the stream velocity.
 
 Solution:
 
-`\[ \mathcal{D} = 
+\[ \mathcal{D} = 
 	\mat{1 & 0 & 1  & 0 & 1 \\
 		1 & 1 & -3 & 1 & -1 \\
 		-2 & -1 & 0 & 0 & -1}
@@ -900,10 +930,420 @@ Could have also obtained
 \[ \mat{0\\1\\1\\1\\-1} \quad \text{ and } \quad \mat{1\\0\\1\\0\\-2} \]
 which gives a different $\Pi_2$ and a different relation.
 \end{slide}
+
+
+\begin{slide}
+
+	Using python to find the null space gives yet another set of different $\Pi_1$ and $\Pi_2$.
+
+\includegraphics[width=0.75\textwidth]{python/sphere-dimensionanalysis.pdf}
+
 	
+\end{slide}
 \end{solution}
 
 
+\begin{slide}
+
+\question
+
+\begin{parts}
+	\item Use Buckingham Pi Theorem on Exercise \ref{q:radioactive} about radioactive decay.
+	\item Use Buckingham Pi Theorem on Exercise \ref{q:budworms} about the budworm population.
+\end{parts}
+	
+\end{slide}
+
+
+
+
+\begin{slide}
+
+SYSTEMS OF ODEs
+	
+\end{slide}
+
+
+
+
+
+\begin{slide}
+
+\begin{problem}[Optimization Problem\footnote{Adapted from ``Mathematical Modelling'' by Meerschaert.}]
+A pig weighting 90 kg gains 3 kg per day and cost 45 cents a day to keep. The market price for pigs is 65 cents/kg, but is falling at 1 cent per day. When should the pig be sold?	
+\end{problem}
+
+Introduce variables:
+\begin{itemize}
+	\item $t=$ time at which the pig is sold (in days)
+	\item $w=$ weight of the pig (in kg)
+	\item $p=$ price of a pig (in \$/kg)
+	\item $C=$ cost of keeping the pig (in \$)
+	\item $R=$ revenue from selling the pig (in \$)
+	\item $P=$ profit from the sale of the pig (in \$)
+\end{itemize}
+	
+\question
+
+\begin{parts}
+	\item Which of these variables depend on $t$? Based on the statement, what do we know about their values?
+	\item What is our goal?
+	\item Solve the problem.
+	\item Answer the question: when should the pig be sold and what is the profit?
+\end{parts}
+
+\end{slide}
+
+\begin{slide}
+
+\SavedDefinitionRender{Sensitivity}
+
+\textbf{Example:} If the time to sell or the profit depends strongly on a parameter, then the model is not very useful.
+If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 cents, then the recommendation would be very suspect!
+
+\begin{parts}
+\setcounter{partsitem}{4}
+
+	\item Let $(t^\star,P^\star)$ be the optimal values found before. 
+	
+	What is the sensitivity of $P$ over the parameter $c=$ the daily maintenance cost of keeping a pig?
+	
+	\item Is $S(P^\star,c)$ positive/negative? What does that mean? Does that make sense?
+	
+	\item What is the sensitivity of $P$ over the parameter $p_0=$ the initial price of a pig (in \$/kg)?
+
+	\item Is $S(P^\star,p_0)$ positive/negative? What does that mean? Does that make sense?
+
+\end{parts}
+
+\end{slide}
+
+
+\begin{solution}
+\begin{slide}
+\textbf{Solutions:}
+\begin{parts}
+	\item 
+	\begin{itemize}
+ 		\item $w(t) = 90 + 3t$
+ 		\item $p(t) = 65-t$
+ 		\item $C(t) = 45t$
+ 		\item $R(t) = p(t) \cdot w(t)$
+ 		\item $P(t) = R(t) - C(t)$
+ 	\end{itemize}
+ 	\item The goal is to maximize $P(t)$ over $t\geq 0$.
+ 	\item 	$P(t) = (90+3t)(0.65-0.01t) - 0.45t$ \\
+			$\dfrac{dP}{dt} = 3(0.65-0.01t)-0.01(90+3t) - 0.45 = 0$\\
+ 			$t^\star = 10$ \\	
+ 			$P^\star(10) = 61.50$
+ 	\item The pig should be sold on day 10, which will give a profit of \$61.50.
+
+	\item We have $P = (90+3t)(0.65-0.01t) - ct$ and $t^\star = \frac{35}{2} - \frac{50}{3} c$.
+
+		We get $P^\star = \frac{25}{3} c^2 - \frac{35}{2} c + \frac{1083}{16}$ so that
+		\begin{align*}
+		S(P^\star,c) 
+			& = \frac{\partial P^\star}{c} \frac{c}{P^\star} \big|_{c=0.45} \\
+			& = \frac{\frac{50}{3} c^2 - \frac{35}{2}c}{\frac{25}{3} c^2 - \frac{35}{2} c + \frac{1083}{16}}\big|_{c=0.45}
+			= -0.0731707
+		\end{align*}
+		This model is insensitive with respect to the maintenance cost! =)
+	\item It is negative, which means that increasing the daily maintenance cost will decrease the profit, which makes sense.
+	
+	\item We get $S(P^\star,p_0) = 1.26829$, so
+%
+%		We have $P = (90+3t)(p_0-0.01t) - 0.45t$ and $t^\star = 50p_0-\frac{45}{2}$.
+%
+%		We get $P^\star = 75 p_0^2 + 22.5 p_0 + 15.1875$ so that
+%		\begin{align*}
+%		S(P^\star,p_0) 
+%			& = \frac{\partial P^\star}{p_0} \frac{p_0}{P^\star} \big|_{p_0=0.65} \\
+%			& = \frac{150p_0^2 + 22.5p_0}{75 p_0^2 + 22.5 p_0 + 15.1875}\big|_{p_0=0.65}
+%			= 1.26829
+%		\end{align*}
+		this model is moderately sensitive to the initial price for a pig. =|
+		
+	\item The sensitivity is positive since increasing the initial price of a pig increases the profit also.
+	
+\end{parts}
+
+
+	
+\end{slide}	
+
+\end{solution}
+
+
+
+\begin{slide}
+
+\begin{definition}[Robustness]
+How do the results depend on the assumptions?\\
+
+We assumed:
+\begin{itemize}
+	\item a linear increase in weight of the pig
+	\item a linear decrease in the price of the pig	  \\
+\end{itemize}
+%\hfill\\
+
+What happens if these were nonlinear? The prediction of prices is notoriously uncertain. \\
+
+Prices are often modelled as stochastic processes (like Brownian motion). This would necessitate a different modelling approach.  \\
+
+In particular, we might then want to maximize the expected (average) profit. But if the variance is very large, then the farmer might prefer a lower expected profit if that means lowering the risk (variance). 
+The farmer might consider maximizing the expected profit with a constraint on the variance of the profit.
+\end{definition}
+
+\end{slide}
+
+
+
+
+
+\begin{slide}
+
+\question
+
+\textbf{Constrained Optimization.} 
+How do we solve optimization problems with constraints?
+
+\SavedDefinitionRender{LagrangeMultipliers}
+
+
+\begin{definition}[Notes:]
+\begin{enumerate}
+	\item This is a necessary, but not sufficient condition.
+	\item To solve the optimization problem, find candidates $x$ that satisfy it, and then pick the best one.
+	\item Points for which $\nabla g_1(x), \ldots, \nabla g_k(x)$ are linearly dependent should also be candidates.
+	\item \eqref{LM} $\Leftrightarrow \nabla f(x^\star) \in {\rm span}\{\nabla g_1(x), \ldots, \nabla g_k(x)\}$.
+	\item The ``optimal'' values for $\lambda_1, \ldots, \lambda_k$ give important insights on the problem -- don't ignore them!
+\end{enumerate}
+\end{definition}
+
+\end{slide}
+
+
+
+
+
+\begin{slide}
+	
+\begin{problem}
+Consider the problem:
+\begin{itemize}
+	\item Maximize $x+y$ \quad such that $x^2+y^2 = 1$.
+\end{itemize}
+\end{problem}
+
+\begin{center}
+	\includegraphics[width=.4\textwidth]{images/LagrangeMultipliers-ex.png}
+\end{center}
+
+\begin{parts}
+	\item Use Lagrange Multipliers to find the maximum (and the minimum).
+
+\bigskip
+\bigskip
+
+	\item If the constraint was $x^2+y^2=c$, then what is:
+	\begin{enumerate}
+		\item the maximizer point $(x^\star,y^\star)$?
+		\item the Lagrange multiplier $\lambda^\star$?
+		\item the maximum $f(x^\star,y^\star)$?
+	\end{enumerate}
+	\begin{solution}
+		 $x^\star=y^\star= \frac{\sqrt{c}}{\sqrt{2}}$ \quad and \quad $\lambda^\star = \frac{1}{\sqrt{2c}}$
+		 
+		 max $= x^\star+y^\star=\sqrt{2c}$
+	\end{solution}
+	
+	\item Compare $\lambda^\star$ with $\dfrac{\partial f(x^\star,y^\star)}{\partial c}$.
+	
+	\begin{solution}
+		\[
+		\frac{\partial f(x^\star,y^\star)}{\partial c}
+			= \frac{\sqrt{2}}{2\sqrt{c}} = \lambda^\star
+		\]
+	\end{solution}
+
+	\item Based on this relation, give an interpretation for the Lagrange Multiplier.
+	
+	\begin{solution}
+		This means that if the constraint increased from $1$ to $1 + \Delta = 1.1$, 	then we would expect the maximum to increase by approximately $\Delta \lambda^\star = \frac{\Delta}{\sqrt{2}} \approx 0.07$.
+	\end{solution}
+
+	
+
+\end{parts}
+
+\end{slide}
+
+
+
+
+%\begin{solution}
+%\begin{slide}
+%
+%We obtain the following equations:
+%\begin{align*}
+%	\nabla f & = \mat{1\\1} \\	
+%	\nabla g & = \mat{2x\\2y} \\
+%	\\
+%	\mat{1\\1} & = \lambda \mat{2x \\ 2y} \\
+%	\\
+%	1 & = 2\lambda x \\
+%	1 & = 2\lambda y \\
+%	1 & = x^2 + y^2 \\
+%	\\
+%	1 & = \frac{1}{2 \lambda^2} \\
+%	\lambda & = \pm\frac{1}{\sqrt{2}}\\
+%	x & = y = \pm \frac{1}{\sqrt{2}}
+%\end{align*}
+%		
+%\end{slide}
+%\end{solution}
+
+
+
+
+
+
+
+
+\begin{slide}
+
+\begin{problem}%[Wood vs Aluminum]
+	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
+\end{problem}
+
+\question 
+
+Let us first investigate the selling price model for \textbf{one type of} chair. %: $P = c_0 + c_1 x^{-a} + c_2 y^{-b}$.
+
+\begin{parts}
+	\item As more chairs of both types are sold in the market: $x \to \infty$, what do you expect will happen to their selling price?
+	
+%	$$ P \to {\rm Cost}$$
+	
+	\item As chairs become scarce: $x \to 0^+$, what happens to the price?
+	
+%	$$P \to \infty$$
+	
+	\item What family of functions satisfies both these conditions?
+	
+%	$$P = c_0 + c_1 x^{-b}$$
+	
+\end{parts}
+ 
+
+%\SavedDefinitionRender{LagrangeMultipliers}
+	
+\end{slide}
+
+
+\begin{slide}
+
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/fitprice.png}
+
+Historical prices and fitting surface $p=f(x,y)$.
+\end{center}
+
+\end{slide}
+
+
+
+\begin{slide}
+
+\begin{problem}%[Wood vs Aluminum]
+	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
+\end{problem}
+
+\question
+
+\begin{parts}
+	\item We want to maximize the manufacturer's profit. What is the function to maximize?
+	\item This is a two-dimensional function, so we need to solve the system
+	\begin{align*}
+		\frac{\partial f}{\partial x} & = 0 \\[5pt]
+		\frac{\partial f}{\partial y} & = 0		
+	\end{align*}
+
+	Write down this system.
+	\item How can we find the solution?
+\end{parts}
+	
+\end{slide}
+
+
+
+\begin{slide}
+
+\SavedDefinitionRender{Newton1}
+
+\begin{parts}
+\setcounter{partsitem}{3}
+	\item From the description above, what is the formula for $x_1$ when using Newton's method?
+	
+	\bigskip
+	
+	\item Leveraging python.
+	\begin{enumerate}
+		\item Go to \url{https://utoronto.syzygy.ca/jupyter}
+		\item Download the file \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_newton.ipynb} and import it into the Jupyter Notebook
+		\item In the file, introduce the partial derivative functions and an initial guess.
+		\item Run the script
+	\end{enumerate}
+\end{parts}
+\end{slide}
+
+
+\begin{slide}
+
+\includegraphics[width=.75\textwidth]{images/chairs-profit.png}
+	
+\end{slide}
+
+\begin{slide}
+
+\begin{parts}
+\setcounter{partsitem}{5}
+	\item Leveraging python's minimization tools.
+	\begin{enumerate}
+		\item Go to \url{https://utoronto.syzygy.ca/jupyter}
+		\item Download the file \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_fmin.ipynb} and import it into Jupyter Notebook
+		\item In the file, introduce the profit function and an initial guess.
+		\item Run the script
+	\end{enumerate}
+\end{parts}
+\end{slide}
+
+
+\begin{slide}
+
+\question
+
+\begin{problem}%[Wood vs Aluminum]
+	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
+\end{problem}
+
+\textbf{Sensitivity}. To compute $p^\star$, you can use \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_sensitivity.ipynb}
+
+\begin{parts}
+	\item How sensitive is the profit to the parameter $c = 10$ (the production cost of the aluminum chair)
+		\[ S(p^\star, c) \approx \frac{p^\star(c+h) - p^\star(c)}{h} \frac{c}{p^\star(c)}?
+		\]
+
+	\item How sensitive is the profit to the parameter $b = 0.4$ (the exponent of $y$ in the selling price of the aluminum chair)
+		\[ S(p^\star, b) \approx \frac{p^\star(b+h) - p^\star(b)}{h} \frac{b}{p^\star(b)}?
+		\]
+		
+\end{parts}
+
+% We already calculated all the terms in these expressions for S except the bold faced ones. Those are the only ones we need to calculate.
+
+\end{slide}
 
 
 

@@ -969,9 +969,9 @@ SYSTEMS OF ODEs
 
 \begin{slide}
 
-\begin{definition}[Optimization Problem\footnote{Adapted from ``Mathematical Modelling'' by Meerschaert.}]
+\begin{problem}[Optimization Problem\footnote{Adapted from ``Mathematical Modelling'' by Meerschaert.}]
 A pig weighting 90 kg gains 3 kg per day and cost 45 cents a day to keep. The market price for pigs is 65 cents/kg, but is falling at 1 cent per day. When should the pig be sold?	
-\end{definition}
+\end{problem}
 
 Introduce variables:
 \begin{itemize}
@@ -1076,7 +1076,24 @@ If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 c
 
 
 \begin{slide}
-\SavedDefinitionRender{Robustness}
+
+\begin{definition}[Robustness]
+How do the results depend on the assumptions?\\
+
+We assumed:
+\begin{itemize}
+	\item a linear increase in weight of the pig
+	\item a linear decrease in the price of the pig	  \\
+\end{itemize}
+%\hfill\\
+
+What happens if these were nonlinear? The prediction of prices is notoriously uncertain. \\
+
+Prices are often modelled as stochastic processes (like Brownian motion). This would necessitate a different modelling approach.  \\
+
+In particular, we might then want to maximize the expected (average) profit. But if the variance is very large, then the farmer might prefer a lower expected profit if that means lowering the risk (variance). 
+The farmer might consider maximizing the expected profit with a constraint on the variance of the profit.
+\end{definition}
 
 \end{slide}
 
@@ -1086,9 +1103,119 @@ If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 c
 
 \begin{slide}
 
-\begin{definition}%[Wood vs Aluminum]
-	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
+\question
+
+\textbf{Constrained Optimization.} 
+How do we solve optimization problems with constraints?
+
+\SavedDefinitionRender{LagrangeMultipliers}
+
+
+\begin{definition}[Notes:]
+\begin{enumerate}
+	\item This is a necessary, but not sufficient condition.
+	\item To solve the optimization problem, find candidates $x$ that satisfy it, and then pick the best one.
+	\item Points for which $\nabla g_1(x), \ldots, \nabla g_k(x)$ are linearly dependent should also be candidates.
+	\item \eqref{LM} $\Leftrightarrow \nabla f(x^\star) \in {\rm span}\{\nabla g_1(x), \ldots, \nabla g_k(x)\}$.
+	\item The ``optimal'' values for $\lambda_1, \ldots, \lambda_k$ give important insights on the problem -- don't ignore them!
+\end{enumerate}
 \end{definition}
+
+\end{slide}
+
+
+
+
+
+\begin{slide}
+	
+\begin{problem}
+Consider the problem:
+\begin{itemize}
+	\item Maximize $x+y$ \quad such that $x^2+y^2 = 1$.
+\end{itemize}
+\end{problem}
+
+\begin{center}
+	\includegraphics[width=.4\textwidth]{images/LagrangeMultipliers-ex.png}
+\end{center}
+
+\begin{parts}
+	\item Use Lagrange Multipliers to find the maximum (and the minimum).
+
+\bigskip
+\bigskip
+
+	\item If the constraint was $x^2+y^2=c$, then what is:
+	\begin{enumerate}
+		\item the maximizer point $(x^\star,y^\star)$?
+		\item the Lagrange multiplier $\lambda^\star$?
+		\item the maximum $f(x^\star,y^\star)$?
+	\end{enumerate}
+	\begin{solution}
+		 $x^\star=y^\star= \frac{\sqrt{c}}{\sqrt{2}}$ \quad and \quad $\lambda^\star = \frac{1}{\sqrt{2c}}$
+		 
+		 max $= x^\star+y^\star=\sqrt{2c}$
+	\end{solution}
+	
+	\item Compare $\lambda^\star$ with $\dfrac{\partial f(x^\star,y^\star)}{\partial c}$.
+	
+	\begin{solution}
+		\[
+		\frac{\partial f(x^\star,y^\star)}{\partial c}
+			= \frac{\sqrt{2}}{2\sqrt{c}} = \lambda^\star
+		\]
+	\end{solution}
+
+	\item Based on this relation, give an interpretation for the Lagrange Multiplier.
+	
+	\begin{solution}
+		This means that if the constraint increased from $1$ to $1 + \Delta = 1.1$, 	then we would expect the maximum to increase by approximately $\Delta \lambda^\star = \frac{\Delta}{\sqrt{2}} \approx 0.07$.
+	\end{solution}
+
+	
+
+\end{parts}
+
+\end{slide}
+
+
+
+
+%\begin{solution}
+%\begin{slide}
+%
+%We obtain the following equations:
+%\begin{align*}
+%	\nabla f & = \mat{1\\1} \\	
+%	\nabla g & = \mat{2x\\2y} \\
+%	\\
+%	\mat{1\\1} & = \lambda \mat{2x \\ 2y} \\
+%	\\
+%	1 & = 2\lambda x \\
+%	1 & = 2\lambda y \\
+%	1 & = x^2 + y^2 \\
+%	\\
+%	1 & = \frac{1}{2 \lambda^2} \\
+%	\lambda & = \pm\frac{1}{\sqrt{2}}\\
+%	x & = y = \pm \frac{1}{\sqrt{2}}
+%\end{align*}
+%		
+%\end{slide}
+%\end{solution}
+
+
+
+
+
+
+
+
+\begin{slide}
+
+\begin{problem}%[Wood vs Aluminum]
+	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
+\end{problem}
 
 \question 
 
@@ -1129,9 +1256,9 @@ Historical prices and fitting surface $p=f(x,y)$.
 
 \begin{slide}
 
-\begin{definition}%[Wood vs Aluminum]
+\begin{problem}%[Wood vs Aluminum]
 	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
-\end{definition}
+\end{problem}
 
 \question
 
@@ -1153,18 +1280,18 @@ Historical prices and fitting surface $p=f(x,y)$.
 
 \begin{slide}
 
-\SavedDefinitionRender{Newton}
+\SavedDefinitionRender{Newton1}
 
 \begin{parts}
 \setcounter{partsitem}{3}
-	\item What is the formula for $x_1$ when using Newton's method?
+	\item From the description above, what is the formula for $x_1$ when using Newton's method?
 	
 	\bigskip
 	
 	\item Leveraging python.
 	\begin{enumerate}
 		\item Go to \url{https://utoronto.syzygy.ca/jupyter}
-		\item Load the file \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_newton.ipynb}
+		\item Download the file \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_newton.ipynb} and import it into the Jupyter Notebook
 		\item In the file, introduce the partial derivative functions and an initial guess.
 		\item Run the script
 	\end{enumerate}
@@ -1185,7 +1312,7 @@ Historical prices and fitting surface $p=f(x,y)$.
 	\item Leveraging python's minimization tools.
 	\begin{enumerate}
 		\item Go to \url{https://utoronto.syzygy.ca/jupyter}
-		\item Load the file \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_fmin.ipynb}
+		\item Download the file \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_fmin.ipynb} and import it into Jupyter Notebook
 		\item In the file, introduce the profit function and an initial guess.
 		\item Run the script
 	\end{enumerate}
@@ -1197,10 +1324,25 @@ Historical prices and fitting surface $p=f(x,y)$.
 
 \question
 
-\textbf{Sensitivity}
+\begin{problem}%[Wood vs Aluminum]
+	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
+\end{problem}
 
+\textbf{Sensitivity}. To compute $p^\star$, you can use \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_sensitivity.ipynb}
 
-	
+\begin{parts}
+	\item How sensitive is the profit to the parameter $c = 10$ (the production cost of the aluminum chair)
+		\[ S(p^\star, c) \approx \frac{p^\star(c+h) - p^\star(c)}{h} \frac{c}{p^\star(c)}?
+		\]
+
+	\item How sensitive is the profit to the parameter $b = 0.4$ (the exponent of $y$ in the selling price of the aluminum chair)
+		\[ S(p^\star, b) \approx \frac{p^\star(b+h) - p^\star(b)}{h} \frac{b}{p^\star(b)}?
+		\]
+		
+\end{parts}
+
+% We already calculated all the terms in these expressions for S except the bold faced ones. Those are the only ones we need to calculate.
+
 \end{slide}
 
 

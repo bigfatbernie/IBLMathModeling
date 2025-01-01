@@ -333,3 +333,16 @@ for some scalars $\lambda_1, \ldots, \lambda_k$.
 
 
 
+
+\begin{SaveDefinition}[key=EulerLagrange, title={Euler-Lagrange Equation}]
+
+The minimizer $x^\star(t)$ of the functional
+\[ \min \int_{t_0}^{t_1} F \big(t, x(t), x'(t) \big) ~dt \]
+with $x(t_0)=x_0$ and $x(t_1)=x_1$ satisfies the \textbf{Euler-Lagrange Equation}:
+\[
+\frac{\partial F}{\partial x} (t, x^\star, {x^\star}')
+	= \frac{d}{dt} \frac{\partial F}{\partial x'} (t, x^\star, {x^\star}') .
+\]
+
+%Note: This is a necessary but not sufficient condition.
+\end{SaveDefinition}

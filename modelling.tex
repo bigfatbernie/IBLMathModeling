@@ -10,13 +10,13 @@
 	hidelinks=true,
 	linkcolor = {0 0 1},
 	% Metadata to be embedded by hyperxmp
-	pdftitle={Ordinary Differential Equations (\jobname)},
+	pdftitle={Mathematical Modelling (\jobname)},
 	pdfauthor={Bernardo Galv\~ao-Sousa},
 	pdfauthortitle={Author},
 	pdfcopyright={Copyright (C) \copyrightdate, Bernardo Galv\~ao-Sousa},
-	pdfsubject={Ordinary Differential Equations textbook/workbook},
-	pdfkeywords={ordinary differential equations, ODEs, modeling, vectors, mathematics, textbook},
-	pdfurl={https://github.com/siefkenj/IBLODEs/},
+	pdfsubject={Mathematical Modelling textbook/workbook},
+	pdfkeywords={modeling, modelling, vectors, mathematics, textbook, ODEs, PDEs, optimization},
+	pdfurl={https://github.com/bigfatbernie/IBLMathModeling/},
 	pdflicenseurl={https://creativecommons.org/licenses/by-sa/4.0/},
 }
 
@@ -602,6 +602,159 @@ The farmer might consider maximizing the expected profit with a constraint on th
 
 
 
+
+
+
+\begin{slide}
+
+\question 
+
+\begin{problem}%[Unconstrained Optimization]
+	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
+\end{problem}
+
+
+Let us first investigate the selling price model for \textbf{one type of} chair. %: $P = c_0 + c_1 x^{-a} + c_2 y^{-b}$.
+
+\begin{parts}
+	\item As more chairs of both types are sold in the market: $x \to \infty$, what do you expect will happen to their selling price?
+	
+%	$$ P \to {\rm Cost}$$
+	
+	\item As chairs become scarce: $x \to 0^+$, what happens to the price?
+	
+%	$$P \to \infty$$
+	
+	\item What family of functions satisfies both these conditions?
+	
+%	$$P = c_0 + c_1 x^{-b}$$
+	
+\end{parts}
+ 
+
+%\SavedDefinitionRender{LagrangeMultipliers}
+	
+\end{slide}
+
+
+\begin{slide}
+
+\begin{center}
+\includegraphics[width=0.6\textwidth]{images/fitprice.png}
+
+Historical prices and fitting surface $p=f(x,y)$.
+\end{center}
+
+\end{slide}
+
+
+
+\begin{slide}
+
+\question
+
+\begin{problem}%[Unconstrained Optimization]
+	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
+\end{problem}
+
+
+\begin{parts}
+	\item We want to maximize the manufacturer's profit. What is the function to maximize?
+	\item This is a two-dimensional function, so we need to solve the system
+	\begin{align*}
+		\frac{\partial f}{\partial x} & = 0 \\[5pt]
+		\frac{\partial f}{\partial y} & = 0		
+	\end{align*}
+
+	Write down this system.
+	\item How can we find the solution?
+\end{parts}
+	
+\end{slide}
+
+
+
+\begin{slide}
+
+\SavedDefinitionRender{Newton1}
+
+\begin{parts}
+\setcounter{partsitem}{3}
+	\item From the description above, what is the formula for $x_1$ when using Newton's method?
+	
+	\bigskip
+	
+	\item Leveraging python.
+	\begin{enumerate}
+%		\item Go to \url{https://utoronto.syzygy.ca/jupyter}
+%		\item Download the file \href{https://raw.githubusercontent.com/bigfatbernie/IBLMathModeling/main/python/chairs_newton.ipynb}{\tt chairs\_newton.ipynb} and import it into the Jupyter Notebook
+		\item Clone the file \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/chairs_newton.ipynb}{\tt chairs\_newton.ipynb} into your Jupyter Notebook
+		\item In the file, introduce the partial derivative functions and an initial guess.
+		\item Run the script
+	\end{enumerate}
+\end{parts}
+\end{slide}
+
+
+\begin{slide}
+
+\includegraphics[width=.75\textwidth]{images/chairs-profit.png}
+	
+\end{slide}
+
+\begin{slide}
+
+\begin{parts}
+\setcounter{partsitem}{5}
+	\item Leveraging python's minimization tools.
+	\begin{enumerate}
+%		\item Go to \url{https://utoronto.syzygy.ca/jupyter}
+%		\item Download the file \href{https://raw.githubusercontent.com/bigfatbernie/IBLMathModeling/main/python/chairs_fmin.ipynb}{\tt chairs_fmin.ipynb} and import it into Jupyter Notebook
+		\item Clone the file \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/chairs_fmin.ipynb}{\tt chairs\_fmin.ipynb} into your Jupyter Notebook
+		\item In the file, introduce the profit function and an initial guess.
+		\item Run the script
+	\end{enumerate}
+\end{parts}
+\end{slide}
+
+
+\begin{slide}
+
+\question
+
+\begin{problem}%[Unconstrained Optimization]
+	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
+\end{problem}
+
+
+\textbf{Sensitivity}. To compute $p^\star$, you can use \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/chairs_sensitivity.ipynb}{\tt chairs_sensitivity.ipynb}.
+
+\begin{parts}
+	\item How sensitive is the profit to the parameter $c = 10$ (the production cost of the aluminum chair)
+		\[ S(p^\star, c) %= \frac{\partial S}{\partial c} (p^\star,c) \cdot \frac{c}{p^\star(c)} 
+			\approx \frac{p^\star(c+h) - p^\star(c)}{h} \cdot \frac{c}{p^\star(c)}?
+		\]
+
+	\item How sensitive is the profit to the parameter $b = 0.4$ (the exponent of $y$ in the selling price of the aluminum chair)
+		\[ S(p^\star, b) \approx \frac{p^\star(b+h) - p^\star(b)}{h} \cdot \frac{b}{p^\star(b)}?
+		\]
+\end{parts}
+
+% We already calculated all the terms in these expressions for S except the $p^\star(b+h)$. Those are the only ones we need to calculate.
+
+\begin{solution}
+\hspace{-3em}Note that we are using numerical derivatives, since calculating the partial derivatives analytically is usually impossible.	
+\end{solution}
+
+
+
+\end{slide}
+
+
+
+
+
+
 \begin{slide}
 
 \question
@@ -705,154 +858,6 @@ Consider the problem:
 %\end{slide}
 %\end{solution}
 
-
-
-
-
-
-
-
-\begin{slide}
-
-\question 
-
-\begin{problem}%[Constrained Optimization]
-	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
-\end{problem}
-
-
-Let us first investigate the selling price model for \textbf{one type of} chair. %: $P = c_0 + c_1 x^{-a} + c_2 y^{-b}$.
-
-\begin{parts}
-	\item As more chairs of both types are sold in the market: $x \to \infty$, what do you expect will happen to their selling price?
-	
-%	$$ P \to {\rm Cost}$$
-	
-	\item As chairs become scarce: $x \to 0^+$, what happens to the price?
-	
-%	$$P \to \infty$$
-	
-	\item What family of functions satisfies both these conditions?
-	
-%	$$P = c_0 + c_1 x^{-b}$$
-	
-\end{parts}
- 
-
-%\SavedDefinitionRender{LagrangeMultipliers}
-	
-\end{slide}
-
-
-\begin{slide}
-
-\begin{center}
-\includegraphics[width=0.6\textwidth]{images/fitprice.png}
-
-Historical prices and fitting surface $p=f(x,y)$.
-\end{center}
-
-\end{slide}
-
-
-
-\begin{slide}
-
-\question
-
-\begin{problem}%[Constrained Optimization]
-	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
-\end{problem}
-
-
-\begin{parts}
-	\item We want to maximize the manufacturer's profit. What is the function to maximize?
-	\item This is a two-dimensional function, so we need to solve the system
-	\begin{align*}
-		\frac{\partial f}{\partial x} & = 0 \\[5pt]
-		\frac{\partial f}{\partial y} & = 0		
-	\end{align*}
-
-	Write down this system.
-	\item How can we find the solution?
-\end{parts}
-	
-\end{slide}
-
-
-
-\begin{slide}
-
-\SavedDefinitionRender{Newton1}
-
-\begin{parts}
-\setcounter{partsitem}{3}
-	\item From the description above, what is the formula for $x_1$ when using Newton's method?
-	
-	\bigskip
-	
-	\item Leveraging python.
-	\begin{enumerate}
-		\item Go to \url{https://utoronto.syzygy.ca/jupyter}
-		\item Download the file \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_newton.ipynb} and import it into the Jupyter Notebook
-		\item In the file, introduce the partial derivative functions and an initial guess.
-		\item Run the script
-	\end{enumerate}
-\end{parts}
-\end{slide}
-
-
-\begin{slide}
-
-\includegraphics[width=.75\textwidth]{images/chairs-profit.png}
-	
-\end{slide}
-
-\begin{slide}
-
-\begin{parts}
-\setcounter{partsitem}{5}
-	\item Leveraging python's minimization tools.
-	\begin{enumerate}
-		\item Go to \url{https://utoronto.syzygy.ca/jupyter}
-		\item Download the file \url{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_fmin.ipynb} and import it into Jupyter Notebook
-		\item In the file, introduce the profit function and an initial guess.
-		\item Run the script
-	\end{enumerate}
-\end{parts}
-\end{slide}
-
-
-\begin{slide}
-
-\question
-
-\begin{problem}%[Constrained Optimization]
-	A manufacturer of lawn furniture makes two types of chairs, one with a wood frame and the other with an aluminum frame. The wood frame chair costs \$18 per unit to manufacture and aluminum frame chair costs \$10 per unit to manufacture. The company operates in a market where the number of units that can be sold depends on price. It is estimated that in order to sell $x$ units per day of the wood chair and $y$ units per day of the aluminum chair, the selling price cannot exceed $10 + 31x^{-0.5} + 1.3y^{-0.2}$ dollars per unit for the wood chair and $5 + 15y^{-0.4} + 0.8x^{-0.08}$ dollars per unit for the aluminum chair.
-\end{problem}
-
-\textbf{Sensitivity}. To compute $p^\star$, you can use \href{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/chairs_sensitivity.ipynb}{\texttt{chairs_sensitivity.ipynb}}.
-
-\begin{parts}
-	\item How sensitive is the profit to the parameter $c = 10$ (the production cost of the aluminum chair)
-		\[ S(p^\star, c) %= \frac{\partial S}{\partial c} (p^\star,c) \cdot \frac{c}{p^\star(c)} 
-			\approx \frac{p^\star(c+h) - p^\star(c)}{h} \cdot \frac{c}{p^\star(c)}?
-		\]
-
-	\item How sensitive is the profit to the parameter $b = 0.4$ (the exponent of $y$ in the selling price of the aluminum chair)
-		\[ S(p^\star, b) \approx \frac{p^\star(b+h) - p^\star(b)}{h} \cdot \frac{b}{p^\star(b)}?
-		\]
-\end{parts}
-
-% We already calculated all the terms in these expressions for S except the $p^\star(b+h)$. Those are the only ones we need to calculate.
-
-\begin{solution}
-\hspace{-3em}Note that we are using numerical derivatives, since calculating the partial derivatives analytically is usually impossible.	
-\end{solution}
-
-
-
-\end{slide}
 
 
 
@@ -1065,7 +1070,7 @@ Introduce the following variables:
 						& $\vec{x} \geq \vec{0}$
 		\end{tabular}
 	\end{center}
-	\item Use \href{https://github.com/bigfatbernie/IBLMathModeling/blob/main/python/farm-linearprog.ipynb}{\texttt{farm-linearprog.ipynb}} to find the solution.
+	\item Use \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/farm-linearprog.ipynb}{\tt farm-linearprog.ipynb} to find the solution.
 
 \end{parts}
 

@@ -3,10 +3,13 @@ cp modelling-slidessol.tex modelling-slides.tex
 
 pdflatex modelling-slidessol.tex
 pdflatex modelling-slidessol.tex
+pdflatex modelling-slidessol.tex
 
 pdflatex modelling-slides.tex
 pdflatex modelling-slides.tex
+pdflatex modelling-slides.tex
 
+pdflatex modelling.tex
 pdflatex modelling.tex
 pdflatex modelling.tex
 

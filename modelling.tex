@@ -1065,16 +1065,17 @@ It is crucial to understand how the optimal cost and loads change with $X$.
 \question
 
 \begin{problem}[Linear Programming\footnote{based on a problem from Meerschaert's `Mathematical Modeling'.}]
-	A family farm has 625 acres of land for planting. Possible crops that they could plant are corn, wheat, and oats. There are 1000 acre-ft (a volume) of water available for irrigation and 300 hours of labour per week available. The requirements and expected yields are shown below.
+	A family farm has 1250 hectares\footnote{1 hectare $=1$ ha $=$ 10\,000 m$^2$.}  of land for planting. Possible crops that they could plant are corn, wheat, and oats. There are 400 hectare-m (a volume) of water available for irrigation and 600 hours of labour per week available. The requirements and expected yields are shown below.
+	
 	
 	\begin{center}
 	\small
 	\begin{tabular}{l|c|c|c}
 	%\hline
 	& corn & wheat & oats \\ \hline
-	irrigation (acre-ft / acre) & 3.0 & 1.0 & 1.5 \\ \hline
-	labour (person-h / week / acre) & 0.8 & 0.2 & 0.3 \\ \hline
-	yield (\$/acre) & 400 & 200 & 250 \\ %\hline
+	irrigation (ha-m / ha) & 1.0 & 0.3 & 0.5 \\ \hline
+	labour (person-h / week / ha) & 1.6 & 0.4 & 0.6 \\ \hline
+	yield (\$/ha) & 1400 & 420 & 700 \\ %\hline
 	\end{tabular}
 	\end{center}
 	
@@ -1084,9 +1085,9 @@ It is crucial to understand how the optimal cost and loads change with $X$.
 Introduce the following variables:
 \begin{itemize}
 	\item $x_i= $ acres planted of $i=1$ corn, $i=2$ wheat, $i=3$ oats
-	\item $w=$ the total irrigation used in acre-ft
+	\item $w=$ the total irrigation used in ha-m
 	\item $\ell=$ the total labour used in person-h / week
-	\item $a=$ the total area planted in acre
+	\item $a=$ the total area planted in hectares
 	\item $y=$ the total yield in \$
 \end{itemize}
 
@@ -1113,22 +1114,22 @@ Introduce the following variables:
 \begin{parts}
 	\item
 		\begin{itemize}
-			\item $w = 3x_1 + x_2 + 1.5 x_3$
-			\item $\ell = 0.8 x_1 + 0.2 x_2 + 0.3 x_3$
+			\item $w = 1x_1 + 0.3x_2 + 0.5 x_3$
+			\item $\ell = 1.6 x_1 + 0.4 x_2 + 0.6 x_3$
 			\item $\displaystyle a = \sum_{i=1}^3 x_i$
-			\item $y = 400 x_1 + 200 x_2 + 250 x_3$
+			\item $y = 1400 x_1 + 420 x_2 + 700 x_3$
 		\end{itemize}
 		
 	\item 
 		\begin{itemize}
 			\item $x_i \geq 0$
-			\item $w \leq 1000$
-			\item $\ell \leq 300$
-			\item $a \leq 625$
+			\item $w \leq 400$
+			\item $\ell \leq 600$
+			\item $a \leq 1250$
 		\end{itemize}
 	\item 	\begin{tabular}[t]{lc}
-				Objective: 						& max \ $\mat{400 & 200 & 250} \vec{x}$ \\
-				\multirow{2}{*}{Constraints:} 	& $\mat{3 & 1 & 1.5\\0.8 & 0.2 & 0.3\\1 & 1 & 1} \vec{x} \leq \mat{1000\\300\\625}$ \\
+				Objective: 						& max \ $\mat{1400 & 420 & 750} \vec{x}$ \\
+				\multirow{2}{*}{Constraints:} 	& $\mat{1 & 0.3 & 0.5\\1.6 & 0.4 & 0.6\\1 & 1 & 1} \vec{x} \leq \mat{400\\600\\1250}$ \\
 							& $\vec{x} \geq \vec{0}$
 			\end{tabular}
 \end{parts}
@@ -1137,14 +1138,14 @@ Introduce the following variables:
 
 \begin{slide}
 
-We ran the same model with the Oats Yield ranging from \$240/acre to \$260/acre and obtained the following graphs.
+We ran the same model with the Wheat Yield ranging from \$400/ha to \$440/ha and obtained the following graphs.
 \begin{center}
 	\includegraphics[width=.5\textwidth]{images/farm-linearprog.png}
 \end{center}
 
 \begin{parts}
 	\setcounter{partsitem}{4}
-	\item Interpret the results and the shadow costs.
+	\item Interpret the results and the shadow profit ($-$ shadow cost).
 \end{parts}
 \end{slide}
 
@@ -1155,7 +1156,7 @@ We ran the same model with the Oats Yield ranging from \$240/acre to \$260/acre 
 \question
 
 \begin{problem}[Modified farming problem]
-We modify the original optimal farming problem to include the notion of plots. The 625 acre farm is broken down into 5 plots of 120 acres each and one 25 acre plot. For convenience, the farmers want to plot only one crop on each plot. As before, 1000 acre-ft of water and 300 hours of labour are available. 
+We modify the original optimal farming problem to include the notion of plots. The 1250 hectares farm is broken down into 5 plots of 240 hectares each and one 50 hectare plot. For convenience, the farmers want to plot only one crop on each plot. As before, 400 ha-m of water and 600 hours of labour are available. 
 The requirements and expected yields are shown below.
 	
 	\begin{center}
@@ -1163,9 +1164,9 @@ The requirements and expected yields are shown below.
 	\begin{tabular}{l|c|c|c}
 	%\hline
 	& corn & wheat & oats \\ \hline
-	irrigation (acre-ft / acre) & 3.0 & 1.0 & 1.5 \\ \hline
-	labour (person-h / week / acre) & 0.8 & 0.2 & 0.3 \\ \hline
-	yield (\$/acre) & 400 & 200 & 250 \\ %\hline
+	irrigation (ha-m / ha) & 1.0 & 0.3 & 0.5 \\ \hline
+	labour (person-h / week / ha) & 1.6 & 0.4 & 0.6 \\ \hline
+	yield (\$/ha) & 1400 & 420 & 700 \\ %\hline
 	\end{tabular}
 	\end{center}
 	

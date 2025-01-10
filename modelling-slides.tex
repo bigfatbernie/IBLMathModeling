@@ -458,7 +458,9 @@ Course topics:
 
 \begin{slide}
 
-\vspace{3cm}
+\begin{slidesonly}
+	\vspace{3cm}
+\end{slidesonly}
 
 \begin{center}
 \Huge 
@@ -531,8 +533,8 @@ If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 c
 	\item 
 	\begin{itemize}
  		\item $w(t) = 90 + 3t$
- 		\item $p(t) = 65-t$
- 		\item $C(t) = 45t$
+ 		\item $p(t) = 0.65-0.01t$
+ 		\item $C(t) = 0.45t$
  		\item $R(t) = p(t) \cdot w(t)$
  		\item $P(t) = R(t) - C(t)$
  	\end{itemize}
@@ -548,7 +550,7 @@ If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 c
 		We get $P^\star = \frac{25}{3} c^2 - \frac{35}{2} c + \frac{1083}{16}$ so that
 		\begin{align*}
 		S(P^\star,c) 
-			& = \frac{\partial P^\star}{c} \frac{c}{P^\star} \big|_{c=0.45} \\
+			& = \frac{\partial P^\star}{\partial c} \frac{c}{P^\star} \big|_{c=0.45} \\
 			& = \frac{\frac{50}{3} c^2 - \frac{35}{2}c}{\frac{25}{3} c^2 - \frac{35}{2} c + \frac{1083}{16}}\big|_{c=0.45}
 			= -0.0731707
 		\end{align*}
@@ -566,7 +568,7 @@ If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 c
 %			& = \frac{150p_0^2 + 22.5p_0}{75 p_0^2 + 22.5 p_0 + 15.1875}\big|_{p_0=0.65}
 %			= 1.26829
 %		\end{align*}
-		this model is moderately sensitive to the initial price for a pig. =|
+		this model is moderately sensitive to the initial price for a pig. =/
 		
 	\item The sensitivity is positive since increasing the initial price of a pig increases the profit also.
 	
@@ -574,7 +576,7 @@ If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 c
 
 
 	
-\end{slide}	
+\end{slide}
 
 \end{solution}
 
@@ -1425,7 +1427,9 @@ We will look back to \textbf{Exercise \ref{q:cv}}.
 \begin{slide}
 \question
 
-\vspace{3cm}
+\begin{slidesonly}
+	\vspace{3cm}
+\end{slidesonly}
 
 \begin{center}
 \Huge 

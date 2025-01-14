@@ -1,6 +1,6 @@
 \documentclass{workbook}
 
-\newcommand{\copyrightdate}{2024}
+\newcommand{\copyrightdate}{\the\year}
 
 \usepackage{ifxetex}
 \usepackage[utf8]{inputenc}
@@ -21,6 +21,8 @@
 }
 
 \usepackage{multirow}
+\usetikzlibrary{arrows,snakes,backgrounds,patterns,shapes.geometric,calc,automata, positioning}
+
 
 %%%
 % import all needed packages and macros
@@ -30,6 +32,7 @@
 
 \usepackage{breqn}
 \usepackage{multirow, multicol}
+
 
 \usepackage{pdfrender} % For text title
 
@@ -485,7 +488,7 @@ Introduce variables:
 \begin{itemize}
 	\item $t=$ time at which the pig is sold (in days)
 	\item $w=$ weight of the pig (in kg)
-	\item $p=$ price of a pig (in \$/kg)
+	\item $m=$ market price of a pig (in \$/kg)
 	\item $C=$ cost of keeping the pig (in \$)
 	\item $R=$ revenue from selling the pig (in \$)
 	\item $P=$ profit from the sale of the pig (in \$)
@@ -513,13 +516,13 @@ If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 c
 
 	\item Let $(t^\star,P^\star)$ be the optimal values found before. 
 	
-	What is the sensitivity of $P$ over the parameter $c=$ the daily maintenance cost of keeping a pig?
+	What is the sensitivity of $P$ over the parameter $c_d=$ the daily maintenance cost of keeping a pig?
 	
-	\item Is $S(P^\star,c)$ positive/negative? What does that mean? Does that make sense?
+	\item Is $S(P^\star,c_d)$ positive/negative? What does that mean? Does that make sense?
 	
-	\item What is the sensitivity of $P$ over the parameter $p_0=$ the initial price of a pig (in \$/kg)?
+	\item What is the sensitivity of $P$ over the parameter $m_0=$ the initial market price of a pig (in \$/kg)?
 
-	\item Is $S(P^\star,p_0)$ positive/negative? What does that mean? Does that make sense?
+	\item Is $S(P^\star,m_0)$ positive/negative? What does that mean? Does that make sense?
 
 \end{parts}
 
@@ -533,7 +536,7 @@ If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 c
 	\item 
 	\begin{itemize}
  		\item $w(t) = 90 + 3t$
- 		\item $p(t) = 0.65-0.01t$
+ 		\item $m(t) = 0.65-0.01t$
  		\item $C(t) = 0.45t$
  		\item $R(t) = p(t) \cdot w(t)$
  		\item $P(t) = R(t) - C(t)$
@@ -545,27 +548,34 @@ If the model said to sell at $t=1$ if the daily maintenance cost changed to 46 c
  			$P^\star(10) = 61.50$
  	\item The pig should be sold on day 10, which will give a profit of \$61.50.
 
-	\item We have $P = (90+3t)(0.65-0.01t) - ct$ and $t^\star = \frac{35}{2} - \frac{50}{3} c$.
-
-		We get $P^\star = \frac{25}{3} c^2 - \frac{35}{2} c + \frac{1083}{16}$ so that
+%	\item We have $P = (90+3t)(0.65-0.01t) - c_dt$ and $t^\star = \frac{35}{2} - \frac{50}{3} c_d$.
+%
+%		We get $P^\star = \frac{25}{3} c_d^2 - \frac{35}{2} c_d + \frac{1083}{16}$ so that
+%		\begin{align*}
+%		S(P^\star,c_d) 
+%			& = \frac{\partial P^\star}{\partial c_d} \frac{c_d}{P^\star} \big|_{c_d=0.45} \\
+%			& = \frac{\frac{50}{3} c_d^2 - \frac{35}{2}c_d}{\frac{25}{3} c_d^2 - \frac{35}{2} c_d + \frac{1083}{16}}\big|_{c_d=0.45}
+%			= -0.0731707
+%		\end{align*}
+	\item We have $P = (90+3t)(0.65-0.01t) - c_dt$ so that
 		\begin{align*}
-		S(P^\star,c) 
-			& = \frac{\partial P^\star}{\partial c} \frac{c}{P^\star} \big|_{c=0.45} \\
-			& = \frac{\frac{50}{3} c^2 - \frac{35}{2}c}{\frac{25}{3} c^2 - \frac{35}{2} c + \frac{1083}{16}}\big|_{c=0.45}
+		S(P^\star,c_d) 
+			& = \frac{\partial P^\star}{\partial c_d} \frac{c_d}{P^\star} \big|_{c_d=0.45} \\
+			& = - t^\star \frac{c_d}{P^\star} \big|_{c_d=0.45}
 			= -0.0731707
 		\end{align*}
 		This model is insensitive with respect to the maintenance cost! =)
 	\item It is negative, which means that increasing the daily maintenance cost will decrease the profit, which makes sense.
 	
-	\item We get $S(P^\star,p_0) = 1.26829$, so
+	\item We get $S(P^\star,m_0) = 1.26829$, so
 %
-%		We have $P = (90+3t)(p_0-0.01t) - 0.45t$ and $t^\star = 50p_0-\frac{45}{2}$.
+%		We have $P = (90+3t)(m_0-0.01t) - 0.45t$ and $t^\star = 50m_0-\frac{45}{2}$.
 %
-%		We get $P^\star = 75 p_0^2 + 22.5 p_0 + 15.1875$ so that
+%		We get $P^\star = 75 m_0^2 + 22.5 m_0 + 15.1875$ so that
 %		\begin{align*}
-%		S(P^\star,p_0) 
-%			& = \frac{\partial P^\star}{p_0} \frac{p_0}{P^\star} \big|_{p_0=0.65} \\
-%			& = \frac{150p_0^2 + 22.5p_0}{75 p_0^2 + 22.5 p_0 + 15.1875}\big|_{p_0=0.65}
+%		S(P^\star,m_0) 
+%			& = \frac{\partial P^\star}{m_0} \frac{m_0}{P^\star} \big|_{m_0=0.65} \\
+%			& = \frac{150m_0^2 + 22.5m_0}{75 m_0^2 + 22.5 m_0 + 15.1875}\big|_{m_0=0.65}
 %			= 1.26829
 %		\end{align*}
 		this model is moderately sensitive to the initial price for a pig. =/
@@ -683,10 +693,13 @@ Historical prices and fitting surface $p=f(x,y)$.
 \begin{slide}
 
 \SavedDefinitionRender{Newton1}
-
+\begin{minipage}{0.6\textwidth}
+	
 \begin{parts}
 \setcounter{partsitem}{3}
-	\item From the description above, what is the formula for $x_1$ when using Newton's method?
+	\item From the description above, sketch the point $x_1$ on the graph on the right when using Newton's method.
+	
+	\item What is the formula for $x_1$?
 	
 \begin{slidesonly}
 	\bigskip
@@ -701,6 +714,19 @@ Historical prices and fitting surface $p=f(x,y)$.
 		\item Run the script
 	\end{enumerate}
 \end{parts}
+\end{minipage}
+\hfill
+	\begin{minipage}{0.35\textwidth}
+		\begin{tikzpicture}%[scale=0.65]
+		  \draw[-latex] (0,-1.5) -- (0,2.5);
+		    \draw[-latex] (-0.25,0) -- (6,0);
+		%    \draw[ultra thick, blue, variable=\x, samples=100,domain=0:8] plot ({\x},{(-1.5*sin(180*(\x-4.5)/pi)*(\x-4.5+0.1(\x-4.5)^3-3*(\x-4.5))/4});
+		    \draw[ultra thick, blue, variable=\x, samples=100,domain=-0.25:6] plot ({\x},{(-1.5*sin(180*(\x-4.5)/pi)*(\x-4.5)+0.1*(\x-4.5)^3-3*(\x-4.5)-0.2)/5});
+		  \draw[dashed, thick] (2,{(-1.5*sin(180*(2-4.5)/pi)*(2-4.5)+0.1*(2-4.5)^3-3*(2-4.5)-0.2)/5}) -- (2,0) node[below] {$x_0$};
+		  \draw[ultra thick, green!50!black, fill=green!75!black] (2,{(-1.5*sin(180*(2-4.5)/pi)*(2-4.5)+0.1*(2-4.5)^3-3*(2-4.5)-0.2)/5}) circle (0.1);
+		\end{tikzpicture}
+	\end{minipage}
+
 \end{slide}
 
 
@@ -1342,7 +1368,7 @@ We will look back to \textbf{Exercise \ref{q:cv}}.
 	 
 	 What is $t_1$ and what is the function $z(t)$?	
 	
-	\item If we add a constraint $x'(t) \leq M$, how would that modify the solution?
+	\item If we add a constraint $x'(t) \leq M$, how would that modify the solution? What does this restriction mean in the ice-cream context?
 	
 \end{parts}
 \end{slide}
@@ -1397,7 +1423,7 @@ We will look back to \textbf{Exercise \ref{q:cv}}.
 			z(t) = \frac{c_2}{4c_1} (t-t_1)^2 + \frac{4c_1 B-c_2 (T-t_1)^2}{T-t_1} (t-t_1)
 		\]
 
-	\url{https://www.desmos.com/calculator/2rfvhjabpf}
+	\url{https://www.desmos.com/calculator/ny2frmc2ov}
 	
 	\item If $B$ is not too large: $B\leq MT-\frac{c_{2}}{4c_{1}}T^{2}$, then the original solution holds.
 		
@@ -1532,6 +1558,7 @@ According to the paper \href{https://www.researchgate.net/publication/289492130_
 \begin{itemize}
 	\item The average person occupies 0.15m$^2$.
 	\item The stadium fits 1200 people in one section.
+	\item The exits are 1.5m wide.
 \end{itemize}
 
 
@@ -1576,107 +1603,27 @@ According to the paper \href{https://www.researchgate.net/publication/289492130_
 Numerical Methods for:
 \[ y' = f(t,y) \]
 
+\SavedDefinitionRender{EulerMethod}
 
-\begin{parts}
-	
-\item Euler Method:
-\begin{align*}
-y_{n+1} & = y_n + h k_1\\	
-k_1 & = f(t_n, y_n)
-\end{align*}
-
-
-
-\begin{tikzpicture}
-	\draw[latex-latex] (4,0) -- (0,0) -- (0,4);
-    \draw[dashed] (1,0) node[below] {$t_n$} -- (1,4);
-    \draw[dashed] (2,0) -- (2,4);
-    \draw[dashed] (3,0) node[below] {$t_{n+1}$} -- (3,4);
-    \draw[dashed] (0,2) node[left] {$y_n$} -- (4,2);
-	\draw[fill=gray] (1,2) circle (0.1);
-    \draw[blue!50!black, fill=blue!50!white] (3,3) circle (0.1);
-    \draw[-latex, thick, blue!50!black] (1,2) -- node[above] {$k_1$} (3,3);
-\end{tikzpicture}
-
-
-\item Heun Method (Improved Euler):
-\begin{align*}
-y_{n+1} & = y_n + h \frac{k_1 + k_2}{2} \\	
-k_1 & = f(t_n, y_n) \\
-k_2 & = f(t_n+h, y_n + h k_1)
-\end{align*}
-
-\begin{tikzpicture}
-	\draw[latex-latex] (4,0) -- (0,0) -- (0,4);
-    \draw[dashed] (1,0) node[below] {$t_n$} -- (1,4);
-    \draw[dashed] (2,0) -- (2,4);
-    \draw[dashed] (3,0) node[below] {$t_{n+1}$} -- (3,4);
-    \draw[dashed] (0,2) node[left] {$y_n$} -- (4,2);
-	\draw[fill=gray] (1,2) circle (0.1);
-    \draw[blue!50!black, fill=blue!50!white] (3,3) circle (0.1);
-    \draw[-latex, thick, blue!50!black] (1,2) -- node[above] {$k_1$} (3,3);
-    \draw[-latex, thick, green!50!black] (3,3) -- node[above] {$k_2$} (4,2.75);
-    \draw[green!50!black, fill=green!75!black] (3,1.5) circle (0.1);
-    \draw[-latex,dashed, thick, green!50!black] (1,2) -- (3,1.5);    
-    \draw[fill=gray] (3,{(3+1.5)/2}) circle (0.1);
-    \draw[-latex, ultra thick] (1,2) -- (3,{(3+1.5)/2});
-\end{tikzpicture}
-
-\end{parts}
+\SavedDefinitionRender{HeunMethod}
 
 \end{slide}
 
-
 \begin{slide}
 
-\begin{parts}
-\setcounter{partsitem}{2}
-	
-\item Runge-Kutta Method:
-\begin{align*}
-y_{n+1} & = y_n + h \frac{k_1 + 2k_2+2k_3 + k_4}{6} \\	
-k_1 & = f(t_n, y_n) \\
-k_2 & = f(t_n+\frac{h}{2}, y_n + \frac{h}{2} k_1) \\
-k_3 & = f(t_n+\frac{h}{2}, y_n + \frac{h}{2} k_2) \\
-k_4 & = f(t_n+h, y_n + h k_3)
-\end{align*}
+\SavedDefinitionRender{RK4Method}
 
-\begin{slidesonly}
-	\vspace{2cm}
-\end{slidesonly}
-\begin{minipage}{.9\textwidth}
+
 Desmos with all these three methods:
-
+\hfil 
 \url{https://www.desmos.com/calculator/haolaltd9s}
-\end{minipage}
 
-\begin{slidesonly}
-	\vspace{4cm}
-\end{slidesonly}
 
-\begin{tikzpicture}
-	\draw[latex-latex] (4,0) -- (0,0) -- (0,4);
-    \draw[dashed] (1,0) node[below] {$t_n$} -- (1,4);
-    \draw[dashed] (2,0) -- (2,4);
-    \draw[dashed] (3,0) node[below] {$t_{n+1}$} -- (3,4);
-    \draw[dashed] (0,2) node[left] {$y_n$} -- (4,2);
-	\draw[fill=gray] (1,2) circle (0.1);
-    \draw[blue!50!black, fill=blue!50!white] (2,3) circle (0.1);
-    \draw[-latex, thick, blue!50!black] (1,2) -- node[above] {$k_1$} (2,3);
-    \draw[-latex, thick, green!50!black] (2,3) -- node[above] {$k_2$} (3,2.75);
-    \draw[green!50!black, fill=green!75!black] (2,1.75) circle (0.1);
-    \draw[-latex,dashed, thick, green!50!black] (1,2) -- (2,1.75);    
-    \draw[-latex, thick, red!50!black] (2,1.75) -- node[above] {$k_3$} (3,1.25);    
-    \draw[green!50!black, fill=red!75!black] (3,1) circle (0.1);
-    \draw[-latex,dashed, thick, red!50!black] (1,2) -- (3,1); 
-    \draw[-latex, thick, gray] (3,1) -- node[above] {$k_4$} (4,1);
-    \draw[fill=gray] (3,1.8) circle (0.1);
-    \draw[-latex, ultra thick] (1,2) -- (3,1.8);
-\end{tikzpicture}
+Consider the ODE $\dfrac{dy}{dx} = 2x\sin(x^2)$.
+\begin{parts}
+	\item Recall the meaning of the line segments in the slope field for this ODE.
 
-\hfill
-
-	\item Consider the ODE $\frac{dy}{dx} = 2x\sin(x^2)$ and $y(0)=0$. With a step $h=0.1$, find the largest interval that the approximations stay within 0.1 distance of the exact solution.
+	\item Consider the solution satisfying $y(0)=0$. With a step $h=0.1$, find the largest interval that the approximations stay within 0.1 distance of the exact solution.
 
 \end{parts}
 
@@ -1724,6 +1671,8 @@ Desmos with all these three methods:
 
 \question \label{q:radioactive}
 
+\paragraph{Non-Dimensionalization.}
+
 Consider the model for a mass undergoing radioactive decay:
 \[ \frac{dm}{dt} = -km \]
 with $m(0) = m_0$.
@@ -1742,6 +1691,7 @@ with $m(0) = m_0$.
 \begin{slide}
 \question \label{q:budworms}
 	
+\begin{problem}[Spruce Budworm Outbreak]
 Consider the model for spruce budworm outbreak in Eastern Canada\footnote{See ``Nonlinear Dynamics and Chaos'' by Strogatz.}.
 
 \[
@@ -1749,23 +1699,54 @@ Consider the model for spruce budworm outbreak in Eastern Canada\footnote{See ``
 \]
 
 The first term accounts for resource-limited population growth within a tree and the second term accounts for the predation of the budworms by birds.
+\end{problem}
 
 \begin{parts}
 	\item What are the units of $N, A, B, K$?
-	\item Consider the new variables\footnote{This is not the only way to do this.}:
-	\begin{itemize}
-		\item $x = N/A$ the non-dimensional budworm population
-		\item $\tau = \frac{Bt}{A}$ the non-dimensional time
-		\item $r = \frac{RA}{B}$ the non-dimensional growth rate
-		\item $k = \frac{K}{A}$ the non-dimensional carrying capacity
-	\end{itemize}
-	What is the ODE satisfied by $x(\tau)$?
+	
+
+
+	\item To ``non-dimensionalize'' this ODE, what variable would you consider instead of $N$?  What ODE is satisfied by your new variable? How many parameters do you have now?
+	
+%	What is the ODE satisfied by $x(\tau)$?
 
 	
 \end{parts}
 
-
 \end{slide}
+
+\begin{solution}
+\begin{slide}
+
+\begin{parts}
+	\item \begin{itemize}
+		\item $N =$ budworm population (amount)
+		\item $ K =$  carrying capacity of budworm population (amount)
+		\item $R =$ 1/time 
+		\item $A =$  amount (like $N$)
+		\item $B =$ 1 / (amount $\times$ time)
+ 	\end{itemize}
+ 	
+ 	\item Consider the new variables\footnote{This is not the only way to do this.}:
+		\begin{itemize}
+			\item $x = N/A$ the non-dimensional budworm population
+			\item $\tau = \frac{Bt}{A}$ the non-dimensional time
+			\item $r = \frac{RA}{B}$ the non-dimensional growth rate
+			\item $k = \frac{K}{A}$ the non-dimensional carrying capacity
+		\end{itemize}
+
+
+	OR consider the new variables:
+	\begin{itemize}
+		\item $x = N/K$ non-dimensional budworm population (fraction of its carrying capacity)
+		\item $b = B/K$ with units 1/(amount$^2 \times$ time
+		\item $a = A/K$ non-dimensional
+	\end{itemize}
+\end{parts}	
+	
+\end{slide}
+\end{solution}
+
 
 
 
@@ -1777,18 +1758,18 @@ The first term accounts for resource-limited population growth within a tree and
 
 \SavedDefinitionRender{BuckinghamPiThm}
 	
-	\begin{center}
-		\begin{tikzpicture}[scale=0.5]
-		  \draw[fill=brown!65!black,draw=none] (-1,0.1) rectangle (1,0);
-		  \draw (-1,0) -- (1,0);
-		  \draw[ultra thick] (0,0) -- (1,-4);
-		  \draw[thick, fill=black!20!white] (1,-4) circle (0.5) node {m};
-		%  \draw[dashed, gray] (0,0) -- (0,-4);
-		%  \draw[->,gray] (0,-3) node[above] {$\quad\theta$} arc (-90:-76:3);
-		%  \draw[->] (1, -4.75) -- (1, -5.25) node[below] {\small $\vec{F}_g$};
-		%  \draw[->] (1.1, -3.3) -- (0.95, -2.7) node[right] {\small $\vec{T}$};  
-		\end{tikzpicture}
-	\end{center}	
+%	\begin{center}
+%		\begin{tikzpicture}[scale=0.5]
+%		  \draw[fill=brown!65!black,draw=none] (-1,0.1) rectangle (1,0);
+%		  \draw (-1,0) -- (1,0);
+%		  \draw[ultra thick] (0,0) -- (1,-4);
+%		  \draw[thick, fill=black!20!white] (1,-4) circle (0.5) node {m};
+%		%  \draw[dashed, gray] (0,0) -- (0,-4);
+%		%  \draw[->,gray] (0,-3) node[above] {$\quad\theta$} arc (-90:-76:3);
+%		%  \draw[->] (1, -4.75) -- (1, -5.25) node[below] {\small $\vec{F}_g$};
+%		%  \draw[->] (1.1, -3.3) -- (0.95, -2.7) node[right] {\small $\vec{T}$};  
+%		\end{tikzpicture}
+%	\end{center}	
 
 
 %\begin{minipage}{.15\textwidth}
@@ -1822,15 +1803,32 @@ The first term accounts for resource-limited population growth within a tree and
 %\bigskip
 %\bigskip
 
-Consider a pendulum. We make assumptions:
-	\begin{itemize}
-		\item The pivot is frictionless
-		\item The rod is massless
-		\item Air resistance is neglected
-%		\item The gravitational field is uniform
-		\item The ceiling is infinitely rigid
-		\item $\cdots$
-	\end{itemize}
+\begin{problem}
+	Consider a pendulum. We make assumptions:
+
+	\begin{minipage}{2.5in}
+			\begin{itemize}
+				\item The pivot is frictionless
+				\item The rod is massless
+				\item Air resistance is neglected
+		%		\item The gravitational field is uniform
+				\item The ceiling is infinitely rigid
+				\item $\cdots$
+			\end{itemize}		
+	\end{minipage}
+	\begin{minipage}{0.5in}
+		\begin{tikzpicture}[scale=0.5]
+		  \draw[fill=brown!65!black,draw=none] (-1,0.1) rectangle (1,0);
+		  \draw (-1,0) -- (1,0);
+		  \draw[ultra thick] (0,0) -- (1,-4);
+		  \draw[thick, fill=black!20!white] (1,-4) circle (0.5) node {m};
+		%  \draw[dashed, gray] (0,0) -- (0,-4);
+		%  \draw[->,gray] (0,-3) node[above] {$\quad\theta$} arc (-90:-76:3);
+		%  \draw[->] (1, -4.75) -- (1, -5.25) node[below] {\small $\vec{F}_g$};
+		%  \draw[->] (1.1, -3.3) -- (0.95, -2.7) node[right] {\small $\vec{T}$};  
+		\end{tikzpicture}
+	\end{minipage}	
+\end{problem}
 
 
 \begin{parts}
@@ -1838,7 +1836,7 @@ Consider a pendulum. We make assumptions:
 	\begin{enumerate}
 		\item Period of the swing $[P] =$ 
 		\item Pendulum mass $[m]=$
-		\item Pendulum rod length $[l]=$
+		\item Pendulum rod length $[\ell]=$
 		\item Gravitational acceleration $[g]=$
 		\item Amplitude of the swing $[\Theta]=$
 	\end{enumerate}
@@ -1862,7 +1860,7 @@ Consider a pendulum. We make assumptions:
 	
 	\begin{center}
 	\begin{tabular}{cccccccl}
-		& $[P]$ & $[m]$ & $[l]$ & $[g]$ & $[\Theta]$ & \\
+		& $[P]$ & $[m]$ & $[\ell]$ & $[g]$ & $[\Theta]$ & \\
 		& $\downarrow$ & $\downarrow$ & $\downarrow$ & $\downarrow$ & $\downarrow$ & \\
 	\multirow{3}{*}{$\mathcal{D}=\left[\begin{matrix} \, \\ \,\\ \, \end{matrix}\right.$} 
 		& & & & & & 
@@ -1888,17 +1886,25 @@ For each vector of the null space basis,
 \[ \mat{2\\0\\-1\\1\\0} , \mat{0\\0\\0\\0\\1} \]
 
 Buckingham Pi Theorem states that these correspond to non-dimensional variables $\Pi_1$ and $\Pi_2$:
-\[ \Pi_1 = \frac{P^2 g}{l} \quad \text{ and } \quad \Pi_2 = \Theta \]
+\[ \Pi_1 = \frac{P^2 g}{\ell} \quad \text{ and } \quad \Pi_2 = \Theta \]
 
 and that there is a relation between them:
 \[
-F(\Pi_1,\Pi_2)=0 \quad \text{ or } \quad \Pi_1 = f(\Pi_2) \quad \Leftrightarrow \quad \frac{P^2 g}{l} = f(\Theta)
+F(\Pi_1,\Pi_2)=0 \quad \text{ or } \quad \Pi_1 = f(\Pi_2) \quad \Leftrightarrow \quad \frac{P^2 g}{\ell} = f(\Theta)
 \]
 which implies that
 \[ 
-P = \sqrt{\frac{l}{g}} \cdot \overline{f}(\Theta),
+P = \sqrt{\frac{\ell}{g}} \cdot \overline{f}(\Theta),
 \]
 or in other words, the fact that the \textit{period of the pendulum is proportional to the square root of its length} is a consequence of a pure dimensional analysis of the variables in the problem.
+
+
+\begin{parts}
+	\setcounter{partsitem}{5}
+	\item Recall the ODE for the pendulum: $ \frac{d^2\theta}{dt^2} = -\frac{g}{\ell}\sin (\theta)$. Linearize it near the equilibrium $\theta=0$.
+	\item Solve the linearized pendulum ODE, and compare the period of the linearized model to the nonlinear one.
+\end{parts}
+
 
 \end{slide}
 
@@ -1909,6 +1915,8 @@ or in other words, the fact that the \textit{period of the pendulum is proportio
 \begin{slide}
 
 \question
+
+\begin{problem}
 
 Consider the flow past a sphere.
 
@@ -1926,7 +1934,8 @@ You don't need to know much about fluid dynamics to be able to deduce some prope
 
 The sphere is in a fluid (water) and we measure the force necessary to keep the sphere from moving downstream.
 
-We want to understand how the drag force depends on the stream velocity.
+We want to understand how the drag force depends on the upstream velocity.
+\end{problem}
 
 \begin{parts}
 	\item What are the units of the variables of interest\footnote{This choice is part of the modelling process.}?
@@ -2011,19 +2020,300 @@ which gives a different $\Pi_2$ and a different relation.
 
 
 
+
+%
+%\begin{slide}
+%
+%\question
+%
+%\begin{problem}[Dog Shampoo]
+%Scientists are testing the effect of different dog shampoos. Let
+%\begin{itemize}
+%	\item $F = $ number of fleas (in millions)
+%	\item $D = $ number of dogs (in thousands)
+%	\item $a = $ effect of different dog shampoos
+%\end{itemize}
+%and consider the model: % for the interaction between them:
+%\begin{align*}
+%	F' & = -(1+a)F + D - 2 \\
+%	D' & = -2F + (1-a)D + 1
+%\end{align*}
+%
+%which is based on the following premises:
+%\begin{itemize}
+%	\item[(P1$_F$)] Ignoring all else, the number of parasites decays in proportion to its population (with constant $1+a$).
+%	\item[(P2$_F$)] Ignoring all else, parasite numbers grow in proportion to the number of hosts (with constant 1).
+%	\item[(P1$_D$)] Ignoring all else, hosts numbers grow in proportion to their current number (with constant $1-a$).
+%	\item[(P2$_D$)] Ignoring all else, host numbers decrease in proportion to the number of parasites (with constant 2).
+%	\item[(P1$_C$)] Anti-flea collars remove 2 million fleas per year.
+%	\item[(P2$_C$)] Constant dog breeding adds 1 thousand dogs per year.
+%\end{itemize}
+%\end{problem}
+%
+%\begin{parts}
+%	\item How are the premises expressed in the differential equations?
+%	\item Find the equilibrium solutions for each value of $-1 \leq a \leq $.
+%	\item Use \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/fleas_dogs.ipynb}{\tt fleas_dogs.ipynb} and eigenvalues to check the stability\footnote{If you are not comfortable with studying the stability of the equilibrium solutions of a system of ODEs, then check exercises 32--61 of the same textbook. You can also check sections 2.4 and 2.5 of the textbook \href{https://raw.githubusercontent.com/siefkenj/IBLODEs/main/diffyqs-by-jiri-lebl/diffyqs.pdf}{\tt ``Diffy Qs'' by Jiri Lebl}.} of the equilibrium points for different values of $-1 \leq a \leq 1$.
+%\end{parts}
+%
+%
+%
+%
+%\end{slide}
+
+
+
 \begin{slide}
 
-SYSTEMS OF ODEs
-	
+\question
+
+\begin{problem}[Dog Shampoo]\label{flea_dog}
+Scientists are testing the effect of different dog shampoos. Let
+\begin{itemize}
+	\item $F = $ number of fleas (in millions)
+	\item $D = $ number of dogs (in thousands)
+	\item $a = $ effect of different dog shampoos
+\end{itemize}
+and consider the model: % for the interaction between them:
+\begin{align*}
+	F' & = -(1+a)F + D - 2 \\
+	D' & = -2F + (1-a)D + 1
+\end{align*}
+
+which is based on the following premises:
+\begin{itemize}
+	\item[(P1$_F$)] Ignoring all else, the number of parasites decays in proportion to its population (with constant $1+a$).
+	\item[(P2$_F$)] Ignoring all else, parasite numbers grow in proportion to the number of hosts (with constant 1).
+\begin{slidesonly}
+	\vspace{3cm}
+\end{slidesonly}
+	\item[(P1$_D$)] Ignoring all else, hosts numbers grow in proportion to their current number (with constant $1-a$).
+	\item[(P2$_D$)] Ignoring all else, host numbers decrease in proportion to the number of parasites (with constant 2).
+	\item[(P1$_C$)] Anti-flea collars remove 2 million fleas per year.
+	\item[(P2$_C$)] Constant dog breeding adds 1 thousand dogs per year.
+\end{itemize}
+\end{problem}
+
+\begin{parts}
+	\item How are the premises expressed in the differential equations?
+	\item Find the equilibrium solutions for each value of $-1 \leq a \leq 1$.
+	\item Use \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/fleas_dogs.ipynb}{\tt fleas_dogs.ipynb} and eigenvalues to check the stability\footnote{If you are not comfortable with studying the stability of the equilibrium solutions of a system of ODEs, then check exercises 32--61 of the same textbook. You can also check sections 2.4 and 2.5 of the textbook \href{https://raw.githubusercontent.com/siefkenj/IBLODEs/main/diffyqs-by-jiri-lebl/diffyqs.pdf}{\tt ``Diffy Qs'' by Jiri Lebl}.} of the equilibrium points for different values of $-1 \leq a \leq 1$.
+\end{parts}
+
+
+
+
 \end{slide}
 
 
 
 
 
+\begin{slide}
+
+\question
+
+\begin{problem}[Mammalian Circadian Clock]\label{circadian}
+
+\begin{center}
+ \begin{tikzpicture}[scale=0.55]
+ 
+        % Setup the style for the states
+        \tikzset{node style/.style={state, 
+                                    minimum width=1.0cm,
+                                    line width=0.5mm,
+                                    fill=gray!20!white}}
+        % Draw the states
+        \node[draw,line width=0.5mm,fill=gray!20!white] at (0, 0)     (eb)     {E-Box};
+        \node[node style] at (5, 2)     (mn)     {mRNA};
+        \node[node style] at (5, 5.5)     (mc)     {mRNA};
+        \node[node style] at (0, 5.5)     (pc)     {PER};
+        \node[node style] at (0, 2)     (pn)     {PER};
+
+        \draw[dashed] (-1,4.3) -- (6,4.3);
+        \draw[thick] (-1,-0.4) -- (0.8,-0.4) -- (0.8, 0.3) -- (1.8,0.3);
+        % Connect the states with arrows
+        \draw[every loop,
+              auto=right,
+              line width=0.5mm,
+              >=latex,
+              draw=black,
+              fill=black]
+            (eb) edge[bend left=10] node {transcription} (mn)
+            (mn) edge[] node {nuclear export} (mc)
+            (mc) edge[] node {translation} (pc)
+            (pc) edge[] node {nuclear import} (pn)
+            (pn) edge[] node {inhibition} (eb);
+    \end{tikzpicture}
+%    \caption{A diagram of the transcription-translation feedback loop of the mammalian circadian clock. When the enhancer-box (E-Box) on the DNA is active, messenger RNA (mRNA) is produced. The mRNA is exported from the nucleus where it is translated into PER protein. The protein is imported into the nucleus where it inhibits the the E-Box. \label{fig:circadianTTFL}}
+\end{center}
+
+When the enhancer-box (E-Box) on the DNA is active, messenger RNA (mRNA) is produced. The mRNA is exported from the nucleus where it is translated into PER protein. The protein is imported into the nucleus where it inhibits the E-Box.
+
+
+We get the model:
+\begin{itemize}
+	\item $x_1 = $ enhancer box on the DNA (E-box)
+	\item $x_2, x_3 = $ mRNA inside/outside the nucleus
+%	\item $x_3 = $ mRNA outside the nucleus
+	\item $x_4, x_5 = $ PER outside/inside the nucleus
+%	\item $x_5 = $ PER inside the nucleus
+\end{itemize}
+We get:
+
+\hfil \begin{minipage}{.4\textwidth}
+\begin{align*}
+	x_1' & = -x_1 + e^{-\alpha x_5} \\
+	x_2' & = -x_2 + x_1 \\
+	x_3' & = -x_3+ x_2 
+\end{align*}	
+\end{minipage}
+\quad 
+\begin{minipage}{.4\textwidth}
+\begin{align*}
+	x_4' & = -x_4 + x_3 \\
+	x_5' & = -x_5+ x_4 
+\end{align*}	
+\end{minipage}
+
+where the exponential term represents the fact that the PER protein inhibits the E-box with ``strength'' $\alpha$.
+\end{problem}
+
+\begin{parts}
+	\item Find an approximation for the equilibrium solution for $\alpha = 1$.
+	\item This is a nonlinear problem. To linearize\footnote{If you are not comfortable with linearization of a system of ODEs, check exercise 61 on \url{https://raw.githubusercontent.com/siefkenj/IBLODEs/main/dist/odes.pdf}.} it around an equilibrium solution, find the Jacobian (or total derivative) $J$.
+	\item Use \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/circadian.ipynb}{\tt circadian.ipynb} and eigenvalues to check the stability of the equilibrium points for different values of $\alpha \in [0,100]$.
+\end{parts}
+
+%
+%\paragraph{TO DO:} CREATE python that takes alpha and computes the jacobian matrix, its eigenvalues and graphs the real part of the eigenvalues as a function of alpha.
 
 
 
+\end{slide}
+
+
+\begin{solution}
+
+\begin{slide}
+
+\begin{parts}
+	\item We get: $x_1 = x_2 = x_3 = x_4 = x_5$ and
+	\[ x_5 = e^{-\alpha x_5} \]
+	
+	We have to approximate the solutions to this equation, e.g. using Newton's method.
+	
+	\item The Jacobian is:
+		\[ J = 
+			\mat { 	-1 & 0 & 0 & 0 & -\alpha e^{-\alpha x_5} \\
+					1 & -1 & 0 & 0 & 0 \\
+					0 & 1 & -1 & 0 &  0 \\
+					0 & 0 & 1 & -1 &  0 \\
+					0 & 0 & 0 & 1 & -1 
+					}
+		\]	
+	\item The solutions are in \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/circadian.ipynb}{\tt circadian5-sol.ipynb}{\tt circadian5-sol.ipynb}.
+	
+	Basically we need to find the (5) eigenvalues for each value of $\alpha \in [0,100]$ and check when:
+	\begin{itemize}
+		\item All negative $\Rightarrow $ stable equilibrium
+		\item One positive $\Rightarrow $ unstable equilibrium
+	\end{itemize}
+	
+	\includegraphics[width=200pt]{images/circadian5.png}
+	
+\end{parts}
+	
+\end{slide}	
+\end{solution}
+
+\begin{slide}
+\question
+
+From the previous question, we obtained equilibrium solutions that changed from stable to unstable as we changed the parameter $\alpha$ -- see the graph below.
+	\begin{center}
+		\includegraphics[width=200pt]{images/circadian5.png}
+	\end{center}
+
+This is called a \textbf{bifurcation}. \\
+
+%\bigskip
+
+Another type of bifurcation involves the creation of disappearance of equilibria as a parameter changes.
+
+There are several typical types of bifurcations.
+
+\end{slide}
+
+
+\begin{slide}
+
+\SavedDefinitionRender{bifurcations}
+
+Decide on the type of bifurcation for each ODE.
+
+\begin{parts}
+	\item The ODE from Exercise \ref{flea_dog}.
+	\item The system of ODEs from Exercise \ref{circadian}.
+	\item The ODE $\frac{dx}{dt} = rx - x^2$.
+	\item The ODE $\frac{dx}{dt} = r + x^2$.
+	\item The ODE $\frac{dx}{dt} = rx - x^3$.
+	\item The following system of ODEs as $\mu$ changes: \\
+	$ \begin{cases}
+ 		\frac{dx}{dt} & = \mu x -  \omega y \\[5pt]
+ 		\frac{dy}{dt} & = \omega x + \mu y
+	\end{cases}
+	$
+	\item The Lotka-Volterra model for $0< a < 1$: \\
+	$ \begin{cases}
+ 		\frac{dx}{dt} & = a xy - x - 2 + \frac1a\\[5pt]
+ 		\frac{dy}{dt} & = y - \frac12 xy - 2 + \frac1a
+	\end{cases}
+	$
+\end{parts}
+	
+	
+\end{slide}
+
+
+\begin{solution}
+\begin{slide}
+\begin{parts}
+	\item Change of stability bifurcation
+	\item Change of stability bifurcation
+	\item Transcritical bifurcation: $x(r-x) = 0$ so $x=0$ and $x=r$ are equilibria and they swap stability at $r=0$.
+	\item Saddle-node bifurcation: equilibria only exist for $r<0$, one stable and one unstable.
+	\item Pitchfork bifurcation: $x(r-x^2)=0$ implies
+	\begin{itemize}
+		\item $r\leq 0$: equilibria at $x=0$
+		\item $r>0$: equilibria at $x=0$ and $x=\pm \sqrt{r}$
+	\end{itemize}
+	See \url{https://www.desmos.com/calculator/p4c44owr9l} about pitchfork perturbation.
+	\item Hopf bifurcation: Equilibrium at $(0,0)$ and with eigenvalues $\mu \pm \omega i$, so
+	\begin{itemize}
+		\item $\mu<0$: stable spiral
+		\item $\mu = 0$: stable centre (periodic orbit)
+		\item $\mu > 0$: unstable spiral
+	\end{itemize}
+	\item Equilibrium at $(\frac{1}{a},2)$ and
+	\begin{itemize}
+		\item $a < 1-\frac{\sqrt{3}}{2} \approx 0.134$: two negative eigenvalues (stable)
+		\item $1-\frac{\sqrt{3}}{2}< a < \frac12$: stable spiral
+		\item $ a = \frac12$: stable centre (periodic orbit)
+		\item $ a > \frac12$: unstable spiral
+	\end{itemize}
+	
+	Change in qualitative behaviour at $a = 1-\frac{\sqrt{3}}{2}$ and Hopf at $a = \frac12$.
+	
+	Calculations at \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/bifurcation-LotkaVolterra.ipynb}{\tt bifurcation-LotkaVolterra.ipynb}.
+	
+	Visualize also here \url{https://www.desmos.com/calculator/aydzcpccy4}
+
+\end{parts}
+	
+\end{slide}
+	
+\end{solution}
 
 
 

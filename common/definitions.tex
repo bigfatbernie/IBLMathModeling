@@ -346,3 +346,113 @@ with $x(t_0)=x_0$ and $x(t_1)=x_1$ satisfies the \textbf{Euler-Lagrange Equation
 
 %Note: This is a necessary but not sufficient condition.
 \end{SaveDefinition}
+
+
+
+
+\begin{SaveDefinition}[key=EulerMethod, title={Euler Method}]
+\begin{align*}
+y_{n+1} & = y_n + h k_1\\	
+k_1 & = f(t_n, y_n)
+\end{align*}
+
+\begin{center}
+\begin{tikzpicture}
+	\draw[latex-latex] (4,0) -- (0,0) -- (0,4);
+    \draw[dashed] (1,0) node[below] {$t_n$} -- (1,4);
+    \draw[dashed] (2,0) -- (2,4);
+    \draw[dashed] (3,0) node[below] {$t_{n+1}$} -- (3,4);
+    \draw[dashed] (0,2) node[left] {$y_n$} -- (4,2);
+	\draw[fill=gray] (1,2) circle (0.1);
+    \draw[blue!50!black, fill=blue!50!white] (3,3) circle (0.1);
+    \draw[-latex, thick, blue!50!black] (1,2) -- node[above] {$k_1$} (3,3);
+\end{tikzpicture}
+\end{center}
+\end{SaveDefinition}
+
+
+\begin{SaveDefinition}[key=HeunMethod, title={Heun Method (Improved Euler)}]
+
+\begin{align*}
+y_{n+1} & = y_n + h \frac{k_1 + k_2}{2} \\	
+k_1 & = f(t_n, y_n) \\
+k_2 & = f(t_n+h, y_n + h k_1)
+\end{align*}
+
+\begin{center}
+\begin{tikzpicture}
+	\draw[latex-latex] (4,0) -- (0,0) -- (0,4);
+    \draw[dashed] (1,0) node[below] {$t_n$} -- (1,4);
+    \draw[dashed] (2,0) -- (2,4);
+    \draw[dashed] (3,0) node[below] {$t_{n+1}$} -- (3,4);
+    \draw[dashed] (0,2) node[left] {$y_n$} -- (4,2);
+	\draw[fill=gray] (1,2) circle (0.1);
+    \draw[blue!50!black, fill=blue!50!white] (3,3) circle (0.1);
+    \draw[-latex, thick, blue!50!black] (1,2) -- node[above] {$k_1$} (3,3);
+    \draw[-latex, thick, green!50!black] (3,3) -- node[above] {$k_2$} (4,2.75);
+    \draw[green!50!black, fill=green!75!black] (3,1.5) circle (0.1);
+    \draw[-latex,dashed, thick, green!50!black] (1,2) -- (3,1.5);    
+    \draw[fill=gray] (3,{(3+1.5)/2}) circle (0.1);
+    \draw[-latex, ultra thick] (1,2) -- (3,{(3+1.5)/2});
+\end{tikzpicture}
+\end{center}
+
+\end{SaveDefinition}
+
+
+\begin{SaveDefinition}[key=RK4Method, title={Runge-Kutta Method (4$^{\text{th}}$ order)}]
+
+\begin{minipage}{.6\textwidth}
+\begin{align*}
+y_{n+1} & = y_n + h \frac{k_1 + 2k_2+2k_3 + k_4}{6} \\	
+k_1 & = f(t_n, y_n) \\
+k_2 & = f(t_n+\frac{h}{2}, y_n + \frac{h}{2} k_1) \\
+k_3 & = f(t_n+\frac{h}{2}, y_n + \frac{h}{2} k_2) \\
+k_4 & = f(t_n+h, y_n + h k_3)
+\end{align*}
+\end{minipage}
+\hfil
+\begin{minipage}{.3\textwidth}
+\begin{tikzpicture}
+	\draw[latex-latex] (4,0) -- (0,0) -- (0,4);
+    \draw[dashed] (1,0) node[below] {$t_n$} -- (1,4);
+    \draw[dashed] (2,0) -- (2,4);
+    \draw[dashed] (3,0) node[below] {$t_{n+1}$} -- (3,4);
+    \draw[dashed] (0,2) node[left] {$y_n$} -- (4,2);
+	\draw[fill=gray] (1,2) circle (0.1);
+    \draw[blue!50!black, fill=blue!50!white] (2,3) circle (0.1);
+    \draw[-latex, thick, blue!50!black] (1,2) -- node[above] {$k_1$} (2,3);
+    \draw[-latex, thick, green!50!black] (2,3) -- node[above] {$k_2$} (3,2.75);
+    \draw[green!50!black, fill=green!75!black] (2,1.75) circle (0.1);
+    \draw[-latex,dashed, thick, green!50!black] (1,2) -- (2,1.75);    
+    \draw[-latex, thick, red!50!black] (2,1.75) -- node[above] {$k_3$} (3,1.25);    
+    \draw[green!50!black, fill=red!75!black] (3,1) circle (0.1);
+    \draw[-latex,dashed, thick, red!50!black] (1,2) -- (3,1); 
+    \draw[-latex, thick, gray] (3,1) -- node[above] {$k_4$} (4,1);
+    \draw[fill=gray] (3,1.8) circle (0.1);
+    \draw[-latex, ultra thick] (1,2) -- (3,1.8);
+\end{tikzpicture}
+\end{minipage}
+\end{SaveDefinition}
+
+
+
+\begin{SaveDefinition}[key=bifurcations, title={Bifurcations}]
+
+A (local) \textbf{bifurcation} occurs when a parameter change causes the stability of an equilibrium to change.
+
+We will study four typical types of bifurcations.
+
+\begin{enumerate}
+	\item \textbf{Saddle-node bifurcation}. Two equilibria collide and annihilate each other.
+	\item \textbf{Transcritical bifurcation}. An equilibrium exists for all values of a parameter and is never destroyed. However, the equilibrium interchanges its stability with another equilibrium as the parameter changes.
+	\item \textbf{Pitchfork bifurcation}. One equilibrium transitions to three equilibria as a parameter changes.
+	\item \textbf{Hopf bifurcation}. A periodic orbit appears (or disappears) through a change in the stability of an equilibrium point -- this means that we transition from purely imaginary to complex eigenvalues.
+\end{enumerate}
+
+
+\end{SaveDefinition}
+
+
+
+

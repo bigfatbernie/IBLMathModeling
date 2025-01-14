@@ -259,6 +259,7 @@
 \iftoggle{slides}{
 	\voidenvironment{module}
 	\voidenvironment{appendix}
+	\voidenvironment{bigcover}
 	\voidenvironment{bookonly}
 	\voidenvironment{solution}
 	\voidenvironment{slidesol}
@@ -270,6 +271,7 @@
 }{}
 \iftoggle{slidessol}{
 	\voidenvironment{module}
+	\voidenvironment{bigcover}
 	\voidenvironment{appendix}
 	\voidenvironment{bookonly}
 	\voidenvironment{annotation}
@@ -280,6 +282,7 @@
 }{}
 \iftoggle{slideswhite}{
 	\voidenvironment{module}
+	\voidenvironment{bigcover}
 	\voidenvironment{appendix}
 	\voidenvironment{bookonly}
 	\voidenvironment{solution}
@@ -374,9 +377,8 @@
 	%\input{modules/module1-exercises.tex}
 \end{module}
 
-%
-% Hours 1-6
-%
+
+
 
 
 \begin{slide}
@@ -435,7 +437,10 @@
 
 \begin{slide}
 
-Course topics:
+\begin{parts}
+\setcounter{partsitem}{2}
+
+	\item Course topics:
 
 \begin{itemize}
 	\item Optimization models
@@ -443,6 +448,8 @@ Course topics:
 	\item Probability models
 \end{itemize}
 	
+\end{parts}
+
 \end{slide}
 
 
@@ -1901,7 +1908,7 @@ or in other words, the fact that the \textit{period of the pendulum is proportio
 
 \begin{parts}
 	\setcounter{partsitem}{5}
-	\item Recall the ODE for the pendulum: $ \frac{d^2\theta}{dt^2} = -\frac{g}{\ell}\sin (\theta)$. Linearize it near the equilibrium $\theta=0$.
+	\item Recall the ODE for the pendulum: $ \frac{d^2\theta}{dt^2} = -\frac{g}{\ell}\sin (\theta)$. Linearize\footnote{If you are not comfortable with linearization of an ODE, check exercise 61 on \url{https://raw.githubusercontent.com/siefkenj/IBLODEs/main/dist/odes.pdf}.} it near the equilibrium $\theta=0$.
 	\item Solve the linearized pendulum ODE, and compare the period of the linearized model to the nonlinear one.
 \end{parts}
 
@@ -2116,7 +2123,7 @@ which is based on the following premises:
 \begin{problem}[Mammalian Circadian Clock]\label{circadian}
 
 \begin{center}
- \begin{tikzpicture}[scale=0.55]
+ \begin{tikzpicture}[scale=0.65]
  
         % Setup the style for the states
         \tikzset{node style/.style={state, 
@@ -2131,7 +2138,7 @@ which is based on the following premises:
         \node[node style] at (0, 2)     (pn)     {PER};
 
         \draw[dashed] (-1,4.3) -- (6,4.3);
-        \draw[thick] (-1,-0.4) -- (0.8,-0.4) -- (0.8, 0.3) -- (1.8,0.3);
+%        \draw[thick] (-1,-0.4) -- (0.8,-0.4) -- (0.8, 0.3) -- (1.8,0.3);
         % Connect the states with arrows
         \draw[every loop,
               auto=right,
@@ -2150,6 +2157,9 @@ which is based on the following premises:
 
 When the enhancer-box (E-Box) on the DNA is active, messenger RNA (mRNA) is produced. The mRNA is exported from the nucleus where it is translated into PER protein. The protein is imported into the nucleus where it inhibits the E-Box.
 
+\begin{slidesonly}
+	\vspace{2cm}
+\end{slidesonly}
 
 We get the model:
 \begin{itemize}

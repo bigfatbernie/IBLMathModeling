@@ -13,7 +13,7 @@
 
 
 
-
+\begin{slidesonly}
 	\begin{scope}
 		\node[anchor=south east,inner sep=0pt,outer sep=0pt,] 
 		at (current page.south east) {\includegraphics[width=\paperwidth, height=\paperheight]{images/openAIart-hurricane.png}};
@@ -56,6 +56,51 @@
 		\fill[covershade] (0,-1in) rectangle ([yshift=-1.05in]current page.north east);
 %		\fill[path fading=south, covershade] (0,-2in) rectangle ([xshift=1in,yshift=2in]current page.south east);
 	\end{scope}
+\end{slidesonly}
+\begin{bigcover}
+	\begin{scope}
+		\node[anchor=south east,inner sep=0pt,outer sep=0pt,] 
+		at (current page.south east) {\includegraphics[width=\paperwidth, height=\paperheight]{images/Book-cover.pdf}};
+
+%      \begin{scope}[
+%        shift={(\pagewidth/2, -15cm)},
+%        draw=white,
+%        scale=1
+%      ]
+%        
+%        % Define the vector field function
+%        % Based on Van der Pol's equation with mu=0.08
+%        \def\vectorfieldx(#1,#2){0.08 * (1 - (#2)^2) * (#1) - (#2)}
+%        \def\vectorfieldy(#1,#2){(#1)}
+%
+%        % Draw the vector field
+%        \foreach \x in {-10,-9.4,...,10}
+%            \foreach \y in {-6,-5.4,...,6}
+%            {
+%                % Calculate the vector at (\x, \y)
+%                \pgfmathsetmacro\vx{\vectorfieldx(\x,\y)}
+%                \pgfmathsetmacro\vy{\vectorfieldy(\x,\y)}
+%                
+%                % Normalize the vector for consistent arrow lengths
+%                \pgfmathsetmacro\norm{sqrt(\vx*\vx + \vy*\vy + 0.01)}
+%                \pgfmathsetmacro\scaleChange{atan(\norm)/100/\norm}
+%                \pgfmathsetmacro\vx{\vx*\scaleChange}
+%                \pgfmathsetmacro\vy{\vy*\scaleChange}
+%                            
+%                % Draw the vector as an arrow
+%                \draw[->] (\x,\y) -- ++(\vx,\vy);
+%            }
+%
+%        
+%      \end{scope}
+
+
+
+		\fill[path fading=north,covershade] (0,2.2in) rectangle ([yshift=-1.01in, xshift=2pt]current page.north east);
+		\fill[covershade] (0,-1in) rectangle ([yshift=-1.05in]current page.north east);
+%		\fill[path fading=south, covershade] (0,-2in) rectangle ([xshift=1in,yshift=2in]current page.south east);
+	\end{scope}		
+\end{bigcover}
 
 
 
@@ -131,13 +176,17 @@
 
 
 \begin{bookonly}
-	\draw (0, -24) node[right, xshift=10em] (AUTHOR) {\phantom{\authornames}};	
+	\draw (0, 15) node[right, xshift=10em] (AUTHOR) {\phantom{\authornames}};	
 \end{bookonly}
+\begin{bigcover}
+	\draw (0, -25) node[right, xshift=10em] (AUTHOR) {\phantom{\authornames}};		
+\end{bigcover}
 
 \begin{displayonly}
 	\draw (0, -8.5) node[right, xshift=10em] (AUTHOR) {\phantom{\authornames}};	
 \end{displayonly}
 
+\begin{slidesonly}
 
 	\path let \p1 = (AUTHOR.north) in coordinate (Ab1) at (0,\y1+\ypadd);
 	\path let \p1 = (AUTHOR.north east) in coordinate (Ab2) at (\x1+\xpadd,\y1+\ypadd);
@@ -146,11 +195,23 @@
 
 	\path[fill=covershade, path fading=west, opacity=.8] (Ab1) -- (Ab2) -- (Ab3) -- (Ab4);
 	\draw[covershade!80!black, line width=1.3pt] (Ab1) -- (Ab2) -- (Ab3) -- (Ab4);
+	
+	\draw (0, -8.5) node[right, xshift=10em, white!75!black] (AUTHOR) {\authornames};	
+\end{slidesonly}
+
 \begin{bookonly}
-	\draw (0, -24) node[right, xshift=10em, white!75!black] (AUTHOR) {\authornames};
+	\draw (0, 15) node[right, xshift=10em, white!75!black] (AUTHOR) {\authornames};
 \end{bookonly}
-\begin{displayonly}
-	\draw (0, -8.5) node[right, xshift=10em, white!75!black] (AUTHOR) {\authornames};
-\end{displayonly}
+\begin{bigcover}
+	\path let \p1 = (AUTHOR.north) in coordinate (Ab1) at (0,\y1+\ypadd-470);
+	\path let \p1 = (AUTHOR.north east) in coordinate (Ab2) at (\x1+\xpadd,\y1+\ypadd-470);
+	\path let \p1 = (AUTHOR.south east) in coordinate (Ab3) at (\x1+\xpadd,\y1-\ypadd-470);
+	\path let \p1 = (AUTHOR.south) in coordinate (Ab4) at (0,\y1-\ypadd-470);
+
+	\path[fill=covershade, path fading=west, opacity=.8] (Ab1) -- (Ab2) -- (Ab3) -- (Ab4);
+	\draw[covershade!80!black, line width=1.3pt] (Ab1) -- (Ab2) -- (Ab3) -- (Ab4);
+
+	\draw (0, -25) node[right, xshift=10em, white!75!black] (AUTHOR) {\authornames};
+\end{bigcover}
 
 \end{tikzpicture}

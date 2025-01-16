@@ -1,0 +1,246 @@
+\begin{enumerate}
+
+\item First, let us define some variables:
+	\begin{itemize}
+		\item $x(s,w) = $ number of board games placed in shelf $s$ with size $w$ cm, for $s \in \{ 1,2,3,4\}$, and $w \in \{7,8,9\}$.
+	\end{itemize}
+	
+We then have the following constraints:
+	\begin{itemize}
+		\item We have 5 games with 7cm-thick boxes: $\displaystyle \sum_{s=1}^4 x(s,7) \leq 5$
+		\item We have 5 games with 7cm-thick boxes: $\displaystyle \sum_{s=1}^4 x(s,8) \leq 10$
+		\item We have 5 games with 7cm-thick boxes: $\displaystyle \sum_{s=1}^4 x(s,9) \leq 4$ \\
+
+		\item Each shelf can only contain games up to a total of 35cm thick: $\displaystyle \sum_{w=7}^9 w \cdot x(s,w) \leq 35$ for each $s \in \{1, 2,3,4\}$
+		\item All variables are positive: $x(s,w)\geq 0$
+	\end{itemize}
+	
+We want to maximize the number of games that we can place:
+\begin{itemize}
+	\item $\displaystyle \max \sum_{s,w} x(s,w)$
+\end{itemize}
+	
+This is a linear programming problem, so we need to set it up in standard form:
+
+\begin{tabular}{ll}
+Objective & $\min \vec{c}^T \vec{x}$ \\
+Constraints & $A \vec{x} \leq \vec{b}$
+\end{tabular}
+
+With this in mind, we construct these vectors and matrix:
+\begin{itemize}
+	\item $\vec{x} = \mat{x(1,7) \\ \vdots \\ x(4,7) \\\hline x(1,8) \\ \vdots \\ x(4,8) \\\hline x(1,9) \\ \vdots \\ x(4,9) }$
+	\hfil and \hfil $\vec{c} = \mat{-1 \\ \vdots \\ -1}$
+	\item $A = \left[ \begin{tabular}{cccc|cccc|cccc}
+		1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 & 0 & 0 & 0 & 0 \\
+		0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 & 1 & 1 & 1 & 1 \\ \hline
+		7 & 0 & 0 & 0 & 8 & 0 & 0 & 0 & 9 & 0 & 0 & 0 \\
+		0 & 7 & 0 & 0 & 0 & 8 & 0 & 0 & 0 & 9 & 0 & 0 \\
+		0 & 0 & 7 & 0 & 0 & 0 & 8 & 0 & 0 & 0 & 9 & 0  \\
+		0 & 0 & 0 & 7 & 0 & 0 & 0 & 8 & 0 & 0 & 0 & 9 
+		\end{tabular} \right]$	
+	\hfil and \hfil $\vec{b} = \mat{5\\10\\4\\\hline35\\35\\35\\35}$
+\end{itemize}
+
+We can then use \texttt{python} and the function \texttt{optimize.linprog} to find the minimum.
+
+We get t he following solution:
+
+\begin{minipage}{.3\textwidth}
+\begin{itemize}
+	\item $\vec{x} = \mat{ 0 \\ 0 \\ 5 \\ 0 \\\hline 4.375 \\ 1.25 \\ 0 \\ 4.375 \\\hline 0 \\ 2.77777778 \\ 0 \\ 0 }$
+\end{itemize}	
+\end{minipage}
+\hfill \begin{minipage}{.6\textwidth}
+This is a problem because we can't divide game boxes, so we need to search for integer solutions only, which require a whole different set of techniques (like the simplex method). 
+Fortunately, the function \texttt{optimize.linprog} can already solve this problem if we add the option \texttt{integrality=np.ones(4*3)} to declare which of the variables should have integer values.	
+\end{minipage}
+
+We then obtain the solution:
+
+\begin{minipage}{.2\textwidth}
+	\begin{itemize}
+		\item $\vec{x} = \mat{5 \\ 0 \\ 0 \\ 0  \\\hline 0 \\ 3 \\ 4 \\ 1 \\\hline 0 \\ 1 \\ 0 \\ 3}$
+	\end{itemize}
+\end{minipage}
+\hfil 
+\begin{minipage}{.5\textwidth}
+	\includegraphics[width=\textwidth]{boardgame.png}
+\end{minipage}
+
+
+\paragraph{Extra analysis.} The function \texttt{optimize.linprog} keeps track of some extra information:
+
+The residuals from each constraint in the variable \texttt{sol.ineqlin.residual}:
+	\begin{itemize}
+		\item Games residual with width 7 cm = 0
+		\item Games residual with width 8 cm = 2 \hfill (2 games with 8cm-thick box not placed)
+		\item Games residual with width 9 cm = 0 \\
+		
+		\item Shelf residual  top - left  is  0.0 cm
+		\item Shelf residual  top - right  is  2.0 cm \hfill (this shelf still has 2cm of space unused)
+		\item Shelf residual  bottom - left  is  3.0 cm \hfill (this shelf still has 3cm of space unused)
+		\item Shelf residual  bottom - right  is  0.0 cm
+	\end{itemize}
+
+\begin{enumerate}	
+\item[(c)] Just as we did with the farming problem in lectures, we can look at the ``shadow costs''. These are stored in the variable \texttt{sol.ineqlin.marginals}:
+	\begin{itemize}
+		\item Shadow-games with width 7 cm = 0.0
+		\item Shadow-games with width 8 cm = 0.0
+		\item Shadow-games with width 9 cm = 0.0 \\
+		
+		\item Shadow-shelf  top - left  is  0.0 games/cm
+		\item Shadow-shelf  top - right  is  0.0 games/cm
+		\item Shadow-shelf  bottom - left  is  0.0 games/cm
+		\item Shadow-shelf  bottom - right  is  0.0 games/cm
+	\end{itemize}
+
+These are all 0 because we are requiring the solution to have integer solutions, so a small change in any constraint will not affect the solution at all. \\
+
+However, if we change one shelf be 1cm (different from a small change), then we get the following results:
+
+
+\hspace{-1em}\begin{tabular}{|c|c|c|}
+\cline{1-1}\cline{3-3}
+\includegraphics[width=.42\textwidth]{boardgame36a.png}
+	& \qquad & \includegraphics[width=.42\textwidth]{boardgame36b.png} \\%[-5pt]
+1$^{\rm st}$ shelf is 36cm wide
+	& & 2$^{\rm nd}$ shelf is 36cm wide \\ \cline{1-1}\cline{3-3}
+\end{tabular}
+
+\hfill 
+
+Observe that although the two problems should be equivalent, the solutions found are different:
+\begin{itemize}
+	\item Both still put all 7cm-wide games
+	\item The first one, leaves \textbf{two} 9cm-wide games unplaced
+	\item The second one, only leaves \textbf{one} 8-cm game unplaced
+\end{itemize}
+
+The difference in these two solutions is due to either the programming of the algorithms or the algorithms themselves.
+
+The second solution is clearly the better one, so we can conclude that adding 1cm to one of the shelves does change the problem significantly and allows us to place one more game in the bookshelf.
+\end{enumerate}
+
+
+
+\newpage
+
+		
+\item This is a more open ended problem, so we must first define our problem clearly.
+
+
+\paragraph{Define the problem. } For the sake of this solution, we will focus on the following problem:
+\begin{itemize}
+	\item Given a resting position for the elevators, and all the possible cases of people calling for the elevator, we will minimize the total time the person calling the elevator needs to wait for the nearest elevator to arrive.
+\end{itemize}
+
+\paragraph{Assumptions. } We assume that each person will make two trips:
+\begin{itemize}
+	\item One from their apartment to the ground floor
+	\item One from the ground floor to their apartment
+	\item The elevator's speed is 1 floor/sec
+	\item The elevator doors take 1 second to open/close
+\end{itemize}
+ 
+ We are disregarding several facts:
+ \begin{itemize}
+ 	\item The elevator capacity	
+ 	\item The fact that at some times of the day (like morning), most people will take the elevator to go to the ground floor
+ 	\item $\cdots$
+ \end{itemize}
+
+\paragraph{Build the model.} We have the following:
+\begin{itemize}
+	\item There are $30\times10\times2 = 600$ people living in the building
+	\item The total number of trips are 1200
+	\item 600 trips from the ground floor
+	\item 20 trips from each floor of the building
+	\item On each trip, the person has to wait only for hte doors to open once the elevator arrives to their floor
+\end{itemize}
+
+Define:
+\begin{itemize}
+	\item $x_i = $ the resting position of elevator $i$
+	\item for simplicity, assume that $0 \leq x_1 \leq x_2 \leq x_3$
+\end{itemize}
+
+Then we want to solve:
+\[
+\min_{x_1, x_2, x_3} \left[ 600 \cdot (1+x_1) + \sum_{n=1}^{30} 20 \cdot \left( 1 + \min\big\{ |n-x_1|, |n-x_2|, |n-x_3|\big\} \right) \right]
+\]
+
+\paragraph{Assess. } This is an \textbf{unconstrained minimization} problem, but it is complicated by the fact that the function includes a minimum between three values and with absolute values. It can still be solved, but it would involve dividing it into several cases to calculate the partial derivatives of the min function.  % as in the following different way to rewrite it:
+%
+%We can also rewrite it as follows:
+%\begin{multline*}
+%\min_{x_1, x_2, x_3} \Bigg[ 
+%	600 \cdot x_1 
+%	+ 20 \cdot \sum_{n=1}^{x_1} 20 (x_1-n)
+%	+ 20 \cdot \sum_{n=x_1+1}^{\frac{x_1+x_2}{2}} (n-x_1)
+%	+ 20 \cdot \sum_{n=\frac{x_1+x_2}{2}}^{x_2} (x_2-n) \\
+%	+ 20 \cdot \sum_{n=x_2+1}^{\frac{x_2+x_3}{2}} (n-x_2)
+%	+ 20 \cdot \sum_{n=\frac{x_2+x_3}{2}}^{x_3} (x_3-n)
+%	 + 20 \cdot \sum_{n=x_3+1}^{30} (n-x_3)
+%	\Bigg]
+%\end{multline*}
+
+Instead, we use \texttt{optimize.fmin}\footnote{We also need to penalize the function when it ``wants'' to have negative values of $x_i$.} to get 
+\begin{itemize}
+	\item $x_1 = 4.371016527455962e-08$
+	\item $x_2 = 12.106232494580468$
+	\item $x_3 = 24.000002224317633$
+	\item Total time $= 2940.000066 $ seconds $= 49$ minutes
+\end{itemize}
+
+Because it would be strange to keep the elevators between floors (although it's possible), we can check the nearby values for the optimal solution:
+
+%\begin{minipage}{.45\textwidth}
+\begin{itemize}
+	\item $x_1 = 0$
+	\item $x_2 = 12$
+	\item $x_3 = 24$
+	\item Total time $= 2940$ sec $= 49$ min
+\end{itemize}	
+%\end{minipage}
+%\begin{minipage}{.45\textwidth}
+%\begin{itemize}
+%	\item $x_1 = 0$
+%	\item $x_2 = 11$
+%	\item $x_3 = 24$
+%	\item Total time $= 1740$ sec $= 29$ min
+%\end{itemize}
+%\end{minipage}
+
+Here are two graphs with the time function we are minimizing and the elevators as they are placed in the building.
+
+\hspace{-3em}\begin{tabular}{ccc}
+\includegraphics[height=200pt]{elevators-time.png}
+	& & \includegraphics[height=200pt]{elevators-building.png} \\[-5pt]
+The time function with $x_1=0$
+	& & The building with the elevators
+\end{tabular}
+
+\hfill 
+
+
+\begin{enumerate}
+\item[(c)] We check the sensitivity of this problem with respect to some of the parameters.
+
+\begin{itemize}
+	\item Sensitivity with respect to number of people living in each floor:
+		\[S(T^\star, {\rm Ppf}) \approx 1\]
+	\item Sensitivity with respect to time it takes the elevators to open/close the doors:
+		\[S(T^\star, E_s) \approx 0.41\]
+\end{itemize}
+\end{enumerate}
+
+
+
+
+		
+			
+\end{enumerate}
+	

@@ -1,0 +1,175 @@
+\documentclass[letter]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{ifthen}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\usepackage{listings}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\ttm,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+frame=tb,                         % Any extra options here
+showstringspaces=false            % 
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+\pythonstyle
+\lstinputlisting[#1]{#2}}}
+
+% Python for inline
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+
+
+%%%
+% Set up the margins to use a fairly large area of the page
+%%%
+\oddsidemargin=.2in
+\evensidemargin=.2in
+\textwidth=6in
+\topmargin=0in
+\textheight=9.0in
+\parskip=.07in
+\parindent=0in
+\pagestyle{fancy}
+
+%%%
+% Set up the header
+%%%
+\newcommand{\setheader}[6]{
+	\lhead{{\sc #1}\\{\sc #2}}% ({\small \it \today})}
+	\rhead{
+		{\bf #3} 
+		\ifthenelse{\equal{#4}{}}{}{(#4)}\\
+		{\bf #5} 
+		\ifthenelse{\equal{#6}{}}{}{(#6)}%
+	}
+}
+
+\makeatletter
+\newcommand{\escapeus}{\begingroup\@makeother\_\@escapeus}
+\newcommand*{\@escapeus}[1]{#1\endgroup}
+\makeatother
+
+%%%
+% Set up some shortcut commands
+%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Proj}{\mathrm{proj}}
+\newcommand{\Perp}{\mathrm{perp}}
+\newcommand{\proj}{\mathrm{proj}}
+\newcommand{\Span}{\mathrm{span}}
+\newcommand{\Null}{\mathrm{null}}
+\newcommand{\Rank}{\mathrm{rank}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\var}[1]{{$\langle$\it #1$\rangle$}}
+\newcommand{\Code}[1]{\texttt{\escapeus #1}}
+
+%%%
+% This is where the body of the document goes
+%%%
+\begin{document}
+	\setheader{APM348}{Homework 1}{Due: 11:59pm January 26}{}{}{}
+
+In this homework you will implement one-dimensional Newton's method in Python and use it to solve the pig selling problem from lecture. You are responsible to submit a PDF homework report on the due date answering the 1 question in section 1, the 3 questions in section 2, and the 5 questions in section 3. You are encouraged to attempt the questions in section 4, particularly if you have prior Python experience, but they will not be graded. \\
+
+Clone the file \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=homeworks/homework1/homework1-exercises.ipynb}{\tt homework1-exercises.ipynb} into your Jupyter Notebook and solve the exercises directly there.
+Export the Jupyter Notebook as a PDF and submit it to gradescope.
+
+
+\section{Function Handles in Python}
+
+Sometimes you will want to pass a (mathematical) function as an argument to a computer subroutine (function) as we will do shortly when implementing Newton's method. This is needed since the Python function we write for applying Newton's method needs to know the function for which it is trying to find roots. We could implement that function separately. However, for short functions it will be easier to use \href{https://www.w3schools.com/python/python_lambda.asp}{anonymous functions}.
+
+\begin{enumerate}
+\item In a Python script, use an anonymous function for $g(x) = \cos(x^2)$ as \\\verb|g = lambda x :  cos(x^2)|. Write a loop that iteratively applies $g$, starting from a value of 1. Your script should output $g(1)$, $g(g(1))$, $g(g(g(1)))$, \ldots . You may wish to plot the sequence of values. What value is the sequence approaching? Which function is this value a root of? This is a fixed point iteration, which is expected to converge slowly. Newton's method can find this root much quicker, so let us implement it.
+\end{enumerate}
+
+\section{Newton's Method}
+
+Newton's method produces a sequence of approximations to a solution of the equation $f(x)=0$. You must provide an initial guess and a procedure for evaluating $f(x)$ and $f'(x)$. We use the root of the linear approximation to $f$ at $x_n$ to obtain a (hopefully) better approximation to the root, $x_{n+1}$. This gives the iteration 
+$$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.$$
+
+\begin{enumerate}[resume]
+
+\item Implement Newton's method. Use the stopping criteria that the function value be less (in absolute value) than a tolerance (\verb|tol|) and a minimum of \verb|miniter=3| iterations be made. Use the command \verb|print| to output formatted results from each iteration.
+
+\item Try your function out on finding the roots of $f(x) = \exp(x) - 4x$. Note the function handle for $f'(x)$ is obtained by differentiation of $f(x)$ by hand. The upper plot shows $f(x)$ and its two roots. Initial guesses in the range [0,3] converge to one of the two roots as shown in the lower plot. What property of $f(x)$ would you guess defines the boundary between each `basin of attraction'?
+
+\item Find the roots of $\cos(x^2) - x$. How many iterations does it take to obtain 12 correct digits? Use Python's \verb|root_scalar| function to compute the same value.
+
+\end{enumerate}
+
+\section{Pig Selling Problem}
+
+Recall the optimization model of maximizing the profit $P(t) = p(t)w(t) - C(t)$ from the sale of a pig with weight $w(t)$ in kg, price $p(t)$ in dollars per kg, and cost of keeping the pig $C(t)$ up to time $t$ in dollars.
+
+\begin{enumerate}[resume]
+
+\item Write a Python script that uses anonymous functions and the \verb|root_scalar| command (or your Newton's method function) to solve the pig selling problem. Specify $p(t)$, $w(t)$, and $C(t)$ along with $p'(t)$, $w'(t)$, and $C'(t)$ at the beginning of the file as function handles and then find $t$ so that $p'(t)w(t) + p(t)w'(t) - C'(t) = 0$. 
+
+	\textit{Hint:} you will need an anonymous function that combines your other functions like \\
+	\verb|dPdt = lambda t : pp(t)*w(t) + p(t)*wp(t) - Cp(t)|
+
+\item When should the farmer sell the pig if $p(t) = 0.65-0.01t$, $w(t) = 90+3t$, and $C(t) = 0.45t$? 
+
+\item When should the farmer sell the pig if $p(t) = 0.65-0.01t$, $w(t) = 90\exp(\gamma t)$, and $C(t) = 0.45t$? You will need to pick a value of $\gamma$. Use a nominal value of $\gamma=\frac{1}{30}$. Make a plot of the optimal time to sell versus $\gamma$ for $\gamma$ in the range 0.030 and 0.035. The graph monotonically increases. Explain the meaning of this result. 
+
+\item Compute the sensitivity of the optimal time to sell with respect to $\gamma$ (at the nominal value of $\gamma$). You will need to use a numerical approximation to the derivative.
+
+\item Make \textbf{different} but reasonable choices for $p(t)$, $w(t)$, and $C(t)$. Is the solution method (root finding) successful for your choices? Briefly discuss the model's robustness.
+
+\end{enumerate}
+
+\section{Extra: Automatic Differentiation}
+
+It is annoying to have to differentiate functions by hand (or symbolically) for use with Newton's method. One alternative is to numerically differentiate the function using previous root estimates and their function values. This is called the secant method, but the approximation slows the convergence of the method. 
+
+Automatic differentiation is different from symbolic and numeric differentiation. It is able to produce a value for $f'(a)$ while computing $f(a)$ by applying the rules of differentiation to the elementary steps involved with the expression of $f$. \href{http://epubs.siam.org/doi/pdf/10.1137/080743627}{Richard Neidinger} has provide a MATLAB class for automatic differentiation. I have ``translated'' this class to Python, and we will use it. 
+
+\begin{enumerate}[resume]
+
+\item Load the \verb|ValDer| library (stands for value and derivative). This file allows you to generate an object that will return both the function value and the derivative. Try it out with \verb|a = ValDer(2,1); y = 1+a*a;| which means that \verb|a| is our independent variable, and we will evaluate it when \verb|a=2|, and \verb|y| is the dependent variable. You should expect \verb|y.val = f(2) = 1+2^2 = 5| and \verb|y.der = f'(2) = 2*2 = 4|.
+
+\item Implement Newton's method with automatic differentiation.
+
+\item Find the roots of $\exp(-\sqrt{x})\sin(x\log(1+x^2))$ using your function.
+
+\end{enumerate}
+\end{document}  

@@ -1,0 +1,157 @@
+\begin{enumerate}
+
+\item 
+\begin{enumerate}
+\item 
+Let $p_f(t) = $ fraction of pollen in the flower at time $t$, so $p_f(0)=1$.
+
+Let $p_b(t)=$ be the amount of pollen gathered by the bee from the current flower at time $t$. Thus $p_b(0)=0$.
+
+We then have:
+\[
+\begin{cases}
+	p_b' =  p_f \\	
+	p_f' = - p_f
+\end{cases}
+\]
+
+We can solve this system:
+\[
+\begin{cases}
+	p_f(t) = e^{-t} \\
+	p_b(t) = 1- e^{-t}
+\end{cases}
+\]
+
+
+\item 
+Average rate of pollen gathering $= \dfrac{\text{total amount of pollen}}{\text{time spent}} = \dfrac{p_b(t)}{1+t} = \dfrac{1-e^{-t}}{1+t}$.
+
+\item The bee wants to maximize the average rate calculated before, so we want to solve the optimization problem:
+\[
+\max_{t \geq 0} \dfrac{1-e^{-t}}{1+t}
+\]
+
+So we need to find the solution of $f'(t)=0$:
+\begin{align*}
+f'(t) 	= \frac{e^{-t}(1+t) - (1-e^{-t})}{(1+t)^2} 
+		  = \frac{(2+t)e^{-t} - 1}{(1+t)^2} & = 0 \\
+\Leftrightarrow \quad (2+t)e^{-t} - 1 & = 0
+\end{align*}
+
+Solve using Newton's Method.
+Get $t= 1.1461932206205825$.
+
+
+
+\item 
+
+\end{enumerate}
+
+
+
+\newpage
+
+\item 
+\begin{enumerate}
+\item From the first premise we have:
+\[ \rho(y) = \frac{M}{RT} p(y) \]
+
+From the second premise we get:
+\[
+	p(y) 	= \text{weight of the air above } y
+			= g \int_y^\infty \rho(s) ~ds
+\]
+
+
+\item We get the equation
+\begin{align*}
+	\frac{RT}{M} \rho(y) & = g \int_y^\infty \rho(s) ~ds \\
+	\frac{RT}{M} \frac{d\rho}{dy}(y) & = - g \rho(y) \\
+	\frac{d\rho}{dy}(y) & = - \frac{gM}{RT} \rho(y)
+\end{align*}
+where we used the fact that $\displaystyle\lim_{y \to \infty} \rho(y) = 0$.
+
+
+\item This is a first-order linear ODE, which is also a separable ODE, so we can solve it using either of the methods for these types of ODEs. 
+We get:
+\[ 
+\rho(y) = \rho_0 e^{-\frac{gM}{RT} (y-y_0)}
+\]
+		
+
+\item We have two regions to consider:
+
+\paragraph{Troposphere.} In this region, we have
+\begin{align*}
+T(y) & = T_0 - y L \\
+\rho_T(y) & = \frac{M}{R\cdot T(y-R_E)} p_T(y-R_E)
+	= \frac{M}{R\cdot T(y-R_E)} p_0 \left( 1 - \frac{L(y-R_E)}{T_0} \right)^{\frac{gM}{RL}}
+\end{align*}
+where $R_E$ is the standard radius of the Earth $= 6\,378\,000$ m.
+
+To calculate the mass of the troposphere, we need to integrate the air density the gravitational constant $g$ times the ``infinitesimal'' volume of each layer of atmosphere at altitude $y$: $4 \pi y^2 dy$. We get 
+\[ 
+M_T = \int_{R_E}^{R_T} 4 \pi y^2 g\rho_T(y) ~dy
+\]
+where $R_T = R_E + 20\,000$ m
+
+\paragraph{Stratosphere.} The air density formula we calculated above, holds true in this region because the temperature is constant. The temperature here is
+\[ 
+T_S = T_0 - 20\,000 L = 158.15 {\rm K}.
+\]
+Which means that we have
+\[
+\rho_S(y) = \rho_T(20\,000) e^{-\frac{gM}{RT_S} (y-20\,000)}
+\]
+
+The mass of the stratosphere is
+\[
+M_S = \int_{R_T}^{R_S} 4 \pi y^2 g\rho_S(y) ~dy
+\]
+where $R_S = R_T + 30\,000 = R_E + 50\,000$ m.
+
+We calculate this to get
+\[
+M = M_T + M_S \approx 5.19 \cdot 10^{19} \text{ kg}
+\]
+
+
+\item We can do the same calculations, using only the integral for $M_T$ up to $R_E+11\,000$ to  estimate the percentage of the atmosphere that is in the troposphere: We get 78\%, which is  pretty close to three quarters.
+
+\item Another way to calculate the mass of the atmosphere\footnote{which is basically cheating because the standard sea level air pressure is defined to give the correct value for the mass of the atmosphere.}:
+
+The air pressure at sea-level is 101325 Pa $=$ 101325 N / m$^2$, which means that the air above is exerting a weight of $ \frac{101325}{g}$ kg in each $m^2$ of Earth's surface.
+
+That means that the total mass of the atmosphere is just multiplying this quantity by the surface area of the Earth:
+\[
+M = \frac{101325}{g} 4 \pi R_E^2 = 5.28 \cdot 10^{18} \text{ kg}.
+\]
+
+Our estimate is off by one order of magnitude.
+
+
+\end{enumerate}
+
+
+\newpage
+
+%
+%
+%Temperature Lapse Rate
+%
+%\begin{tabular}{c|c|c}
+%Altitude Region	& Lapse rate & $T(y)$\\
+%(m)	& (K / km) & (K) \\ \hline
+%0   -- 11\,000	  	& $6.5$ & $T(y)=288.15 -  0.0065 y$\\
+%11\,000 -- 20\,000	& $0.0$ & $T(y) = 216.65$ \\
+%20\,000 -- 32\,000	& $-1.0$ & $T(y) = 216.65 + 0.001 (y-20\,000)$ \\
+%32\,000 -- 47\,000	& $-2.8$ & $T(y) = 228.65 + 0.0028 (y-32\,000)$\\
+%47\,000 -- 51\,000	& $0.0$ & $T(y) = 270.65$ \\
+%51\,000 -- 71\,000	& $2.8$	& $T(y) = 270.65 - 0.0028 (y-51\,000)$\\ 
+%71\,000 -- 85\,000	& $2.0$ & $T(y) = 214.65 - 0.002 (y-71\,000)$
+%\end{tabular}
+%
+
+\end{enumerate}
+	

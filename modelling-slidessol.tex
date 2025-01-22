@@ -1228,7 +1228,7 @@ Introduce the variables:
 
 \question
 
-\begin{problem}[Quadratic Programming\footnote{Based on an example from Kamien and Schwartz's `Dynamic Optimization'}]
+\begin{problem}[Ice Cream\footnote{Based on an example from Kamien and Schwartz's `Dynamic Optimization'}]
 
 Suppose a manufacturing company receives an order for $B$ units to be delivered at time $T$, e.g. Sobeys has placed an order for $B = 100$ pallets of Chapman's vanilla ice-cream for a promotion starting in $T = 10$ days.
 
@@ -1240,12 +1240,12 @@ Let $x(t)$ be the inventory at time $t$ and suppose that $x(0)=0$ and to fill th
 \begin{parts}
 	\item Let us divide the time interval $[0,T]$ into $N$ ``chunks''. What is the length $\Delta t$ of each?
 	\item Let $\Delta x_n$ be the number of units produced during the $n^{\rm th}$ time interval. Find a formula relating $\Delta x_n$ with $x(t)$. Find an equation relating $\Delta x_n$ with $B$.
-	\item We need to consider the cost of storing the produced units in inventory: assume that each unit has a cost of $c_2$ per time interval $\Delta t$. What is the total inventory cost?
+	\item We need to consider the cost of storing the produced units in inventory: assume that each unit has a cost of $c_2$ per unit time. What is the total inventory cost?
 	\item We want to model the fact that running machines faster is more costly. What is a model for the cost of producing $\Delta x_n$ units during a time interval of length $\Delta t$ that quantifies this?
 	\item What is the total production cost? 
 	\item What is the total cost?
 	\item What are the constraints for the variables?
-	\item Similarly to the linear programming problem, you can use the python tool \texttt{quadprog} to approximate the solution.
+	\item Approximate the solution.
 \end{parts}
 \end{slide}
 
@@ -1253,34 +1253,45 @@ Let $x(t)$ be the inventory at time $t$ and suppose that $x(0)=0$ and to fill th
 \begin{solution}
 \begin{slide}
 
-Let us break the time interval $[0,T]$ into $\Delta t = T/N$ ``chunks'' and consider $t_n=n \Delta t$. We need to decide how many units $\Delta x_n$ to produce at each time interval.
+\begin{parts}
 
-We then have:
+\item Let us break the time interval $[0,T]$ into $\Delta t = T/N$ ``chunks'' and consider $t_n=n \Delta t$. We need to decide how many units $\Delta x_n$ to produce at each time interval.
+
+\item We then have:
 \begin{itemize}
 	\item $x(t_{n+1})) = x(t_n) + \Delta x_n$
 	\item $\Delta x_1 + \cdots + \Delta x_N = B$
 \end{itemize}
 
-We need to consider the cost of storing the produced units in inventory: assume that each unit has a cost of $c_2$ per time interval $\Delta t$:
+\item We need to consider the cost of storing the produced units in inventory: assume that each unit has a cost of $c_2$ per unit time:
 \begin{itemize}
-	\item Inventory Cost $\displaystyle = \sum_{n=1}^N \Delta x_n (N-n) c_2$
+	\item Inventory Cost $\displaystyle = \sum_{n=1}^N \Delta x_n (T-t_n) c_2$
 \end{itemize}
 
-As another modelling assumption, assume that the production cost is proportional to the square size of the order -- that is, the faster the machines have to run, the more costly:
+\item If the production cost was: $\displaystyle\sum_{n=1}^N c \Delta x_n$, then $c=$ the cost of producing 1 unit in $\Delta t$ time.
+
+If this is constant, then there is no penalty in running the machines faster, so we need to consider $c$ that is not constant and depends on $\Delta x_n$: we make the modelling assumption $c = c_1 \frac{\Delta x_n}{\Delta t}$, so that $c$ is proportional to the rate of production.
+We get
 \begin{itemize}
-	\item Production Cost $\displaystyle = \sum_{n=1}^N \Delta x_n^2 c_1	$
+	\item Production Cost $\displaystyle = \sum_{n=1}^N  \frac{\Delta x_n^2}{\Delta t} c_1	$
 \end{itemize}
 
-So the total cost is
+\item So the total cost is
 \begin{itemize}
 	\item Total Cost $\displaystyle = \sum_{n=1}^N \bigg[ \Delta x_n^2 c_1 + \Delta x_n (N-n) c_2 \bigg]$
 \end{itemize}
 
-The constraints are
+\item The constraints are
 \begin{itemize}
 	\item $\Delta x_1 + \cdots + \Delta x_N = B$
 	\item $\Delta x_n \geq 0$
 \end{itemize}
+
+	
+\item The solution is here: \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/IceCream.ipynb}{\tt IceCream.ipynb}
+
+
+\end{parts}
 
 \end{slide}
 \end{solution}
@@ -1300,15 +1311,17 @@ Then, we have the following:
 		\hfill (why?)
 \end{itemize}
 We can formulate the problem as
-\begin{center}
+\begin{problem}
 \begin{tabular}[t]{lc}
 	Objective: 						& min \ $\displaystyle\int_0^T c_1 \big(x'(t)\big)^2 + c_2 x(t) ~dt$ \\[10pt]
 	\multirow{2}{*}{Constraints:} 	& $x(0)=0$ and $x(T)=B$ \\
 				& $x'(t) \geq 0$
 \end{tabular}
-\end{center}
 
 The goal here is to find a function $x(t)$. This is a problem in \textbf{Calculus of Variations}.
+\end{problem}
+
+
 \end{slide}
 
 
@@ -1328,7 +1341,7 @@ When we want to find a minimizer of a function, \textsl{we set the derivative to
 
 \begin{parts}
 	\item The definition of derivative for a real function is
-	\[ f'(t) = \lim_{\varepsilon \to 0} \frac{f(x+\varepsilon)-f(x)}{\varepsilon} \]
+	\[ f'(x) = \lim_{\varepsilon \to 0} \frac{f(x+\varepsilon)-f(x)}{\varepsilon} \]
 	
 	We only have one direction for $\varepsilon$, so this limit suffices. For a function of multiple variables, we introduced the notion of partial derivative:
 	\[ \frac{\partial f}{\partial x_i}(\vec{x}) = \lim_{\varepsilon \to 0} \frac{f(\vec{x}+\varepsilon \vec{e}_i)-f(\vec{x})}{\varepsilon} \]
@@ -1346,7 +1359,7 @@ When we want to find a minimizer of a function, \textsl{we set the derivative to
 
 	\item Set $g'(0)=0$ and solve.
 	
-	\textit{Hint: If $\int_a^b f(t) g(t) ~dt=0$ for every function $g(t)$ satisfying $g(a)=g(b)=0$, then $f(t)=0$ for all $t \in (a,b)$.}
+	\textit{Hint: If $\int_a^b f(t) v(t) ~dt=0$ for every function $v(t)$ satisfying $v(a)=v(b)=0$, then $f(t)=0$ for all $t \in (a,b)$.}
 
 \end{parts}
 \end{slide}
@@ -1952,7 +1965,7 @@ We want to understand how the drag force depends on the upstream velocity.
 		\item upstream velocity $[v]=$
 		\item fluid density $[\rho]=$
 		\item sphere diameter $[D]=$
-		\item fluid viscosity (its resistance to deformation by shear stress) $[\mu]= $
+		\item fluid viscosity\footnote{Fluid viscosity is the sphere's resistance to deformation by shear stress. To help with the units, the formula for the Force from viscosity is $F =\mu \cdot A \cdot u/y$, where $A$ is area, $u$ is velocity and $y$ is position.} $[\mu]= $
 	\end{enumerate}
 	\item Create a dimension matrix $\mathcal{D}$.
 	\item What is its rank? What is the dimension of its null space? Find a basis for its null space.

@@ -1,8 +1,0 @@
-lualatex modelling-slidessol.tex
-lualatex modelling-slides.tex
-
-lualatex modelling-slidessol.tex
-lualatex modelling-slides.tex
-
-mv *.pdf dist/.
-rm -f *.aux

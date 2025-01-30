@@ -1413,13 +1413,13 @@ We will look back to \textbf{Exercise \ref{q:cv}}.
 			$x(t) = \frac{c_2}{4c_1} t^2 + v_0 t + x_0$
 			
 		Using the boundary conditions we get:
-			\[x(t) = \frac{c_2}{4c_1} t^2 + \frac{4c_1 B-c_2 T^2}{T} t\]
+			\[x(t) = \frac{c_2}{4c_1} t^2 + \frac{4c_1 B-c_2 T^2}{4c_1 T} t\]
 
-	\item 		If $B < c_2 T^2$, then $x'$ can be negative at the beginning:
+	\item 		If $B < \frac{c_2 T^2}{4c_1}$, then $x'$ can be negative at the beginning:
 		\begin{align*}
-			x'(t) \geq 0 	
-				& \Leftrightarrow \frac{c_2}{2c_1} t + \frac{4c_1 B-c_2 T^2}{4c_1 T} \geq 0 \\
-				& \Leftrightarrow t \geq \frac{c_2 T^2 - 4c_1 B}{c_2T}	
+			x'(t) \leq 0 	
+				& \Leftrightarrow \frac{c_2}{2c_1} t + \frac{4c_1 B-c_2 T^2}{4c_1 T} \leq 0 \\
+				& \Leftrightarrow t \leq \frac{c_2 T^2 - 4c_1 B}{c_2T}	
 		\end{align*}
 		
 		This only happens for small values of $B$. Intuitively, this means that since the order is small, the producer would be better off by selling more of their product to save on inventory (inventory cost becomes negative) and produce the required order later.
@@ -1606,10 +1606,12 @@ According to the paper \href{https://www.researchgate.net/publication/289492130_
 \item $p(t) = 2\theta \frac12 r^2(t)/(0.15\cdot 1.5) = \frac{\theta}{0.225} r^2(t)$
 \item $\displaystyle p'(t) = \frac{1}{0.225} \underbrace{2 \theta r\frac{dr}{dt}}_{- k \alpha \sqrt{r}} = -\frac{k \alpha}{0.225} \sqrt{r(t)} = - \frac{152}{3} \sqrt{r(t)}$ 
 \item Max at $t=0$ when $|p'(t)| \approx 139.678$
+\item The solution is here: \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/Stadium-Euler.ipynb}{\tt Stadium-Euler.ipynb}
 \end{itemize}
 
 \includegraphics[width=0.4\textwidth]{python/Stadium-Euler-ipynb.pdf}
-	
+
+
 \end{slide}	
 \end{solution}
 
@@ -1651,6 +1653,32 @@ Consider the ODE $\dfrac{dy}{dx} = 2x\sin(x^2)$.
 	
 \end{slide}
 
+
+
+
+\begin{solution}
+\begin{slide}
+
+The exact solution is 
+\[
+y = 1 - \cos(x^2).
+\]
+
+And by observing it on Desmos: 
+\begin{center}
+	\url{https://www.desmos.com/calculator/qflikqjufs}
+\end{center}
+
+We conclude that
+\begin{itemize}
+	\item Euler: $x< 1.2$
+	\item Heun: $x < 5.6$
+	\item Runge-Kutta: all $x$ ?
+\end{itemize}
+	
+\end{slide}
+	
+\end{solution}
 
 
 
@@ -1704,8 +1732,44 @@ with $m(0) = m_0$.
 	\item Introduce new variables: $\tau = \frac{t}{t_c}$ and $\overline{m}(\tau) = \frac{m(t)}{m_0}$. What is the ODE satisfied by $\overline{m}(\tau)$? What are its units? What are the parameters for this equation?
 	
 \end{parts}
-	
+
 \end{slide}
+
+
+
+
+\begin{solution}
+\begin{slide}
+
+\begin{parts}
+	\item The units of m are mass $M$, so the units of $\frac{dn}{dt}$ are $\frac{M}{T}$.
+	
+	This means that the units of $k$ must be $\frac{1}{T}$, so that $km$ matches the units on the other side of the equation.
+	
+	This implies that $t_c$ has the units of time $T$.
+	
+	\item $\displaystyle\frac{d\overline{m}}{d\tau} = \frac{1}{m_0} \frac{dm}{d\tau} = \frac{1}{m_0} \frac{dm}{dt} \frac{dt}{d\tau} = \frac{t_c}{m_0} \frac{dm}{dt}$
+	
+	So we get 
+	\[
+	\frac{d\overline{m}}{d\tau} 
+		= \frac{t_c}{m_0} \frac{dm}{dt} 
+		= -\frac{t_c}{m_0} k m(\tau)
+		= -\frac{1}{m_0} m(\tau)
+		= - \overline{m}
+	\]
+	and $\overline{m}(0)=1$.
+	
+\end{parts}
+\end{slide}
+
+\end{solution}
+
+	
+
+
+
+
 
 
 
@@ -1741,11 +1805,11 @@ The first term accounts for resource-limited population growth within a tree and
 
 \begin{parts}
 	\item \begin{itemize}
-		\item $N =$ budworm population (amount)
-		\item $ K =$  carrying capacity of budworm population (amount)
-		\item $R =$ 1/time 
-		\item $A =$  amount (like $N$)
-		\item $B =$ 1 / (amount $\times$ time)
+		\item $[N] =$ budworm population ($N$)
+		\item $[K] =$  carrying capacity of budworm population ($N$)
+		\item $[R] =\frac{1}{T}$ 
+		\item $[A] = N$
+		\item $[B] = \frac{N}{T}$
  	\end{itemize}
  	
  	\item Consider the new variables\footnote{This is not the only way to do this.}:
@@ -1757,16 +1821,39 @@ The first term accounts for resource-limited population growth within a tree and
 		\end{itemize}
 
 
+	\begin{align*}
+		\frac{dx}{d\tau} 
+			& = \frac{1}{A} \frac{dN}{dt} \frac{dt}{d\tau}
+			= \frac{1}{B} R N \left( 1 - \frac{N}{K} \right) - \frac{N^2}{A^2 + N^2} \\
+			& = \frac{1}{B} A R x \left( 1 - A\frac{x}{K} \right) - \frac{x^2}{(1 + x^2)} \\
+			& = r x \left(1-\frac{x}{k}\right)- \frac{x^2}{(1 + x^2)}
+	\end{align*}
+
+
 	OR consider the new variables:
 	\begin{itemize}
 		\item $x = N/K$ non-dimensional budworm population (fraction of its carrying capacity)
 		\item $b = B/K$ with units 1/(amount$^2 \times$ time
 		\item $a = A/K$ non-dimensional
 	\end{itemize}
+	
+	\begin{align*}
+		\frac{dx}{d\tau} 
+			& = \frac{1}{K} \frac{dN}{dt} \frac{dt}{d\tau}
+			= R x \left( 1 - x \right) - \frac{1}{K}\frac{B N^2}{A^2 + N^2} \\
+			& = R x \left( 1 - x \right) - \frac{b x^2}{a + x^2}
+	\end{align*}
+
+
+	
 \end{parts}	
 	
 \end{slide}
-\end{solution}
+
+\end{solution}	
+
+
+
 
 
 

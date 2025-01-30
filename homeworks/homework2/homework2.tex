@@ -1,0 +1,254 @@
+\documentclass[letter]{article}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{ifthen}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={red!50!black},
+    citecolor={blue!50!black},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{deepblue}{rgb}{0,0,0.5}
+\definecolor{deepred}{rgb}{0.6,0,0}
+\definecolor{deepgreen}{rgb}{0,0.5,0}
+
+\usepackage{listings}
+
+% Default fixed font does not support bold face
+\DeclareFixedFont{\ttb}{T1}{txtt}{bx}{n}{12} % for bold
+\DeclareFixedFont{\ttm}{T1}{txtt}{m}{n}{12}  % for normal
+
+% Python style for highlighting
+\newcommand\pythonstyle{\lstset{
+language=Python,
+basicstyle=\ttm,
+otherkeywords={self},             % Add keywords here
+keywordstyle=\ttb\color{deepblue},
+emph={MyClass,__init__},          % Custom highlighting
+emphstyle=\ttb\color{deepred},    % Custom highlighting style
+stringstyle=\color{deepgreen},
+frame=tb,                         % Any extra options here
+showstringspaces=false            % 
+}}
+
+
+% Python environment
+\lstnewenvironment{python}[1][]
+{
+\pythonstyle
+\lstset{#1}
+}
+{}
+
+% Python for external files
+\newcommand\pythonexternal[2][]{{
+\pythonstyle
+\lstinputlisting[#1]{#2}}}
+
+% Python for inline
+\newcommand\pythoninline[1]{{\pythonstyle\lstinline!#1!}}
+
+
+%%%
+% Set up the margins to use a fairly large area of the page
+%%%
+\oddsidemargin=.2in
+\evensidemargin=.2in
+\textwidth=6in
+\topmargin=0in
+\textheight=9.0in
+\parskip=.07in
+\parindent=0in
+\pagestyle{fancy}
+
+%%%
+% Set up the header
+%%%
+\newcommand{\setheader}[6]{
+	\lhead{{\sc #1}\\{\sc #2}}% ({\small \it \today})}
+	\rhead{
+		{\bf #3} 
+		\ifthenelse{\equal{#4}{}}{}{(#4)}\\
+		{\bf #5} 
+		\ifthenelse{\equal{#6}{}}{}{(#6)}%
+	}
+}
+
+\makeatletter
+\newcommand{\escapeus}{\begingroup\@makeother\_\@escapeus}
+\newcommand*{\@escapeus}[1]{#1\endgroup}
+\makeatother
+
+%%%
+% Set up some shortcut commands
+%%%
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Proj}{\mathrm{proj}}
+\newcommand{\Perp}{\mathrm{perp}}
+\newcommand{\proj}{\mathrm{proj}}
+\newcommand{\Span}{\mathrm{span}}
+\newcommand{\Null}{\mathrm{null}}
+\newcommand{\Rank}{\mathrm{rank}}
+\newcommand{\mat}[1]{\begin{bmatrix}#1\end{bmatrix}}
+\newcommand{\var}[1]{{$\langle$\it #1$\rangle$}}
+\newcommand{\Code}[1]{\texttt{\escapeus #1}}
+
+%%%
+% This is where the body of the document goes
+%%%
+\begin{document}
+	\setheader{APM348}{Homework 2}{Due: 5:59pm February 9}{}{}{}
+
+
+In this lab you will use \texttt{python} to solve a linear programming problem based on the farm crop-planning example from lecture\footnote{In lecture, we used metric units, here we will be using imperial units because that is how the data was found.}. We will consider many more crops and more detail on the operating costs of the farm. Much of the data in this problem has been acquired about a particular farm, but some has been entirely made up. If you locate other data about this particular farm then feel free to make use of it and share it with your classmates.
+
+
+Clone the file \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=homeworks/homework2/homework2-exercises.ipynb}{\tt homework2-exercises.ipynb} into your Jupyter Notebook and solve the exercises directly there. \\
+
+You must submit two PDF files to gradescope:
+\begin{itemize}
+	\item A \LaTeX'ed document in PDF format with your answers and conclusions to the problem, referencing the python code and citing all sources used.
+	\item A PDF document from exporting your Jupyter Notebook
+\end{itemize}
+
+
+
+\section{Problem Background}
+
+The Holland Marsh, known as ``the mars'', is a wetland and agricultural area in Ontario, Canada, about 50 km (31 mi) north of Toronto. The marsh comprises 7\,200 acres southwest of the town of Bradford. The annual vegetable production is around \$29 million, about 14\% of the annual vegetable production in Ontario.
+
+The marsh consists of over 125 separate farms that act largely independently. Sup- pose that the farms centralize their decision making with the Holland Marsh Growers' Association. They would like to plan which crops to plant over the next growing season.
+Historically, 36.4\% of crops are carrots; 34\% are onions; 14.6\% are celery and mixed greens; and 14.5\% are mixed flowers, garlic, parsnips, turnips, beets, celery root, Chinese vegetables, potatoes, tomatoes, and sprouts. The marsh is able to grow over 60 different crops, but typical seasons see only 34 different crops.
+For simplicity, we will assume that all of the crops grow at the same time. In reality, the same plot of land could grow multiple different crops in a season. For example, corn in the spring/summer and then pumpkins in the fall. This `synchronization' means that the resources used for harvesting and planting must be exclusively allocated. Another aspect of planning that we will ignore is the interaction of crops. The crop choices on adjacent land or even from different seasons can affect the yield. We could account for these details, but won't to start.
+
+We will consider the following resources:
+
+
+
+\begin{enumerate}
+	\item \textit{Agricultural land.} We have 7\,200 acres available and will assume that each acre is identical. In reality, some plots of land would be better suited to particular crops because of properties of the soil or proximity to other resources. For example, it would be wise to put the water hungry crops near to a natural water resource. We ignore these issues.
+
+	\item \textit{Water irrigation.} In this area of the world, standard grass requires 5.5mm of water per day or roughly 3.3 acre-ft per acre in a 200 day season. The crops are divided into five categories as needing $-30\%$, $-10\%$, the same, $+10\%$, or $+20\%$ of the standard grass requirement. The typical rainfall over the season is 18.5 acre-ft per acre. This model assumes that all of the rainfall on the farm is collected and redistributed. Although much of rainfall runoff is collected, we neglect the considerable losses in this process.
+	
+	\item \textit{Labour.} Especially when planting or harvesting, significant manual labour is required. We will assume that the labour demands are constant over the season. Only 2\,500 person-hours of labour per week are available.
+	
+	\item \textit{Machinery.} The harvesting of many crops is done with the use of a combine. Most other tasks require the use of a tractor. We will assume that each acre requires a certain number of machine-hours per week. This ignores the specifics of which machines are needed for which crops and when. Only 12\,000 machine-hours are available each week.
+
+
+
+	\item \textit{Fertilizer.} Each crop has different requirements of fertilizer to promote growth. This ignores the obvious fact that different fertilizers work with different crops and that the yield is tied to the fertilizer use. The government limits the total amount of fertilizer used due to their adverse effects on the environment. For this farm, the limits are 5\,000 acre-ft.
+\end{enumerate}
+
+
+Factors affecting profit:
+
+
+\begin{enumerate}	
+	
+	\item \textit{Crop yield.} Two sources of variability affect the yield: the price of the crop, affected by the market demand, and the amount of the crop grown per acre, affected by nature. The yields given are those expected at the time of planning the crops. The actual yields will differ when it is time to sell. You will note that the yields are larger than those from the lecture example. This is partly due to the lecture values including the costs of planting, machinery, and labour. Here, these costs have been separated out.
+	
+	\item \textit{Resource costs.} A person-hour costs \$10 consisting of that person's wage and the associated overhead to employing that person. Each machine-hour costs \$15 to employ the operator, maintain the machine, and fuel the machine. Assume there are 28 weeks in a season. In addition to limiting the use of fertilizer, the government also charges a fee of \$5 per acre-ft of fertilizer. There is no cost for irrigation water from rainfall.	
+
+
+	\item \textit{Planting costs.} These come primarily from the cost of seeds and fertilizer.
+	
+\end{enumerate}
+
+
+Data on the resource usage and costs are provided in \href{https://raw.githubusercontent.com/bigfatbernie/IBLMathModeling/main/homeworks/homework2/crops_data.xlsx}{\tt crops\_data.xlsx}. I have done my best to accumulate this data from multiple sources. If you notice that some of the values are unreasonable, please modify the data and send me an email citing a source.
+
+\paragraph{Main Question.} What crops should be planted to maximize profit?
+
+
+
+
+
+
+\section{Assignment}
+
+
+\begin{enumerate}[label=\textbf{\arabic*.}]
+	\item Let's start with the simpler example from lecture. 
+
+	Clone the Jupyter Notebook \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=homeworks/homework2/homework2-exercises.ipynb}{\tt homework2-exercises.ipynb}.
+	
+	Read the code and comments to determine how it works. The core of the program is the call to \verb|linprog| to solve the linear programming problem. Run the script. The linear programming problem is solved repeatedly as the yield of oats is varied between \$240/acre and \$260/acre. The resulting plot was discussed in lecture. The middle subplot shows how the available land is optimally allocated between the three crops as a function the yield of oats. Change this plot to be a stacked area chart using Python's \verb|stackplot| function. Add subplots that show how labour and water are optimally allocated as a function of the yield of oats. For each value of the parameter, which constraints are active? 
+\end{enumerate}
+
+The remaining questions are concerned with the Holland Marsh as described in the Problem Background. 
+	Modify the the next part of the script to solve the problem. Look for the labels \verb|TODO|. 
+	Note that you will have to transpose (with \verb|'|) the loaded data when building the constraint matrix $A$.
+
+\begin{enumerate}[resume,label=\textbf{\arabic*.}]
+
+	\item 
+	\begin{enumerate}[label=\textbf{(\alph*)}]
+		\item According to the model, which crops should the Holland Marsh grow?
+		\item In reality, they grow mostly carrots. Why does the model not recommend this?
+		\item The Holland Marsh grows many more types of crops than the model recommends. Are they missing out on profit or does the model not account for something important?
+	\end{enumerate}
+	
+	
+	\item The government discourages the use of fertilizer by imposing a fee for its use and setting a hard limit on the total amount used.
+
+	\begin{enumerate}[label=\textbf{(\alph*)}]
+		\item Is the hard limit constraint binding? If so, what is its shadow price?
+		\item Remove the hard limit (by setting the limit value to a very large number). Do the optimal crops change? How much more profit is made?
+		\item Remove the fertilizer fee (set the price to \$0/acre-ft). Do the optimal crops change? How much more profit is made?
+
+	\end{enumerate}
+	
+	
+	\item Describe what happens to the optimal crops and the optimal yield as the cost of a person-hour rises from \$10 to \$15.
+	
+	\item \textit{(Optional Extra)} The farm has convinced investors to provide an extra \$500\,000 at the beginning of the season. How should that money be allocated, if at all, between acquiring more machinery for \$2\,000 per machine-hours/week or acquiring more labour for \$500 per person-hours/week?
+	
+	
+You might be tempted to address this question using the shadow prices for labour and machinery. The constraint with the higher shadow price should be relaxed using the investment money. However, you can only trust this decision for small amounts of investment. For such a large investment amount, you should formulate the question as a linear program as follows.
+
+Let $e_B$ and $e_M$ be the additional investment in labour and machinery. Let $E = \$500\,000$ be the available investment. These variables are constrained as $e_B \geq 0$, $e_M \geq 0$, and $e_B + e_M \leq E$. The effect of investment in labour is to increase $B$, so the constraint on the total labour becomes $\vec{l}\cdot \vec{x} \leq B + e_B/C_B$, where $C_B = 500$ is the cost of increasing the labour restriction. Similarly, the constraint on machinery becomes $\vec{m} \cdot \vec{x} \leq M + e_M/C_M$.
+
+These new constraints are linear and include the two new variables. To solve the problem, modify the A matrix in your \verb|python| code by adding two columns (for $e_B$ and $e_M$) and a new row (for $e_B + e_M \leq E$). You will also need to add another entry to the $\vec{b}$ vector. You should also modify your objective since using the investment money takes away from profit in that you could simply pocket that money as profit. You will find that the investment money is better spent on the farm as it will increase the profit by more than \$500\,000. You should augment the $\vec{f}$ vector in your code so that the variables $e_B$ and $e_M$ add to the negative profit (i.e. take away from profit).
+	
+	
+\end{enumerate}
+
+\newpage
+
+\section{Dimensional Analysis}
+
+Let us study a parachutist falling.
+
+Consider with the variables and parameters:
+	\begin{itemize}
+	\item $g= $ gravitational acceleration
+	\item $m = $ mass of the parachutist and parachute
+	\item $b = $ parachute's air resistance
+	\item $v = $ speed of the parachutist
+\end{itemize}
+
+Then the following differential equation models the parachutist's speed as they fall:
+	\[ mv' = mg - b v^2. \]
+
+
+\begin{enumerate}[resume,label=\textbf{\arabic*.}]
+
+\item What are the units of all the variables and parameters above? Create the dimensional matrix for this problem and calculate its rank.
+	\label{q:buck_pi_rel}Use Buckingham Pi Theorem to find dimensionless constants and obtain a relation between $v$ and the other parameters.
+
+\item \label{q:t_vel} Solve the differential equation and calculate the terminal velocity, i.e. $\displaystyle \lim_{t \to \infty} v(t)$. 
+
+\item Compare the terminal velocity found in \ref{q:t_vel} with the relation found in \ref{q:buck_pi_rel}.
+
+\end{enumerate}
+
+	
+\end{document}  

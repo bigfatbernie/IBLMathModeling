@@ -5,3 +5,6 @@
 *.log
 *.out
 *.gz
+book/.texpadtmp/definitions.idx
+book/.texpadtmp/modelling-slidessol.idx
+book/.texpadtmp/symbols.idx

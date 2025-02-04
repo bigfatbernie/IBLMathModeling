@@ -454,5 +454,26 @@ We will study four typical types of bifurcations.
 \end{SaveDefinition}
 
 
+\begin{SaveDefinition}[key=characteristics, title={Method of Characteristics}]
+
+This is a method to solve a specific type of Partial Differential Equations:
+\[
+u_t(x,t) + f(x,t) \cdot u_x(x,t) = g(x,t).
+\]
+
+The idea is to interpret the left-hand side as a total derivative with respect to $t$:
+\[\frac{du}{dt} \bigskip(x(t),t\big) = u_t(x,t) + f(x,t) u_x(x,t),\]
+which implies that
+\[
+\begin{cases}
+\frac{dx}{dt} = f(x,t) & \text{(moving observer)} \\
+\frac{d}{dt} \left[u\big(x(t),t\big) \right] = g\big(x(t),t\big) & \text{(solution for the observer)}
+\end{cases}
+\]
+The moving observers $x(t)$ are called the \textit{characteristics}.
+This method allows us to ``transform'' a PDE into two ODEs.
+
+\hfill \textit{Video: } \url{https://youtu.be/tNP286WZw3o}
+\end{SaveDefinition}
 
 

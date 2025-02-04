@@ -2399,7 +2399,7 @@ Decide on the type of bifurcation for each ODE.
 		\item $r\leq 0$: equilibria at $x=0$
 		\item $r>0$: equilibria at $x=0$ and $x=\pm \sqrt{r}$
 	\end{itemize}
-	See \url{https://www.desmos.com/calculator/p4c44owr9l} about pitchfork perturbation.
+	See \url{https://www.desmos.com/calculator/24dytsysw6} about pitchfork perturbation.
 	\item Hopf bifurcation: Equilibrium at $(0,0)$ and with eigenvalues $\mu \pm \omega i$, so
 	\begin{itemize}
 		\item $\mu<0$: stable spiral
@@ -2436,10 +2436,623 @@ Decide on the type of bifurcation for each ODE.
 
 
 
+\begin{slide}
+\question \label{transport}
+
+\begin{problem}[Transport Equation]
+	
+Consider a river with the water moving at speed $v$.
+\begin{center}
+\includegraphics*[width=175pt]{images/river.pdf}
+\end{center}
+
+We want to model $w(x,t)$, the density of pollutant in the river at the point $x$ and time $t$.
+\end{problem}
+
+\begin{parts}
+\item How much pollutant is there in $[a,b]$?
+\item How does pollutant change in $[a,b]$?
+\item Find a ``conservation of pollutant'' equation.
+\item Simplify the equation to obtain a PDE for $w(x,t)$.
+
+\textit{Hint: Recall the FTC: $f(b)-f(a) = \int_a^b f'(x) dx$.}
+
+\end{parts}
+
+
+\end{slide}
+
+
+\begin{solution}
+\begin{slide}
+
+\begin{parts}
+	\item $\displaystyle T(t) = R \int_a^b w(x,t) ~dx$	, 	where $R$ is the width of the river.
+	\item Pollutant goes in through the left and out through the right, so the change in the amount of pollutant is
+	\[
+	w(a,t) v R - w(b,t) v R = v R \bigskip(w(a,t) - w(b,t)\big).
+	\]
+
+	\item Because pollutant is neither created or destroyed, we know that:
+	\[T'(t) = v R \bigskip(w(a,t) - w(b,t)\big) \]
+	
+	\begin{slidesonly}
+	\vspace{3cm}
+	\end{slidesonly}	
+	
+	\item \hfil \\[-35pt]
+	\begin{align*}
+		R \int_a^b \frac{\partial w}{ \partial t} (x,t) \, dx & = v R \bigskip(w(a,t) - w(b,t)\big) \\
+		\int_a^b \frac{\partial w}{ \partial t} (x,t) ~dx & = v \bigskip(w(a,t) - w(b,t)\big) \\
+		\int_a^b \frac{\partial w}{ \partial t} (x,t) ~dx & = -v \int_a^b \frac{\partial w}{\partial x} (x,t) ~dx
+	\end{align*}
+	\[
+	\int_a^b \frac{\partial w}{ \partial t} + v \frac{\partial w}{ \partial x} ~dx = 0
+	\]
+	
+	Because $a,b$ are arbitrary points in the river, we can conclude that
+	\[ 
+	\frac{\partial w}{ \partial t} + v \frac{\partial w}{ \partial x} = 0
+	\qquad \text{ or } \qquad 
+	w_t + v \cdot w_x = 0
+	\]
+	
+\end{parts}
+
+	Here is a Jupyter notebook with the Lax-Friedrichs Method approximation for the transport equation:
+	\begin{itemize}
+		\item \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/transport_LaxFriedrichs.ipynb}{\tt transport\_LaxFriedrichs.ipynb}
+	\end{itemize}
+	
+\end{slide}
+	
+\end{solution}
+
+
+\begin{slide}
+\question
+
+\SavedDefinitionRender{characteristics}
+	
+\begin{parts}
+
+	\item Find the solution of the transport equation from Exercise \ref{transport} using the Method of Characteristics with the initial condition $u(x,0) = p(x)$.
+	
+	\item Find the solution of the same problem with an accelerating river: $v = 3t^2$.
+	
+\end{parts}
+
+\begin{center}
+	\begin{tikzpicture}[scale=1.5]
+		\draw[gray] (-0.4,0)--(0,0);
+		\draw[latex-latex, gray] (3,0) node[above] {$x$} -- (0,0) -- (0,2) node[right] {$t$};
+		\draw[orange, thick] (0.5,0) node[below] {$x_0$} -- (2.5,1.5) node[above] {$x=vt+x_0$};
+		\foreach \i in {0,0.4,0.8,1.2}:
+			\draw[dashed, blue,variable=\x,domain=-0.75:2.75,samples=50] plot ({\x+4*\i/3},{sin(\x*180)*(-1.2*\x*\x*\x*\x+3.7*\x*\x*\x-5.8*\x)/20+0.04+\i});
+		\draw[blue] (-0.75,0) node {$u(x,0)$};
+	\end{tikzpicture}
+	\end{center}	
+
+\end{slide}
+%
+%
+%\begin{slide}
+%
+%\begin{center}
+%	\begin{tikzpicture}[scale=1.5]
+%		\draw[gray] (-0.4,0)--(0,0);
+%		\draw[latex-latex, gray] (3,0) node[above] {$x$} -- (0,0) -- (0,2) node[right] {$t$};
+%		\draw[orange, thick] (0.5,0) node[below] {$x_0$} -- (2.5,1.5) node[above] {$x=vt+x_0$};
+%		\foreach \i in {0,0.4,0.8,1.2}:
+%			\draw[dashed, blue,variable=\x,domain=-0.75:2.75,samples=50] plot ({\x+4*\i/3},{sin(\x*180)*(-1.2*\x*\x*\x*\x+3.7*\x*\x*\x-5.8*\x)/20+0.04+\i});
+%		\draw[blue] (-0.75,0) node {$u(x,0)$};
+%	\end{tikzpicture}
+%	\end{center}	
+%\end{slide}
+
+
+\begin{solution}
+
+\begin{slide}
+\begin{parts}
+
+	\item We need to solve
+	
+	\begin{itemize}
+		\item $	\frac{dx}{dt} = v \quad \to$  an observer moving along the river at the same speed as the river
+		\item $ \frac{du}{dt} = 0 \quad \to $ for such an observer looking at the river, the pollutant density doesn't change
+	\end{itemize}
+
+		\[
+	\begin{cases}
+		x = vt + x_0 \\
+		u\big(x(t),t\big) = C
+	\end{cases}
+	\]
+	
+	This means that when $t=0$, we get $u(x_0,0) = C = p(x_0)$, and $x_0 = x - vt$, so
+	\[
+	u(x,t) = C = p(x_0) = p(x-vt).
+	\]
+	
+	The idea in a graph:
+	\begin{center}
+	\begin{tikzpicture}
+		\draw (-1,0)--(0,0);
+		\draw[latex-latex] (3,0) node[above] {$x$} -- (0,0) -- (0,2) node[right] {$t$};
+		\draw[red, thick] (0.5,0) node[below] {$x_0$} -- (2.5,1.5) node[above] {$x=vt+x_0$};
+%		\draw[red, thick] (0.5,0) node[below] {$x_0$} -- node[above, rotate=37] {$x=vt+x_0$}(2.5,1.5);
+		\foreach \i in {0,0.4,0.8,1.2}:
+			\draw[dashed, gray,variable=\x,domain=-0.75:2.75,samples=50] plot ({\x+4*\i/3},{sin(\x*180)*(-1.2*\x*\x*\x*\x+3.7*\x*\x*\x-5.8*\x)/20+0.04+\i});
+		\draw[gray] (-1,0) node {$u(x,0)$};
+	\end{tikzpicture}
+	\end{center}
+
+	\item The idea is similar but we get 
+	
+			\[
+	\begin{cases}
+		x = t^3 + x_0 \\
+		u\big(x(t),t\big) = C
+	\end{cases}
+	\]
+	
+	This means that when $t=0$, we get $u(x_0,0) = C = p(x_0)$, and $x_0 = x - t^3$, so
+	\[
+	u(x,t) = C = p(x_0) = p(x-t^3).
+	\]
+
+		
+\end{parts}
+
+\end{slide}
+	
+\end{solution}
+
+
+
+\begin{slide}
+
+\question
+
+\begin{problem}[Traffic Flow]
+\begin{center}
+\includegraphics[width=0.9\textwidth]{images/road-long.pdf}
+\end{center}
+We want to model how traffic flows on a one way road.
+\end{problem}
+
+Let
+\begin{itemize}
+\item $\rho(x,t) = $ density of cars (number of cars per $km$) %at position $x$ and time $t$;
+\item $\phi(x,t) = $ number of cars passing the point $x$ per hour % at time $t$ 
+			% $=$ flux of cars.
+\end{itemize}
+
+And assume:
+\begin{itemize}
+	\item[(C)] Cars are conserved (they are not destroyed nor created on the road)
+\end{itemize}
+
+\begin{parts}
+\item What is the total number of cars in the section of the road $x \in [a,b]$ at time $t$?
+
+\item How does the total number of cars change in $[a,b]$?
+
+
+\item Obtain an equation relating $\rho(x,t)$ and $\phi(x,t)$. The equation should not include $a$ or $b$.	
+
+\end{parts}
+
+
+\end{slide}
+
+
+
+\begin{slide}
+
+
+We need to model how fast cars move on the road: $\phi(x,t)$.
+
+Below we graphed measurements for density and speed at the highway 401\footnote{Data from the paper \href{https://doi.org/10.1287/trsc.1090.0297}{``Calibrating Steady-State Traffic Stream and Car-Following Models Using Loop Detector Data'' by H Rakha and M Arafeh}} together with three different models to fit the data.
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+    \begin{axis}[
+            width=10cm, height=5cm, %, width=15cm, height=8cm,     % size of the image
+            grid = major,
+            grid style={dashed, gray!30},
+            xmin=0,xmax=60,ymin=0,ymax=120,
+%			minor y tick num=5,
+			ytick distance = 20,
+            ylabel=speed $v$ (km/h),
+            xlabel=density $\rho$ (vehicles/km),
+            clip mode=individual % so that the fits go on top of the data
+         ]
+        \addplot[only marks] table  {images/densityspeed.dat};
+        \addplot[domain=0:60, very thick, samples=121, color=blue]{121.2613*(1-x/63.6628)}; % Greenshields
+        \addplot[domain=0:60, very thick, samples=121, color=orange]{106.6081*(1-exp(-56.1848*(1/x-1/56.5544)))}; % Newell
+        \addplot[domain=0:60, very thick, samples=121, color={black!60!green}]{109.7737/(1+exp(0.1297*(x-32.2037)))}; % logistic
+    \end{axis}
+\end{tikzpicture}
+\end{center}
+
+It shows three models:
+\begin{itemize}
+	\item[\textcolor{blue}{\textbullet}] \textcolor{blue}{Greenshields model} (linear fit of the data): $v(\rho) = v_{\max} \left(1 - \dfrac{\rho}{\rho_{\max}}\right)$
+	\item[\textcolor{orange}{\textbullet}] \textcolor{orange}{Newel model}
+	\item[\textcolor{black!60!green}{\textbullet}] \textcolor{black!60!green}{Logistic model}: $v(\rho) = v_{\max} / \left(1+ e^{-k(\rho - \rho_0)}\right)$
+\end{itemize}
+
+\begin{parts}
+\setcounter{partsitem}{3}
+	\item Using the Greenshields model, find an expression for $\phi(x,t)$.	
+	\item Obtain a PDE for $\rho(x,t)$.
+\end{parts}
+
+	
+\end{slide}
+
+
+\begin{solution}
+\begin{slide}
+
+\begin{parts}
+	
+	\item $\displaystyle C(t) = \int_a^b \rho(x,t) ~dx$
+	\item $\displaystyle C'(t) = \phi(a,t) - \phi(b,t)$
+	\item From the previous two parts, we get
+	\[ 
+		\int_a^b \rho_t ~dx = \phi(a,t) - \phi(b,t)
+	\]
+
+	By using the FTC, we have $\displaystyle \phi(b,t) - \phi(a,t) = \int_a^b \phi_x(x,t) ~dx$, so we conclude that
+	\[ 
+		\int_a^b \rho_t + \phi_x(x,t) ~dx = 0
+	\]
+	Because this integral must be true for any values of $a,b$, we conclude that the integrand must be zero:
+	\[ 
+		\rho_t + \phi_x(x,t) = 0
+	\]	
+	
+	
+	\item $\phi(x,t) = \rho v(\rho)$
+	\item We can expand the equation we found before:
+	\begin{align*}
+		\rho_t + \phi_x(x,t) & = 0 \\
+		\rho_t + \rho_x v_{\max} \left(1 - \dfrac{\rho}{\rho_{\max}}\right) - \rho v_{\max} \dfrac{\rho_x}{\rho_{\max}} & = 0 \\
+		\rho_t + \rho_x v_{\max} \left(1 - \dfrac{2 \rho}{\rho_{\max}}\right) & = 0
+	\end{align*}
+
+\end{parts}
+	
+\end{slide}
+	
+\end{solution}
 
 
 
 
+
+\begin{slide}
+\question
+
+Let us study two interesting cases.
+
+\begin{parts}
+\item[]
+\begin{center}
+\includegraphics[width=.6\textwidth]{images/road-green.pdf}	
+\end{center}
+
+
+\item What is the initial car density $\rho(x,0) = \rho_0(x)$ on a one way road with a traffic light that just turned from \textbf{\textcolor{red}{red}} to \textbf{\textcolor{green}{green}}?
+
+
+\begin{center}
+\includegraphics[width=.6\textwidth]{images/road-red.pdf}	
+\end{center}
+
+
+\item To model a light turning from \textbf{\textcolor{green}{green}} to \textbf{\textcolor{red}{red}}, we need to be more creative. What is an initial car density $\rho(x,0) = \rho_0(x)$ that will guarantee incoming cars have to stop at the red light?
+
+	
+\end{parts}
+	
+\end{slide}
+
+
+
+
+
+\begin{slide}
+\question \label{traffic:red}
+
+\begin{problem}[Traffic flow scenario]
+
+We want to solve the following traffic flow problem:
+\begin{align*}	
+	& \rho_t + v_{\max} \left( 1 - \frac{2 \rho}{\rho_{\max}}\right) \rho_x = 0  \tag{Traffic flow model} \\
+	& r(x,0) = f(x) = 
+		\begin{cases}
+			\rho_{\min}	& \text{ for } x<0\\
+			\rho_{\max}	& \text{ for } x>0
+		\end{cases}
+\end{align*}
+
+Consider the following parameters: 
+\begin{itemize}
+	\item $v_{\max}=60$
+	\item $\rho_{\max} = 120$
+	\item $\rho_{\min} = 20$
+\end{itemize}
+\end{problem}
+
+
+\begin{parts}
+	\item What are the moving observers (characteristics) $x(t)$ for this problem?
+	\item What is the density $\rho(x,t)$?
+	\item Sketch the characteristics and mark the values of $\rho$ on the same graph below.
+	
+	\begin{center}
+	\begin{tikzpicture}
+		\draw[-latex] (0,-0.5) -- (0,2) node[left] {$t$};
+		\draw[-latex] (-2.5,0) -- (2.5,0) node[above] {$x$};	
+	\end{tikzpicture}
+	\end{center}
+
+	
+	\item What is $\rho(0,2)$?
+\end{parts}
+
+	
+\end{slide}
+
+
+\begin{slide}
+\question
+When characteristics intersect, this means that the solution \textbf{cannot be continuous}.
+
+So we need to find a \textbf{discontinuous} solution.
+
+\begin{itemize}
+\item Assume that the discontinuity forms a curve $x_s(t)$.
+\end{itemize}
+
+\begin{center}
+	\begin{tikzpicture}
+		\draw[-latex] (0,-0.5) -- (0,2.5) node[left] {$t$};
+		\draw[-latex] (-2.5,0) -- (2.5,0) node[above] {$x$};	
+		\draw[thick,blue] (-2,0) node[below] {$\rho_1$} -- (2.5,2.5);
+		\draw[thick,green!50!black] (0.5,0) node[below] {$\rho_2$} -- (1,2.5);
+		\draw[thick, fill=white] (0.8125,1.5625) circle (0.1);
+	\end{tikzpicture}	
+	\qquad 
+	\begin{tikzpicture}
+		\draw[-latex] (0,-0.5) -- (0,2.5) node[left] {$t$};
+		\draw[-latex] (-2.5,0) -- (2.5,0) node[above] {$x$};	
+		\draw[thick, blue] (-2,0) node[below] {$\rho_1$} -- (0.8125,1.5625);
+		\draw[thick, green!50!black] (0.5,0) node[below] {$\rho_2$} -- (0.8125,1.5625);
+		\draw[orange, ultra thick, variable=\x,domain=0:0.72,samples=20] plot({\x+0.8125},{1.5625+0.4*\x-9*\x*\x*\x+\x+12*\x*\x*\x*\x}) node[right] {$x_s(t)$};
+		\draw[thick, fill=white] (0.8125,1.5625) circle (0.1);
+	\end{tikzpicture}	
+\end{center}
+
+
+
+\begin{parts}
+	\item What should the discontinuity $x_s(t)$ be?
+\end{parts}
+	
+\end{slide}
+
+
+\begin{slide}
+\question
+
+We need to step back for a moment and review some Calculus.
+
+Consider a function
+\[
+F(x) = \int_0^z g(x) ~dx
+\]
+and consider a differentiable function $h(t)$.
+
+\begin{parts}
+	\item What is $F'(z)$?
+	\item What is $F'\big(g(t)\big)$? 
+	 	\qquad What is $\left[ F\big(h(t)\big) \right]'$?
+
+	\item What is $\displaystyle \left[ \int_0^{h(t)} g(x) ~dx \right]'$?
+		\qquad  What is $\displaystyle \left[ \int_{h(t)}^1 g(x) ~dx \right]'$?
+
+\end{parts}
+
+\end{slide}
+
+
+
+\begin{slide}
+\question
+We need to go back to the derivation of the traffic flow model.
+
+We had the following:
+\[
+\frac{d}{dt} \left[ \int_a^b \rho(x,t) ~dx \right] = \phi(a,t) - \phi(b,t)
+\]
+
+We then took the derivative inside the integral, because we assumed that the density $\rho$ was differentiable (thus continuous). Now we know it is not, so we must break up the interval of integration into ``chunks'' where $\rho$ is continuous.
+
+We now assume that $\rho(x,t)$ is discontinuous across $x=x_s(t)$.
+
+\begin{parts}
+	\item Expand the left-hand side of the equation into integrals with continuous integrands.
+	\item We know that $\phi = \phi(\rho)$. Take the limits
+	\[ a \to \big(x_s(t)\big)^- \quad \text{ and } \quad b \to \big(x_s(t)\big)^+ \]
+	and obtain an ODE for $x_s(t)$.
+	
+	This ODE is called the \textbf{Rankine-Hugoniot shockwave condition}.
+	
+\end{parts}
+	
+\end{slide}
+
+
+\begin{solution}
+
+\begin{slide}
+
+\begin{parts}
+
+\item We have
+\begin{multline*}	
+	\frac{d}{dt} \left[ \int_a^b \rho(x,t) ~dx \right] \\
+		= \frac{d}{dt} \left[ \int_a^{x_s(t)} \rho(x,t) ~dx + \int_{x_s(t)}^b \rho(x,t) ~dx \right]
+\end{multline*}
+
+Using the previous exercise, we get
+%\[\rho\big(x_s^-(t),t\big) x_s'(t) - \rho\big(x_s^+(t),t\big) x_s'(t)	+ \int_a^b \rho_t(x,t) ~dx \]
+\[
+\left[\rho\big(x_s^-(t),t\big)- \rho\big(x_s^-(t),t\big) \right] x_s'(t) + \int_a^b \rho_t(x,t) ~dx
+\]
+
+	\item Let us define the following
+	\begin{itemize}
+		\item $\displaystyle\rho^-(t) = \lim_{x \to x_s^-(t)} \rho(x,t)$
+		\item $\displaystyle\rho^+(t) = \lim_{x \to x_s^+(t)} \rho(x,t)$
+	\end{itemize}
+	
+%	Then we have
+%	\[
+%	\left[\rho\big(x_s^-(t),t\big)- \rho\big(x_s^-(t),t\big) \right] x_s'(t) + \int_a^b \rho_t(x,t) ~dx
+%		= \phi\big(\rho(a,t)\big)	 - \phi\big(\rho(b,t)\big)
+%	\]
+	So when we take the limits, we obtain
+	\[
+		( \rho^-(t) - \rho^+(t)) x_s'(t) = \phi(\rho^-(t)) - \phi(\rho^+(t)) 
+	\]
+	We get
+	\[
+		x_s'(t) = \frac{\phi(\rho^-) - \phi(\rho^+)}{\rho^- - \rho^+}
+	\]
+
+	This condition is called the \textbf{Rankine-Hugoniot shockwave condition}.
+\end{parts}
+
+\end{slide}
+\end{solution}
+
+
+
+
+\begin{slide}
+\question
+
+\begin{parts}
+	\item Use the Rankine-Hugoniot shockwave condition to find the full solution of Exercise \ref{traffic:red}.
+	
+	
+	\item Compare the solution to the numerical solution using the Lax-Friedrichs method in \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=python/traffic_flow_LaxFriedrichs.ipynb}{\tt traffic\_flow\_LaxFriedrichs.ipynb}.
+	
+	Note that to use this method, we wrote the PDE as
+	$ \rho_t + \big( \phi(\rho) \big)_x = 0 $
+	with $\phi(\rho) = v_{\max} \left( 1 - \frac{\rho}{\rho_{\max}}\right) \rho$.
+	
+	\textit{Note also that the method is very sensitive to the choice of $\Delta x$ and $\Delta t$: it only works when $\frac{\Delta t}{\Delta x}$ is small enough.}
+	
+	\item What happens when cars slow down gradually? Find the solution for the initial condition
+	\[	r(x,0) = f(x) = 
+		\begin{cases}
+			\rho_{\min}	& \text{ for } x<-1\\
+			\rho_{\max} + (\rho_{\min}-\rho_{\max})x & \text{ for } -1 \leq x \leq 0 \\ 
+			\rho_{\max} 	& \text{ for } x>0
+		\end{cases}
+	\]
+	
+\end{parts}
+
+	
+\end{slide}
+
+
+\begin{solution}
+\begin{slide}
+
+\begin{parts}
+
+\item The Rankine-Hugoniot condition yields:
+\[
+x'_s(t) = \frac{\phi(20) - \phi(120)}{20-120} = -\frac{1000 - 0}{100} = -10
+\]
+where we recall that $\displaystyle\phi(\rho) = v_{\max} \left( 1 - \frac{\rho}{\rho_{\max}}\right) \rho = 60 \left(1 - \frac{\rho}{120}\right) \rho$.
+
+We also know that the discontinuity starts at the point $(x,t) = (0,0)$, so 
+\[
+x_s(t) = -10t
+\]
+
+\begin{minipage}{.5\textwidth}
+This means that the solution is
+\[
+\rho(x,t) = 
+	\begin{cases}
+		\rho_{\min} & \text{ for } x < x_s(t) \\
+		\rho_{\max} & \text{ for } x > x_s(t)
+	\end{cases}
+\]
+
+In practice this means that cars are accumulating behind the traffic sign ($\rho_{\max}$) means cars are stopped.
+The cars are accumulating at the speed of $10$ km/h.
+\end{minipage}
+\hfill
+\begin{minipage}{.4\textwidth}
+	\begin{tikzpicture}
+		\draw[-latex] (0,-0.5) -- (0,2.5) node[left] {$t$};
+		\draw[-latex] (-2.5,0) -- (2,0) node[above] {$x$};	
+		\draw[thick, blue] (0,0) -- ({-2.5/5},2.5) node[above left] {$x=-10t$};
+		\draw[green!50!black] (-1.5,1) node {$\rho(x,t) = \rho_{\min}$};
+		\draw[red] (1,1.5) node {$\rho(x,t) = \rho_{\max}$};
+%		\draw[thick,blue] (-2,0) node[below] {$\rho_1$} -- (2.5,2.5);
+%		\draw[thick,green!50!black] (0.5,0) node[below] {$\rho_2$} -- (1,2.5);
+%		\draw[thick, fill=white] (0.8125,1.5625) circle (0.1);
+	\end{tikzpicture}	
+\end{minipage}
+
+Here is an animation of the solution: \href{https://raw.githubusercontent.com/bigfatbernie/IBLMathModeling/main/book/images/traffic_flow-animation.m4v}{traffic_flow-animation.m4v}
+
+\end{parts}
+	
+\end{slide}	
+\end{solution}
+
+
+\begin{solution}
+\begin{slide}
+\begin{parts}
+\setcounter{partsitem}{1}
+\item When we run the numerical solution \href{https://raw.githubusercontent.com/bigfatbernie/IBLMathModeling/main/book/images/traffic_flow-60.mp4}{(click here to see an animation)}, we get the following:
+
+\hfil \begin{tabular}{ccc}
+\includegraphics[width=.35\textwidth]{images/traffic_flow-60-deltax110.png}
+	& \quad	& \includegraphics[width=.35\textwidth]{images/traffic_flow-60-deltax550.png} \\[-8pt]
+larger $\Delta x$ and $\frac{\Delta t}{\Delta x} = 0.02$
+	& 		& smaller $\Delta x$ and $\frac{\Delta t}{\Delta x} = 0.1$
+\end{tabular}
+
+If the resolution in $x$ is not good enough, then we see some artifacts from the numerical approximation.
+
+We can estimate the speed of the shockwave: it takes 4 time-steps to get to from $x=0$ to $x=-2$:
+\begin{itemize}
+	\item Speed of the shockwave $= \frac{2}{4 \cdot (0.05)} = 10$ km/h.
+\end{itemize}
+
+
+\item In this case, the shockwave doesn't start at $t=0$, but when the characteristics meet for the first time.
+
+\end{parts}
+	
+\end{slide}
+	
+\end{solution}
 
 
 

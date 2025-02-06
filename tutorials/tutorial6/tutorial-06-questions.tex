@@ -1,0 +1,93 @@
+		\begin{objectives}
+			In this tutorial you will explore a model with a system of two nonlinear differential equations as well as a modification on that model.
+			
+				These problems relate to the following course learning objectives:
+				\begin{itemize}\it 
+					\item Model with a system of ODEs. \\[-20pt]
+					\item Analyze the stability of equilibrium points. \\[-20pt]
+					\item Linearize a nonlinear problem around a point of interest.
+				\end{itemize}
+		\end{objectives}
+
+
+
+\vspace{-.5em}
+\subsection*{Problems}
+\vspace{-.5em}
+
+
+\begin{enumerate}
+	\item\label{q1} Consider the Lotka-Volterra Predator-Prey model
+	\begin{align*}
+		\frac{dx}{dt} & = ax - pxy  \tag{prey equation}\\
+		\frac{dy}{dt} & = -by + qxy \tag{predator equation}
+	\end{align*}
+	with the parameters $a,b,p,q>0$.
+	
+	\begin{enumerate}
+		\item Describe how the system of differential equations models a predator-prey interaction.
+		\item Find the equilibrium solutions. How would you label them for a lay person?
+		\item Calculate the Jacobian and decide on the stability of each equilibrium solution.
+		\item One of the equilibrium solutions is stable, but not asymptotically stable / attracting (solutions starting nearby, don't converge towards the equilibrium, but also don't diverge away).
+		
+		Let us show this fact:
+		\begin{enumerate}
+			\item To show this, use the system of ODEs above to find an expression for $\dfrac{dy}{dx}$. 
+			\item Solve the differential equation you obtained for $y(x)$.
+			\item Your solution has the form $E(x,y) = C$ for an arbitrary constant $C$.
+			\item Conclude that the solution of the system of ODEs, ``live'' on the level sets of a function, which are closed curves. So the system has periodic orbits.
+			\item Use \texttt{python} to visualize the level sets of $E$.
+			\item Simulate a solution using Euler's method and Runge-Kutta's method. What do you observe?
+		\end{enumerate}
+		
+		\item The Lotka-Volterra model has provided insight into real-world ecological phenomenon. Consider the example:
+		\begin{center}
+		\framebox{
+		\begin{minipage}{.85\textwidth}
+			\it A beach-side community became panicked after a string of shark attacks one summer. They decided to aggressively hunt the sharks, which dramatically reduced their numbers near the beach. However, the following year there was a considerable increase in the number of shark sightings.
+		\end{minipage}
+		}
+		\end{center}
+		
+		Recalling that the sharks are predators of fish, explain the situation.
+		
+		Use a sketch to describe what probably happened in your level set graph.	
+	\end{enumerate}
+	
+	\newpage
+	
+	\item \label{q2} \footnote{Based on the 2024 test 1.} Now let us consider a modified Lotka-Volterra model to account for logistic growth of the prey population:
+	\begin{align*}
+		\frac{dx}{dt} & = ax \left( 1 - \frac{x}{K} \right) - pxy  \tag{logistic prey equation}\\
+		\frac{dy}{dt} & = -by + qxy \tag{predator equation}
+	\end{align*}
+	with $a=b=p=q=1$ and $K>0$.
+
+	\begin{enumerate}
+		\item What value of $K$ recovers the original Lotka-Volterra predator-prey model?
+		\item Find the equilibrium solutions and the values of $K$ for which they are all valid. How would you label them for a lay person?
+		\item Classify the stability of each equilibrium solution.
+		\item Sketch a phase portrait and describe the effects of including a logistic prey growth in the Lotka-Volterra model.
+	
+	\end{enumerate}
+	
+	
+	
+	
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

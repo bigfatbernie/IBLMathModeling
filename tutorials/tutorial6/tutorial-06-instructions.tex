@@ -1,0 +1,70 @@
+\subsection*{Learning Objectives}
+	Students need to be able to\ldots
+		\begin{itemize}\it 
+			\item Model with a system of ODEs. \\[-20pt]
+			\item Analyze the stability of equilibrium points. \\[-20pt]
+			\item Linearize a nonlinear problem around a point of interest.
+		\end{itemize}
+
+
+%	
+\subsection*{Context}
+	
+In lecture we studied some examples  of linearizing and studying the stability of equilibrium points.
+We do so again in this tutorial.
+
+We go in a bit more detail to prove some properties of the Lotka-Volterra model, such as showing that the solutions form periodic orbits.
+
+
+
+\subsection*{Resources for TAs}
+
+The \verb|python| code is here: \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=tutorials/tutorial6/tutorial6.ipynb}{\tt tutorial6.ipynb}
+
+
+\subsection*{Before Tutorial}
+
+
+Send an announcement to students letting them know that they will need to bring a laptop and will be using Jupyter Notebooks \url{https://utoronto.syzygy.ca}.
+
+
+\subsection*{What to Do}
+	
+Introduce the learning objectives for the day's tutorial. \\
+
+Problem \ref{q1} is quite long, so there might not be any time for problem \ref{q2}. That is ok. If that happens, tell the students that they should work on problem \ref{q2} on their own.
+
+
+\begin{enumerate}[label=\ref{q1}.(\alph*)]
+	\item Students should analyze and explain the meaning of each term on the RHS
+	\item Students will probably be a little stumped here. Ask them, if they had to write a tweet (xeet?) describing each equilibrium solution, what would they write?
+	\item When we do the Jacobian, we are linearizing the ODEs, so somethings to keep in mind:
+	\begin{itemize}
+		\item All eigenvalues have real parts < 0 : Attracting / Asymptotically stable equilibrium
+		\item One eigenvalue has real part > 0 : Repelling / Asymptotically unstable equilibrium
+		\item All eigenvalues have real parts = 0 : Can't tell! (like when the second derivative is 0, we can't tell if it's a max/min/none!)
+	\end{itemize}
+
+	
+	\item Insist that students do the \verb|python| parts. Tell them to use previous \verb|python| codes (from homework/lecture/...) - for plotting and for numerical methods.
+	
+	The Euler and Runge-Kutta methods are described in the lecture slides.
+	
+\end{enumerate}
+
+
+
+
+
+
+
+%\subsection*{Notes}
+%
+%	\begin{enumerate}
+%		\item Note
+%	\end{enumerate}
+	
+	
+
+	
+	

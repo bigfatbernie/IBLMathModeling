@@ -176,16 +176,16 @@ Data on the resource usage and costs are provided in \href{https://raw.githubuse
 
 
 \begin{enumerate}[label=\textbf{\arabic*.}]
-	\item Let's start with the simpler example from lecture. 
+	\item Let's start with the simpler example from lecture (so still in metric units). 
 
 	Clone the Jupyter Notebook \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=homeworks/homework2/homework2-exercises.ipynb}{\tt homework2-exercises.ipynb}.
 	
-	Read the code and comments to determine how it works. The core of the program is the call to \verb|linprog| to solve the linear programming problem. Run the script. The linear programming problem is solved repeatedly as the yield of oats is varied between \$240/acre and \$260/acre. The resulting plot was discussed in lecture. The top-left subplot shows how the available land is optimally allocated between the three crops as a function the yield of oats. Change this plot to be a stacked area chart using Python's \verb|stackplot| function. Add a subplot that show how labour and water are optimally allocated as a function of the yield of oats. For each value of the parameter, which constraints are active? 
+	Read the code and comments to determine how it works. The core of the program is the call to \verb|linprog| to solve the linear programming problem. Run the script. The linear programming problem is solved repeatedly as the yield of oats is varied between \$400/acre and \$440/acre. The resulting plot was discussed in lecture. The top-left subplot shows how the available land is optimally allocated between the three crops as a function the yield of oats. Change this plot to be a stacked area chart using Python's \verb|stackplot| function. Add a subplot that show how labour and water are optimally allocated as a function of the yield of oats. For each value of the parameter, which constraints are active? 
 \end{enumerate}
 
 The remaining questions are concerned with the Holland Marsh as described in the Problem Background. 
 	Modify the next part of the script to solve the problem. Look for the labels \verb|TODO|. 
-	Note that you will have to transpose (with \verb|'|) the loaded data when building the constraint matrix $A$.
+	Note that you should transpose the loaded data when building the constraint matrix $A$.
 
 \begin{enumerate}[resume,label=\textbf{\arabic*.}]
 

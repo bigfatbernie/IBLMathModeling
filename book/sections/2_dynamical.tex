@@ -161,6 +161,9 @@ According to the paper \href{https://www.researchgate.net/publication/289492130_
 
 \addcontentsline{toc}{subsection}{Numerical Methods for ODEs}
 
+\addcontentsline{toc}{subsubsection}{Euler Method}
+\addcontentsline{toc}{subsubsection}{Heun Method}
+
 
 \begin{slide}
 
@@ -169,17 +172,16 @@ According to the paper \href{https://www.researchgate.net/publication/289492130_
 Numerical Methods for:
 \[ y' = f(t,y) \]
 
-\addcontentsline{toc}{subsubsection}{Euler Method}
 \SavedDefinitionRender{EulerMethod}
 
-\addcontentsline{toc}{subsubsection}{Heun Method}
 \SavedDefinitionRender{HeunMethod}
 
 \end{slide}
 
+\addcontentsline{toc}{subsubsection}{Runge-Kutta (4th order) Method}
+
 \begin{slide}
 
-\addcontentsline{toc}{subsubsection}{Runge-Kutta (4th order) Method}
 
 \SavedDefinitionRender{RK4Method}
 
@@ -794,7 +796,7 @@ which is based on the following premises:
         \node[draw,line width=0.5mm,fill=gray!20!white] at (0, 0)     (eb)     {E-Box};
         \node[node style] at (5, 2)     (mn)     {mRNA};
         \node[node style] at (5, 5.5)     (mc)     {mRNA};
-        \node[node style] at (0, 5.5)     (pc)     {PER};
+        \node[node style] at (0, 5.5)     (pc)     {\textbf{PER}};
         \node[node style] at (0, 2)     (pn)     {PER};
 
         \draw[dashed] (-1,4.3) -- (6,4.3);
@@ -815,7 +817,7 @@ which is based on the following premises:
 %    \caption{A diagram of the transcription-translation feedback loop of the mammalian circadian clock. When the enhancer-box (E-Box) on the DNA is active, messenger RNA (mRNA) is produced. The mRNA is exported from the nucleus where it is translated into PER protein. The protein is imported into the nucleus where it inhibits the the E-Box. \label{fig:circadianTTFL}}
 \end{center}
 
-When the enhancer-box (E-Box) on the DNA is active, messenger RNA (mRNA) is produced. The mRNA is exported from the nucleus where it is translated into PER protein. The protein is imported into the nucleus where it inhibits the E-Box.
+When the enhancer-box (E-Box) on the DNA is active, messenger RNA (mRNA) is produced. The mRNA is exported from the nucleus where it is translated into PER protein. The protein is imported into the nucleus where it inhibits the E-Box. It is the cytosolic concentration of PER (highlighted) that indicates the time of day.
 
 \begin{slidesonly}
 	\vspace{2cm}
@@ -882,7 +884,7 @@ where the exponential term represents the fact that the PER protein inhibits the
 					0 & 0 & 0 & 1 & -1 
 					}
 		\]	
-	\item The solutions are in \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/circadian.ipynb}{\tt circadian5-sol.ipynb}{\tt circadian5-sol.ipynb}.
+	\item The solutions are in \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/circadian.ipynb}{\tt circadian5-sol.ipynb}.
 	
 	Basically we need to find the (5) eigenvalues for each value of $\alpha \in [0,100]$ and check when:
 	\begin{itemize}
@@ -892,6 +894,8 @@ where the exponential term represents the fact that the PER protein inhibits the
 	
 	\includegraphics[width=200pt]{images/circadian5.png}
 	
+	
+	Observe that in this case, we are actually looking for the \textbf{unstable} regime, when periodic solutions appear -- check the last part of the \texttt{Jupyter Notebook}. These only appear when the feedback in strong enough.
 \end{parts}
 	
 \end{slide}	
@@ -907,7 +911,7 @@ where the exponential term represents the fact that the PER protein inhibits the
 
 From the previous question, we obtained equilibrium solutions that changed from stable to unstable as we changed the parameter $\alpha$ -- see the graph below.
 	\begin{center}
-		\includegraphics[width=200pt]{images/circadian5.png}
+		\includegraphics[width=225pt]{images/circadian5-periodic.png}
 	\end{center}
 
 This is called a \textbf{bifurcation}. \\
@@ -955,7 +959,7 @@ Decide on the type of bifurcation for each ODE.
 \begin{slide}
 \begin{parts}
 	\item Change of stability bifurcation
-	\item Change of stability bifurcation
+	\item Hopf bifurcation
 	\item Transcritical bifurcation: $x(r-x) = 0$ so $x=0$ and $x=r$ are equilibria and they swap stability at $r=0$.
 	\item Saddle-node bifurcation: equilibria only exist for $r<0$, one stable and one unstable.
 	\item Pitchfork bifurcation: $x(r-x^2)=0$ implies
@@ -963,7 +967,7 @@ Decide on the type of bifurcation for each ODE.
 		\item $r\leq 0$: equilibria at $x=0$
 		\item $r>0$: equilibria at $x=0$ and $x=\pm \sqrt{r}$
 	\end{itemize}
-	See \url{https://www.desmos.com/calculator/24dytsysw6} about pitchfork perturbation.
+	See \url{https://www.desmos.com/calculator/uksexnwbdz} about pitchfork perturbation.
 	\item Hopf bifurcation: Equilibrium at $(0,0)$ and with eigenvalues $\mu \pm \omega i$, so
 	\begin{itemize}
 		\item $\mu<0$: stable spiral
@@ -1086,6 +1090,12 @@ We want to model $w(x,t)$, the density of pollutant in the river at the point $x
 	
 	\item Find the solution of the same problem with an accelerating river: $v = 3t^2$.
 	
+	\item Find the solution for $w_t + 5 w_x = 2$.
+
+	\item Find the solution for $w_t + 3t^2 w_x = 2$.
+
+	\item Find the solution for $w_t + 3t^2 w_x = -x$.
+	
 \end{parts}
 
 \begin{center}
@@ -1098,6 +1108,8 @@ We want to model $w(x,t)$, the density of pollutant in the river at the point $x
 		\draw[blue] (-0.75,0) node {$u(x,0)$};
 	\end{tikzpicture}
 	\end{center}	
+	
+	
 
 \end{slide}
 %
@@ -1673,6 +1685,9 @@ Here is an animation of the solution: \href{https://raw.githubusercontent.com/bi
 \end{slide}
 	
 \end{solution}
+
+
+
 
 
 

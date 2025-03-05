@@ -477,3 +477,147 @@ This method allows us to ``transform'' a PDE into two ODEs.
 \end{SaveDefinition}
 
 
+
+\begin{SaveDefinition}[key=IntroProbability, title={Introduction to continuous probability}]
+
+\begin{itemize}
+	\item Continuous random variables take values according to a \textbf{probability density function (pdf)}
+	\item We evaluate the probability that a random variable has a value in an interval by integrating the pdf over that interval:
+	\[ \Pr(a \leq T \leq b) = \int_a^b f_T(t) ~dt, \]
+	where $f_T(t)$ is the pdf.
+	
+	\item Since $T$ must have a value, we have
+	\[ \int_{-\infty}^{\infty} f_T(t) ~dt = 1.\]
+	
+\end{itemize}
+	
+\begin{center}
+	\begin{tikzpicture}
+		\draw[draw=none,fill=blue!50!white,variable=\x,domain=0.5:1, samples=100] plot ({\x},{0.1+1.2*exp(-(\x+0.26)^2-2*(\x+0.26)^6)+0.6*exp(-4*(\x-1.13)^4)}) -- (1,0) node[below] {\small $b$} -- (0.5,0) node[below] {\small $a$} -- cycle;
+	    \draw (-2,0) -- (3,0);
+		\draw[thick, variable=\x,domain=-2:3, samples=100] plot ({\x},{0.1+1.2*exp(-(\x+0.26)^2-2*(\x+0.26)^6)+0.6*exp(-4*(\x-1.13)^4)});
+	\end{tikzpicture}	
+\end{center}
+
+\begin{itemize}
+	\item It is convenient to define the \textbf{cumulative distribution function (cdf)} $F_T(t)$ and the complementary cumulative distribution function (ccdf) $\tilde{F}_T(t)$ as
+	\begin{align*}
+		F_T(t) & = \Pr(T\leq t) = \int_{-\infty}^t f_T(\tau) ~d\tau \\
+		\tilde{F}_T(t) & = \Pr(T\geq t) = \int_t^{+\infty} f_T(\tau) ~d\tau
+	\end{align*}
+
+	\item These functions are related by $F_T(t) = 1 - \tilde{F}_T(t)$.
+	\item By the FTC, we also have $\frac{dF_T}{dt}(t) = f_T(t)$.
+	\item The \textbf{mean} of the random variable $T$ is
+		\[ \mu_T = \int_{-\infty}^\infty t \cdot f_T(t) ~dt. \]
+\end{itemize}
+	
+\end{SaveDefinition}
+
+
+\begin{SaveDefinition}[key=ConditionalProb, title={Conditional Probability}]
+$\Pr(A|B) = $ Probability that $A$ will happen given that $B$ has happened $= \dfrac{\Pr(A \text{ and } B)}{\Pr(B)}$.
+\end{SaveDefinition}
+
+
+
+\begin{SaveDefinition}[key=Exponential, title={Exponential Random Variable}]
+
+The exponential random variable $T \sim {\rm Exp}(\gamma)$ is defined by the pdf:
+\[ f_T(t) = \begin{cases}
+ 	\gamma e^{-\gamma t} & \text{ if }  t \geq 0 \\
+ 	0 	& \text{ otherwise}
+ \end{cases}
+\]
+\end{SaveDefinition}
+
+
+\begin{SaveDefinition}[key=memoryless, title={Memoryless Random Variable}]
+
+A random variable is said to be \textbf{memoryless} if
+\[
+\Pr(T > t+s | T > t) = \Pr(T>s).
+\]
+\end{SaveDefinition}
+
+
+
+
+\begin{SaveDefinition}[key=hazard, title={Hazard function}]
+	
+We also define the \textit{hazard function} $h_T(t)$, which is the probability density function of an event that has not happened yet will occur imminently.
+
+We then have
+\begin{align*}
+	h_T(t)
+		& = \lim_{\Delta t \to 0^+} \frac{\Pr( t \leq T \leq t+\Delta t | T \geq t)}{\Delta t} \\
+		& = \lim_{\Delta t \to 0^+} \frac{\Pr( t \leq T \leq t+\Delta t \text{ and } T \geq t)}{\Pr(T \geq t) \Delta t} \\
+		& = \lim_{\Delta t \to 0^+} \frac{\Pr(T \leq t+\Delta t) - \Pr(T \leq t)}{\Pr(T \geq t)\Delta t} \\
+		& = \underbrace{\lim_{\Delta t \to 0^+} \frac{F_T(t+\Delta t) - F_T(t)}{\Delta t}}_{=\frac{dF_T}{dt}} \cdot \frac{1}{\tilde{F}(t)}\\
+		& = \frac{f_T(t)}{\tilde{F}(t)}
+\end{align*}
+\end{SaveDefinition}
+
+
+
+
+\begin{SaveDefinition}[key=Poisson, title={Poisson Process}]
+
+The most famous stochastic process is the \textbf{Poisson Process} to count events. 
+
+It assumes that:
+\begin{itemize}
+	\item The events are randomly distributed
+	\item It is memoryless: all $t$'s are equal. The probability of an event happening doesn't depend on $t$
+	\item Events cannot un-occur, so counting only increases.
+\end{itemize}
+
+
+Let $N(t)$ be the (random) number of events that have occurred up to time $t$.
+Because events are memoryless, this means that the random times between events $T$ are \textbf{exponentially distributed} with pdf
+\[
+f_T(t) = \gamma e^{-\gamma t}.
+\]
+Has we have seen in exercise \ref{exponential}:
+\begin{itemize}
+	\item The cdf is $F_T(t) = 1-e^{-\gamma t}$ and the ccdf is $\tilde{F}_T(t) = e^{-\gamma t}$
+	\item The hazard function is $h_T(t) = \gamma$ a constant.
+\end{itemize}	
+
+\end{SaveDefinition}
+
+
+\begin{SaveDefinition}[key=Poisson2, title={Poisson Process}]
+
+From the exercise \ref{ex-poisson}, we usually denote $\lambda = \gamma t$ and so we have:
+\[
+\Pr(N=k) = \frac{\lambda^k}{k!} e^{-\lambda},
+\]
+
+Its mean is $\lambda$ and so is the variance.\\
+
+You can watch these two videos to get a better idea of what is $p_n(t)$: \url{https://youtu.be/3z-M6sbGIZ0} and \url{https://youtu.be/Jkr4FSrNEVY}
+\end{SaveDefinition}
+
+
+
+\begin{SaveDefinition}[key=discrete-event, title={Discrete Event Method}]
+
+Also known as the Gillipse or Stochastic simulation algorithm.
+
+In this method, pseudo-random numbers determine the times of each event and the simulation progresses by jumping to the time of the first event, updating the state according to the event, sampling new times for the events, and repeating. This produces an exact realization of the stochastic process.
+
+\textit{This method will be slow if there are lots of events.}
+\end{SaveDefinition}
+
+
+\begin{SaveDefinition}[key=tau-leaping, title={$\pmb{\tau}$-leaping Method}]
+
+Similarly to Euler's method for ODEs, we take a fixed time step $\Delta t$ (usually it is denoted by $\tau$) and decide independently how many of each event occurred. This is an approximation in that as events occur during the finite time step, the rates should have changed, but were not.
+	
+\textit{This method will be slow if many steps do not result in any events.}	
+\end{SaveDefinition}
+
+
+
+

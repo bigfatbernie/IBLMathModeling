@@ -208,13 +208,11 @@ We will use the main idea of Euler's method to approximate the solution to this 
 	
 	Write a discretized formula for $u_{xx}(x_i,y_j)$ in terms of $u_{ij}$. Do the same for $u_{yy}(x_i,y_j)$.
 	
-	\item Using these, obtain a numerical scheme for the \ref{HeatEq}.
+	\item Using these, obtain a numerical scheme for the \ref{HeatEq}: an expression involving only $u_{ij}$'s.
 	
-	\textit{Hint: The numerical method should look like a linear system: $A \vec{u} = \vec{b}$.} 
-
 	\item This scheme is \textit{implicit}, so we need to find a way to solve it.
 	
-	For that, consider $L=4, H=4$ and the following boundary conditions:
+	For that, consider $L=4, H=3$ and the following boundary conditions:
 	\begin{itemize}
 		\item $u(x,0) = u(0,y) = 0$
 		\item $u(4,y) = 50$

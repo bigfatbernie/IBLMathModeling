@@ -603,7 +603,7 @@ You can watch these two videos to get a better idea of what is $p_n(t)$: \url{ht
 
 \begin{SaveDefinition}[key=discrete-event, title={Discrete Event Method}]
 
-Also known as the Gillipse or Stochastic simulation algorithm.
+Also known as the Gillespie or Stochastic simulation algorithm.
 
 In this method, pseudo-random numbers determine the times of each event and the simulation progresses by jumping to the time of the first event, updating the state according to the event, sampling new times for the events, and repeating. This produces an exact realization of the stochastic process.
 
@@ -620,4 +620,48 @@ Similarly to Euler's method for ODEs, we take a fixed time step $\Delta t$ (usua
 
 
 
+
+\begin{SaveDefinition}[key=WelfordAlgorithm, title ={Welford's Algorithm}]
+
+
+Suppose that the samples for the weekly profit are $R_n$ for $n=1, 2, \ldots$.
+
+We compute two sequences $\mu_n$ and $V_n$ to estimate the mean and variance of $R$.
+
+The algorithm is given by:
+
+%\begin{itemize}
+%	\item $\mu_0 = 0$ and $V_0=0$
+%	\item For each $n$:
+%	\begin{itemize}
+%		\item $\delta_n = R_n - \mu_{n-1}$
+%		\item $\mu_n = \mu_{n-1} + \frac{\delta_n}{n}$
+%		\item $\delta'_n =  R_n - \mu_n$
+%		\item $V_n = V_{n-1} + \delta_n \delta'_n$
+%	\end{itemize}
+%\end{itemize}
+\begin{algorithm}[H]
+% \SetAlgoLined
+% \LinesNumbered
+    $\mu_0 = V_0 = 0$\; 
+	\SetAlgoLined\SetArgSty{}
+	\ForAll{$n \in \{1,2,\ldots\}$}{
+	$\delta_n = R_n - \mu_{n-1}$;
+
+	$\mu_n = \mu_{n-1} + \frac{\delta_n}{n}$;
+
+	$\delta'_n =  R_n - \mu_n$;
+
+	$V_n = V_{n-1} + \delta_n \delta'_n$;
+	}  
+\end{algorithm}
+
+Under some conditions on the random variable $R$:
+\begin{itemize}
+	\item $\mu_n$ will converge to the mean of $R$;
+	\item $\frac{V_n}{n}$ will converge to the variance of $R$.
+\end{itemize}
+
+\textit{We should ignore the first few weeks to make sure that we are sampling from the steady state distribution of profits.}
+\end{SaveDefinition}
 

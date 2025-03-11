@@ -283,7 +283,7 @@ Start with $N(0) = 0$ and define $p_n(t) = \Pr\big( N(t)=n \big)$, the probabili
 
 
 \begin{slide}
-\question
+\question \label{aquarium}
 \begin{problem}[Aquarium Problem\footnote{based on a problem from Meerschaert's `Mathematical Modeling'.}]
 
 A pet store sells large aquariums. They sell approximately \textbf{one aquarium per week} (call this the parameter $\lambda$).
@@ -566,6 +566,7 @@ Construct a Markov chain model for the heat equation interpreting it as particle
 
 
 \begin{slide}
+\question
 \begin{problem}[Stochastic Simulation]
 It is very rare to be able to obtain analytic results for probabilistic models, so we will study simulating them.
 \end{problem}
@@ -574,8 +575,268 @@ It is very rare to be able to obtain analytic results for probabilistic models, 
 
 \SavedDefinitionRender{tau-leaping}
 
-
+Here is some code simulating an Exponential Distribution using each method.
+\begin{itemize}
+	\item \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/numerical-stochastic.ipynb}{\tt numerical-stochastic.ipynb}
+\end{itemize}
 
 	
 \end{slide}
+
+
+
+\begin{slide}
+\question \label{aquarium2}
+
+Recall Exercise \ref{aquarium}. 
+
+\begin{parts}
+	\item Using the Jupyter Notebook 	\href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/aquarium-part2.ipynb}{\tt aquarium-part2.ipynb}, simulate the aquarium problem.
+
+	\item The store is considering an alternative re-stocking policy: when the stock is down to 1 aquarium, they flip a coin and decide whether to re-stock to 3 aquariums or not.
+	
+	Simulate this new store policy in the same Jupyter Notebook and compare the results.
+	
+	\item Run the last part of the Jupyter Notebook to combine the results of these two policies. You need to add titles and legends to the graphs, and labels to the $x-$ and $y-$ axes. Compare the results.
+
+	\item \label{aquarium2:economic} Create an economic model for the store that includes: profit from each aquarium sale, stocking cost per aquarium in stock, shipping cost when re-ordering new aquariums.
+	
+		Evaluate which of the previous two policies is better. 
+\end{parts}
+
+\end{slide}
+
+
+\begin{solution}
+\begin{slide}
+\begin{parts}	
+	\item Plot one simulation for the original re-stocking policy.
+	
+		\includegraphics[width=0.4\textwidth]{images/aquarium-sim-og.png}
+	\item Plot the same simulation for the modified re-stocking policy.
+	
+		\includegraphics[width=0.4\textwidth]{images/aquarium-sim-mod.png}
+		
+		
+	Observations:
+	\begin{itemize}
+		\item Week 1: the modified store decided not to order new aquariums, even though they only had 1 in stock
+		\item Week 2: the modified store re-stocked
+		\item Week 3: the original store had 1 aquarium in stock and sold it, then re-stocked
+		\item Week 3: the modified store, had 3 aquariums in stock and sold at least 2, because they also re-stocked
+		\item Week 3: This means that the original store lost 1 or 2 more sales than the modified store.
+	\end{itemize}	
+	
+	
+	\item From the plots below, we can see that the modified store loses much fewer sales.
+\end{parts}	
+
+		\includegraphics[width=0.75\textwidth]{images/aquarium-sim.png}
+	
+
+\end{slide}
+	
+\end{solution}
+
+
+
+\begin{slide}
+\question \label{SIR_stochastic}
+	
+Recall the SIR model:
+\begin{align*}
+\frac{dS}{dt} 	& = - \beta SI \\
+\frac{dI}{dt} & = \beta SI - \gamma I \\
+\frac{dR}{dt} & = \gamma I
+\end{align*}
+
+We now want to create a stochastic simulation for the same model:
+\begin{itemize}
+	\item A \textit{susceptible} individual becomes \textit{infected} with probability $\beta I$ per unit time;
+	\item An \textit{infected} individual becomes \textit{recovered} with probability $\gamma$ per unit time.
+\end{itemize}
+
+An \textit{event} happens when one of these two changes of circumstances happens and we assume that the time between events is \textit{memoryless}, hence it should be \textit{exponentially} distributed with the appropriate rate.
+
+Since the number of infected individuals changes with every event, the rate will need to be updated with each event.
+
+\begin{parts}
+	\item Explain why the \textit{discrete event} method will give a better approximation than the  \textit{$\tau$-leaping} method.
+	\item We are expecting lots of events, so we will use the $\tau$-leaping method.
+		we use the binomial distribution (the discrete version of the Poisson distribution) to determine whether an individual became infected or not.
+		Then complete the following for \textbf{one time step} of length $\Delta t$:
+		\begin{itemize}
+			\item $\Pr($new infectives$=k)\quad =\quad $
+			\item $\Pr($new recovereds$=k)\quad =\quad $
+		\end{itemize}
+	\item Create a simulation for $t\in [0,10]$ and $\Delta t = 0.1$ with:
+	\begin{itemize}
+		\item Initial population: $S_0=99$, $I_0=1$, $R_0=0$
+		\item Infection rate: $\beta=0.1$ (which means $R_0=10$)
+		\item Recovery rate: $\gamma =1$
+	\end{itemize}
+	\item Compare the differences with the deterministic continuous model.
+\end{parts}
+
+\end{slide}
+
+
+\begin{solution}
+\begin{slide}
+\begin{parts}
+	\item With the \textit{discrete event} method, we recalculate the rates with every event, but with the \textit{$\tau$-leaping} method, we don't, we calculate how many events happen in a predetermined timestep size. Since in this model, the rate changes with each event, the discrete event method is more accurate.
+
+	\item 
+
+		$\Pr($new infectives$=k)\quad =\quad {{S}\choose{k}} (\Delta t \beta I)^k (1-\Delta t \beta I)^{S-k}$
+		
+		$\Pr($new recovereds$=k)\quad =\quad {{I}\choose{k}} (\Delta t \gamma)^k (1-\Delta t \gamma)^{I-k}$
+
+		
+	\item The first graph is the result of 10 simulations with \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/SIR-stochastic-sol.ipynb}{\tt SIR-stochastic-sol.ipynb}
+	
+	\includegraphics[width=0.5\textwidth]{images/SIR-stochastic1.png}
+
+	\includegraphics[width=0.5\textwidth]{images/SIR-stochastic2.png}
+	
+	\item Observe how on one of the simulations, no one else became infected, which would not be possible on the continuous model. Also note that the infected population actually becomes zero in finite time as opposed to asymptotically converging to 0 in the continuous model.
+\end{parts}
+	
+\end{slide}
+	
+\end{solution}
+
+
+
+\begin{slide}
+\question
+
+\textbf{Monte Carlo Simulations} and their accuracy.
+
+The simulations we have done with the aquarium and SIR models are called Monte Carlo simulations. These rely on running the simulations again and again, which can take a long time. To compare the accuracy with other numerical methods:
+
+\begin{itemize}
+	\item Monte Carlo has square-root convergence: To be 2x more accurate, we need to run it 4x more
+	\item Euler has linear convergence: To be $2^1$x more accurate, we need to run it 2x more
+	\item Runge-Kutta 4 has 4th order convergence: To be $2^4$x more accurate, we need to run it 2x more
+\end{itemize}
+
+They can be very convenient though to run through examples and try different strategies, e.g. for the aquarium store, changing the re-stocking policy required 1-2 different lines of coding.
+
+\end{slide}
+
+
+\begin{slide}
+\question
+
+\begin{problem}[Optimization with Stochastic Simulation]
+
+We want to continue on the idea of Exercise \ref{aquarium2}.\ref{aquarium2:economic}.
+
+We assume the following:
+\begin{enumerate}
+	\item Each delivery has a cost \$$d$ independent of the number of aquariums shipped.
+	\item Each sale has a profit of \$$s$.
+	\item Each item in inventory has a small probability $\rho$ of being damaged during the week and that would incur as a cost of \$$c$. The aquariums are damaged independently, so the number of damaged aquariums is binomial $K \sim B(X_n,\rho)$.
+\end{enumerate}
+
+We want to optimize the profit.
+\end{problem}
+
+\begin{parts}
+	\item Let policy $p(x)$ be the number of aquariums that are reordered when there $x$ aquariums in stock. What are all the possible values $p(x)$? How many possible policies are there?
+	\item If the store had a maximum of $m$ aquariums in stock (instead of 3), how many different policies are there?
+	\item We can reduce these numbers, because the cost of ordering new aquariums is fixed and doesn't depend on how many aquariums are ordered. 
+		
+		So if we're willing to re-order to a certain stock $L$ when  the stock is $x$: $p(x) = $?
+		then for $y<x$, we should have $p(y)= $?
+	
+	\item Based on the previous property, how many policies are there for a maximum of $m$ aquariums?
+\end{parts}
+
+	
+\end{slide}
+
+
+
+\begin{solution}
+\begin{slide}
+\begin{parts}
+
+	\item $p(3) = 0$, $p(2)\in\{0,1\}$, $p(1)\in\{0,1,2\}$, $p(0)\in\{0,1,2,3\}$, with a total number of possible policies of $4!$.
+
+	\item If the maximum is $m$ aquariums, then there are $(m+1)!$ possible policies, which quickly become too many to check.
+
+	\item So if we're willing to re-order to a certain stock $L$ when  the stock is $x$: $p(x) = L-x$
+		then for $y<x$, we should have $p(y)= L-y$?
+
+	\item So we have:
+	\[ 
+	p(x) = \begin{cases}
+			\max\{L-x,0\}	& \text{ if } x < t 	 \\
+			0 				& \text{ if } x \geq t 	
+		 \end{cases}
+	\]
+	where $t$ is the level below which the store restocks and $L$ is the level it tries to achieve.
+
+	The possible cases are: $t \in \{1, \ldots, m\}$ and $L \in \{t, \ldots, m\}$, so there are
+	\[\sum_{t=1}^m (m-t+1) =\frac12 m(m+1).
+	\]
+\end{parts}
+\end{slide}	
+\end{solution}
+
+
+\begin{slide}
+\SavedDefinitionRender{WelfordAlgorithm}
+
+
+We can now estimate the long term profit by simulating the Markov decision process for each policy.
+
+\begin{itemize}
+	\item We can reduce the sampling error by simulating for a large number of weeks (instead of simulating several times)
+	\item We can use Welford's algorithm to estimate the mean weekly profit and its variance.
+\end{itemize}
+
+\begin{parts}
+	\item Use Welford's algorithm to calculate all mean and variance of the profit for all the possible policies with $m=3$ (the original setting).
+	Use the following values: 
+	\begin{itemize}
+		\item $\lambda=1$ expected customer per week
+		\item Delivery cost $d=\$5$ and sale profit $s=\$20$
+		\item Damage probability $\rho=0.01$ and cost $c=\$60$
+	\end{itemize}
+	
+	What is the best policy?
+\end{parts}	
+	
+\end{slide}
+
+
+\begin{solution}
+\begin{slide}
+\begin{parts}
+
+	\item Running $1\,000\,000$ weeks and ignoring the first 50 weeks over all 6 policies, we obtain the best policy: 
+	\begin{itemize}
+		\item \textit{Re-order if the stock $X=0$ or $X=1$.}
+		\item The average weekly profit is \$ 15.28
+		\item The standard deviation is \$ 20.38
+	\end{itemize}
+	Below is a graph of the average profits and their standard deviations for each re-stocking policy.
+	
+	\includegraphics[width=0.5\textwidth]{images/aquarium-policies.png}	
+
+	Code: \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/aquarium-part3-sol.ipynb}{\tt aquarium-part3-sol.ipynb}
+	
+	
+\end{parts}
+
+
+	
+\end{slide}	
+\end{solution}
+
+
+
 

@@ -175,7 +175,7 @@ The coefficients $T^S_{i,j}$, $T^I_{i,j}$, and $T^R_{i,j}$ are the travel rates 
 In this part of the homework assignment, you will approximate the steady-state temperature of a 2-dimensional object.
 
 For that, first consider the steady-state heat equation:
-\begin{equation}\tag{H}\label{HeatEq}
+\begin{equation}\tag{Heat Equation}\label{HeatEq}
 	\Delta u = u_{xx} + u_{yy} = \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 0,
 \end{equation}
 where $\Delta u$ is called the Laplacian of $u$ and $u(x,y)$ is the temperature of the 2-dimensional slab at the position $(x,y)$ in Celsius.
@@ -208,11 +208,11 @@ We will use the main idea of Euler's method to approximate the solution to this 
 	
 	Write a discretized formula for $u_{xx}(x_i,y_j)$ in terms of $u_{ij}$. Do the same for $u_{yy}(x_i,y_j)$.
 	
-	\item Using these, obtain a numerical scheme for \eqref{HeatEq}.
-
+	\item Using these, obtain a numerical scheme for the \ref{HeatEq}: an expression involving only $u_{ij}$'s.
+	
 	\item This scheme is \textit{implicit}, so we need to find a way to solve it.
 	
-	For that, consider $L=4, H=4$ and the following boundary conditions:
+	For that, consider $L=4, H=3$ and the following boundary conditions:
 	\begin{itemize}
 		\item $u(x,0) = u(0,y) = 0$
 		\item $u(4,y) = 50$
@@ -253,7 +253,8 @@ We will use the main idea of Euler's method to approximate the solution to this 
 	
 	Explain how you can reduce it to a $6 \times 6$ system.
 	
-	Use \verb|python| to solve the $6\times 6$ system and sketch the solution.
+	\item On the notebook \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=homeworks/homework3/homework3-exercises.ipynb}{\tt homework3-exercises.ipynb}, 
+	read the code and comments and set up the matrix $A$ and vector $\vec{b}$ to solve the $6\times 6$ system and sketch the solution.
 	
 	\item Consider the same problem with $N_x$ and $N_y$ points on the horizontal and vertical directions, and consider $\Delta x = \frac{4}{N_x}$ and $\Delta y = \frac{3}{N_y}$.
 	

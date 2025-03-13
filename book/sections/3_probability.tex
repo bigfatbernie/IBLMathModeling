@@ -160,6 +160,34 @@ Should Backblaze always use the hard drives with the longest mean time between f
 \end{slide}
 
 
+\begin{solution}
+\begin{slide}
+\begin{parts}
+\item The profit function is
+\[
+P = \sum_{n=1}^N \left[p_n \sum_{m=1}^{x_n} T_n(m) - c_n x_n\right].
+\]
+and it should be constrained to $\sum_{n=1}^N x_n = M$.
+
+\item Their expected profit is
+\[
+E(P) = \sum_{n=1}^N (p_n \mu_{T_n} - c_n )x_n.
+\]
+	
+\item We need to find the type of drive $n^\star$ that maximizes
+\[ \max_n (p_n \mu_{T_n} - c_n) \]
+and buy $M$ hard drives of type $n^\star$ to get an expected profit of 
+\[ 
+E(P) = M (p_{n^\star} \mu_{T_{n^\star}} - c_{n^\star})
+\]
+\end{parts}
+	
+\end{slide}
+	
+\end{solution}
+
+
+
 \begin{slide}
 
 This means that they will \textit{put all their eggs in one basket}!
@@ -236,8 +264,8 @@ Start with $N(0) = 0$ and define $p_n(t) = \Pr\big( N(t)=n \big)$, the probabili
 
 	\item 
 	\begin{enumerate}
-		\item increases if $N$ was $n-1$ and an event occurs imminently
 		\item decreases if $N$ was $n$ and an event occurs imminently
+		\item increases if $N$ was $n-1$ and an event occurs imminently
 	\end{enumerate}
 	
 	\item 	
@@ -252,7 +280,7 @@ Start with $N(0) = 0$ and define $p_n(t) = \Pr\big( N(t)=n \big)$, the probabili
 	\]
 	
 	\item The series 
-	\[ \sum_{n} \frac{(\gamma t)^n}{n!}  \]
+	\[ \sum_{n=0}^\infty \frac{(\gamma t)^n}{n!}  \]
 	is the Taylor series for $e^{\gamma t}$.
 	
 	\item Consider $g_n(t) = \frac{(\gamma t)^n}{n!}$. Then

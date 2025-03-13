@@ -665,3 +665,36 @@ Under some conditions on the random variable $R$:
 \textit{We should ignore the first few weeks to make sure that we are sampling from the steady state distribution of profits.}
 \end{SaveDefinition}
 
+
+
+\begin{SaveDefinition}[key=Q-learning, title ={Q-learning Algorithm}]
+	
+Let $Q(x,a)$ be the expected profit for the upcoming week with an inventory of $x$ in the previous week and ordering $a$ aquariums.
+We call this function the \textit{quality of state $x$ with action $a$}.
+
+The optimal policy for state $x$ is the action with the best quality: $\displaystyle p(x) = {\rm argmax}_a Q(x,a)$.
+
+We are going to determine $Q(s,a)$ using iterative refinement during a stochastic simulation of this Markov decision process.
+
+\begin{algorithm}[H]
+% \SetAlgoLined
+% \LinesNumbered
+	\SetAlgoLined\SetArgSty{}
+	\For{each week $n$}{
+		$a_n = $ random action
+		
+		$R_n = \underbrace{s \min (D_n,X_n)}_{\text{profit from sales}} - \underbrace{d(a_n>0)}_{\text{delivery cost}} - \underbrace{cK_n}_{\text{damage cost}}$ \quad (reward/profit for the week)
+		
+		$\displaystyle Q(X_n,a_n) \leftarrow (1-\alpha_n)Q(X_n,a_n) + \alpha_n\left(R_n + \gamma \max_{a} Q(X_{n+1},a)\right)$
+	} 
+\end{algorithm}
+
+The parameter $\alpha_n$ (\textit{learning rate}) expresses the importance of the most recent observation relative to the prior knowledge represented in the current value of the quality function. We want $\alpha_n \to 0$ as the quality function converges.
+
+The parameter $\gamma$ (\textit{discount factor}) expresses the notion that rewards later are worth less than rewards now. Since our process goes on forever, we want $\gamma <1$ to endure convergence, otherwise the total rewards would grow indefinitely.
+
+\end{SaveDefinition}
+
+
+
+

@@ -591,7 +591,7 @@ Here is some code simulating an Exponential Distribution using each method.
 Recall Exercise \ref{aquarium}. 
 
 \begin{parts}
-	\item Using the Jupyter Notebook 	\href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/aquarium-part2.ipynb}{\tt aquarium-part2.ipynb}, simulate the aquarium problem.
+	\item Using the Jupyter Notebook 	\href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/aquarium-part2.ipynb}{\tt aquarium-MonteCarlo.ipynb}, simulate the aquarium problem.
 
 	\item The store is considering an alternative re-stocking policy: when the stock is down to 1 aquarium, they flip a coin and decide whether to re-stock to 3 aquariums or not.
 	
@@ -609,6 +609,8 @@ Recall Exercise \ref{aquarium}.
 
 \begin{solution}
 \begin{slide}
+Solution python: \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/aquarium-MonteCarlo-sol.ipynb}{\tt aquarium-MonteCarlo-sol.ipynb}
+
 \begin{parts}	
 	\item Plot one simulation for the original re-stocking policy.
 	
@@ -743,7 +745,13 @@ We assume the following:
 We want to optimize the profit.
 \end{problem}
 
+\begin{slidesonly}
+\vspace{2cm}	
+\end{slidesonly}
+
+
 \begin{parts}
+	\item What is the formula for the profit on week $n$ with inventory $X_n$ and demand $D_n$?
 	\item Let policy $p(x)$ be the number of aquariums that are reordered when there $x$ aquariums in stock. What are all the possible values $p(x)$? How many possible policies are there?
 	\item If the store had a maximum of $m$ aquariums in stock (instead of 3), how many different policies are there?
 	\item We can reduce these numbers, because the cost of ordering new aquariums is fixed and doesn't depend on how many aquariums are ordered. 
@@ -752,6 +760,7 @@ We want to optimize the profit.
 		then for $y<x$, we should have $p(y)= $?
 	
 	\item Based on the previous property, how many policies are there for a maximum of $m$ aquariums?
+	
 \end{parts}
 
 	
@@ -762,6 +771,13 @@ We want to optimize the profit.
 \begin{solution}
 \begin{slide}
 \begin{parts}
+	\item We now have 
+	\[
+	R_n = \begin{cases}
+		s\cdot \min\{D_n,X_n\} - d - c \cdot K_n & \text{if} \min\{D_n,X_n\}>0 \\
+		- c \cdot K_n & \text{otherwise}
+ 	\end{cases}
+	\]
 
 	\item $p(3) = 0$, $p(2)\in\{0,1\}$, $p(1)\in\{0,1,2\}$, $p(0)\in\{0,1,2,3\}$, with a total number of possible policies of $4!$.
 
@@ -794,11 +810,13 @@ We want to optimize the profit.
 We can now estimate the long term profit by simulating the Markov decision process for each policy.
 
 \begin{itemize}
-	\item We can reduce the sampling error by simulating for a large number of weeks (instead of simulating several times)
+	\item We can reduce the sampling error by simulating for a large number of weeks (instead of simulating several times).
 	\item We can use Welford's algorithm to estimate the mean weekly profit and its variance.
+	\item Even though Welford's algorithm reduces the computations needed to calculate the mean and variance, we still need to run the simulation for each possible policy and each week.
 \end{itemize}
 
 \begin{parts}
+\setcounter{partsitem}{4}
 	\item Use Welford's algorithm to calculate all mean and variance of the profit for all the possible policies with $m=3$ (the original setting).
 	Use the following values: 
 	\begin{itemize}
@@ -816,7 +834,7 @@ We can now estimate the long term profit by simulating the Markov decision proce
 \begin{solution}
 \begin{slide}
 \begin{parts}
-
+\setcounter{partsitem}{4}
 	\item Running $1\,000\,000$ weeks and ignoring the first 50 weeks over all 6 policies, we obtain the best policy: 
 	\begin{itemize}
 		\item \textit{Re-order if the stock $X=0$ or $X=1$.}
@@ -827,13 +845,119 @@ We can now estimate the long term profit by simulating the Markov decision proce
 	
 	\includegraphics[width=0.5\textwidth]{images/aquarium-policies.png}	
 
-	Code: \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/aquarium-part3-sol.ipynb}{\tt aquarium-part3-sol.ipynb}
+	Code: \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/aquarium-MC-policies-sol.ipynb}{\tt aquarium-MC-policies-sol.ipynb}
 	
 	
 \end{parts}
 
 
 	
+\end{slide}	
+\end{solution}
+
+
+
+
+\begin{slide}
+\question
+
+\SavedDefinitionRender{Q-learning}
+
+\end{slide}
+
+\begin{slide}
+Let us now implement the Q-learning algorithm to calculate the optimal policies for different cases.
+
+\begin{parts}
+	\item Use \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/aquarium-Qlearn.ipynb}{\tt aquarium-Qlearn.ipynb} to calculate the quality of state matrix $Q$ for the original case $m=3$, $\rho=0.01$.
+	\item Use this to deduce the best policy in this case.
+	\item Use the same process to deduce the optimal policies for the cases $m \in \{1, \ldots 7\}$ and $\rho \in \{0.01, 0.03, 0.05\}$.
+\end{parts}
+\end{slide}
+
+
+
+\begin{solution}
+\begin{slide}
+\begin{parts}
+	\item We obtain the matrix
+	\[ 
+	Q = \mat{
+		83.98925114 & 91.15973818 & 95.97324719 & \pmb{99.00385354} \\
+		96.15340924 & 96.03440076 & \pmb{98.52386915} &  0. \\
+		\pmb{101.72981334} & 98.57852473 &  0.         &  0. \\
+		\pmb{104.05899297} &  0.         &  0.         &  0.
+	}
+	\]
+	
+	\item To deduce the best policy:
+	\begin{itemize}
+		\item We need to find the value of $a$ that maximizes the quality for each state
+		\item We need to find the maximum for each row and identify the value of that column
+	\end{itemize} 
+	
+	For $m=3$ and $\rho=0.01$, we get:
+	\begin{itemize}
+		\item 3 \quad 2 \quad 0 \quad 0
+	\end{itemize}
+	which means that the store should order 3 aquariums when inventory is 0, 2 aquariums when inventory is 1, and not re-stock otherwise.
+	
+	This matches our previous conclusions.
+	
+\end{parts}
+\end{slide}
+
+\begin{slide}
+\begin{parts}
+\setcounter{partsitem}{2}
+	\item Here are my results:
+\end{parts}
+	
+	\begin{tabular}{|l|l|l|l|}
+	\hline
+	$\pmb{m}$ & \textbf{policy for $\pmb{\rho=0.01}$}
+		& \textbf{policy for $\pmb{\rho=0.03}$}
+		& \textbf{policy for $\pmb{\rho=0.05}$} \\ \hline
+	\textbf{1} 
+		& 1 \quad 0 
+		& 1 \quad 0 
+		& 1 \quad 0 \\
+	\textbf{2} 
+		& 2 \quad 1 \quad 0 
+		& 2 \quad 0 \quad 0 
+		& 2 \quad 0 \quad 0 \\
+	\textbf{3} 
+		& 3 \quad 2 \quad 0 \quad 0 
+		& 3 \quad 2 \quad 0 \quad 0 
+		& 2 \quad 0 \quad 0 \quad 0 \\
+	\textbf{4} 
+		& 4 \quad 3 \quad 0 \quad 0 \quad 0 
+		& 3 \quad 2 \quad 0 \quad 0 \quad 0 
+		& 2 \quad 0 \quad 0 \quad 0 \quad 0 \\
+	\textbf{5}
+		& 5 \quad 4 \quad 0 \quad 0 \quad 0 \quad 0 
+		& 3 \quad 2 \quad 0 \quad 0 \quad 0 \quad 0 
+		& 2 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 \\
+	\textbf{6}
+		& 4 \quad 4 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 
+		& 3 \quad 2 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 
+		& 2 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 \\
+	\textbf{7}
+		& 5 \quad 4 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 
+		& 3 \quad 2 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0
+		& 2 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0 \quad 0\\
+	\hline	
+	\end{tabular}	
+
+Observe that because the Q-learning algorithm moves randomly from state to state and explores random actions $a$ each iteration, the more possible states and actions, the \textit{weeks} we need and the results are less conclusive.
+
+After running the simulation a few times for $m=6,7$ and $\rho=0.01$, the results varied between these policies:
+\begin{itemize}
+	\item $4 \quad 4 \quad 0 \quad \cdots$
+	\item $5 \quad 4 \quad 0 \quad \cdots$
+	\item $6 \quad 4 \quad 0 \quad \cdots$
+\end{itemize}
+
 \end{slide}	
 \end{solution}
 

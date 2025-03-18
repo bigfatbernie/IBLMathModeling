@@ -899,7 +899,16 @@ Let us now implement the Q-learning algorithm to calculate the optimal policies 
 \begin{parts}
 	\item Use \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=book/python/aquarium-Qlearn.ipynb}{\tt aquarium-Qlearn.ipynb} to calculate the quality of state matrix $Q$ for the original case $m=3$, $\rho=0.01$.
 	\item Use this to deduce the best policy in this case.
-	\item Use the same process to deduce the optimal policies for the cases $m \in \{1, \ldots 7\}$ and $\rho \in \{0.01, 0.03, 0.05\}$.
+	\item Use the same process to deduce the optimal policies for the cases $m \in \{1, \ldots 7\}$ and $\rho \in \{0.01, 0.03, 0.05\}$. \\
+	
+	
+
+	\item Deduce the best policy with an epsilon-greedy Q-learning algorithm: instead of choosing a random action in each iteration, do the following
+	\begin{itemize}
+		\item Choose the action with best quality with probability $1-\varepsilon$
+		\item Choose a random action with probability $\varepsilon$
+	\end{itemize}
+	\item Deduce the best policy with an epsilon-greedy Q-learning algorithm with a decaying learning rate: the parameter $\varepsilon$ decays to zero as we run more and more iterations.
 \end{parts}
 \end{slide}
 

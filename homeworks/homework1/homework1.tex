@@ -130,11 +130,14 @@ $$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}.$$
 
 \item Implement Newton's method. Use the stopping criteria that the function value be less (in absolute value) than a tolerance (\verb|tol|) and a minimum of \verb|miniter=3| iterations be made. Use the command \verb|print| to output formatted results from each iteration.
 
-\item Try your function out on finding the roots of $f(x) = \exp(x) - 4x$. Note the function handle for $f'(x)$ is obtained by differentiation of $f(x)$ by hand. The upper plot shows $f(x)$ and its two roots. Initial guesses in the range [0,3] converge to one of the two roots as shown in the lower plot. What property of $f(x)$ would you guess defines the boundary between each `basin of attraction'?
+\item Try your function out on finding the roots of $f(x) = \exp(x) - 4x$. Note the function handle for $f'(x)$ is obtained by differentiation of $f(x)$ by hand. The upper plot shows $f(x)$ and its two roots. Initial guesses in the range [0,3] converge to one of the two roots as shown in the lower plot. What property of $f(x)$ would you guess defines the boundary between each `\textbf{basin of attraction}'?
 
 \item Find the roots of $\cos(x^2) - x$. How many iterations does it take to obtain 12 correct digits? Use Python's \verb|root_scalar| function to compute the same value.
 
 \end{enumerate}
+
+\newpage
+
 
 \section{Pig Selling Problem}
 

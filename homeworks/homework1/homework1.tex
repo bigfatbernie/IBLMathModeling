@@ -118,7 +118,7 @@ Export the Jupyter Notebook as a PDF and submit it to gradescope.
 Sometimes you will want to pass a (mathematical) function as an argument to a computer subroutine (function) as we will do shortly when implementing Newton's method. This is needed since the Python function we write for applying Newton's method needs to know the function for which it is trying to find roots. We could implement that function separately. However, for short functions it will be easier to use \href{https://www.w3schools.com/python/python_lambda.asp}{anonymous functions}.
 
 \begin{enumerate}
-\item In a Python script, use an anonymous function for $g(x) = \cos(x^2)$ as \\\verb|g = lambda x :  cos(x^2)|. Write a loop that iteratively applies $g$, starting from a value of 1. Your script should output $g(1)$, $g(g(1))$, $g(g(g(1)))$, \ldots . You may wish to plot the sequence of values. What value is the sequence approaching? Which function is this value a root of? This is a fixed point iteration, which is expected to converge slowly. Newton's method can find this root much quicker, so let us implement it.
+\item In a Python script, use an anonymous function for $g(x) = \cos(x^2)$ as \\\verb|g = lambda x :  cos(x**2)|. Write a loop that iteratively applies $g$, starting from a value of 1. Your script should output $g(1)$, $g(g(1))$, $g(g(g(1)))$, \ldots . You may wish to plot the sequence of values. What value is the sequence approaching? Which function is this value a root of? This is a fixed point iteration, which is expected to converge slowly. Newton's method can find this root much quicker, so let us implement it.
 \end{enumerate}
 
 \section{Newton's Method}

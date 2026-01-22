@@ -105,7 +105,7 @@ showstringspaces=false            %
 % This is where the body of the document goes
 %%%
 \begin{document}
-	\setheader{APM348}{Homework 2}{Due: 5:59pm February 9}{}{}{}
+	\setheader{APM348}{Homework 2}{Due: 5:59pm February 8}{}{}{}
 
 
 In this lab you will use \texttt{python} to solve a linear programming problem based on the farm crop-planning example from lecture\footnote{In lecture, we used metric units, here we will be using imperial units because that is how the data was found.}. We will consider many more crops and more detail on the operating costs of the farm. Much of the data in this problem has been acquired about a particular farm, but some has been entirely made up. If you locate other data about this particular farm then feel free to make use of it and share it with your classmates.
@@ -123,7 +123,7 @@ You must submit two PDF files to gradescope:
 
 \section{Problem Background}
 
-The Holland Marsh, known as ``the mars'', is a wetland and agricultural area in Ontario, Canada, about 50 km (31 mi) north of Toronto. The marsh comprises 7\,200 acres southwest of the town of Bradford. The annual vegetable production is around \$29 million, about 14\% of the annual vegetable production in Ontario.
+The Holland Marsh, known as ``the marsh'', is a wetland and agricultural area in Ontario, Canada, about 50 km (31 mi) north of Toronto. The marsh comprises 7\,200 acres southwest of the town of Bradford. The annual vegetable production is around \$29 million, about 14\% of the annual vegetable production in Ontario.
 
 The marsh consists of over 125 separate farms that act largely independently. Sup- pose that the farms centralize their decision making with the Holland Marsh Growers' Association. They would like to plan which crops to plant over the next growing season.
 Historically, 36.4\% of crops are carrots; 34\% are onions; 14.6\% are celery and mixed greens; and 14.5\% are mixed flowers, garlic, parsnips, turnips, beets, celery root, Chinese vegetables, potatoes, tomatoes, and sprouts. The marsh is able to grow over 60 different crops, but typical seasons see only 34 different crops.
@@ -176,11 +176,18 @@ Data on the resource usage and costs are provided in \href{https://raw.githubuse
 
 
 \begin{enumerate}[label=\textbf{\arabic*.}]
-	\item Let's start with the simpler example from lecture (but moved into imperial units). 
+	\item Let's start with the simpler example from lecture.% (but moved into imperial units). 
 
 	Clone the Jupyter Notebook \href{https://utoronto.syzygy.ca/jupyter/user-redirect/git-pull?repo=https://github.com/bigfatbernie/IBLMathModeling&subPath=homeworks/homework2/homework2-exercises.ipynb}{\tt homework2-exercises.ipynb}.
 	
-	Read the code and comments to determine how it works. The core of the program is the call to \verb|linprog| to solve the linear programming problem. Run the script. The linear programming problem is solved repeatedly as the yield of wheat is varied between \$400/ha and \$440/ha. The resulting plot was discussed in lecture. The top-left subplot shows how the available land is optimally allocated between the three crops as a function the yield of wheat. Change this plot to be a stacked area chart using Python's \verb|stackplot| function. Add a subplot that show how labour and water are optimally allocated as a function of the yield of wheat. For each value of the parameter, which constraints are active? 
+	Read the code and comments to determine how it works. The core of the program is the call to \verb|linprog| to solve the linear programming problem. Run the script. The linear programming problem is solved repeatedly as the yield of wheat is varied between \$400/ha and \$440/ha. The resulting plot was discussed in lecture. 
+	
+	\begin{enumerate}
+	
+	\item The top-left subplot shows how the available land is optimally allocated between the three crops as a function the yield of wheat. Change this plot to be a stacked area chart using Python's \verb|stackplot| function. 
+	
+	\item Add a subplot that show the percentage of water, labour, and land that are optimally allocated as a function of the yield of wheat. For each value of the parameter, which constraints are active? 
+	\end{enumerate}
 \end{enumerate}
 
 The remaining questions are concerned with the Holland Marsh as described in the Problem Background. 

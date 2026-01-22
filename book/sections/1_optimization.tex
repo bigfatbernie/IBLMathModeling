@@ -809,7 +809,7 @@ Introduce the variables:
 
 \begin{problem}[Ice Cream\footnote{Based on an example from Kamien and Schwartz's `Dynamic Optimization'}]
 
-Suppose a manufacturing company receives an order for $B$ units to be delivered at time $T$, e.g. Sobeys has placed an order for $B = 100$ pallets of Chapman's vanilla ice-cream for a promotion starting in $T = 10$ days.
+Suppose a manufacturing company receives an order for $B$ units to be delivered at time $T$, e.g. Sobeys has placed an order for $B = 5$ pallets of Chapman's vanilla ice-cream for a promotion starting in $T = 4$ days.
 
 Chapman's Ice Cream must decide when to produce their tasty product. They don't want to produce it early since they will have to pay to keep it frozen until the order is due. They also do not want to produce it the day before it is due since running the production line fast might have a large cost. %For example, running the machines quickly might have more waste or might produce more and expansive wear-and-tear on the machines.
 \end{problem}
@@ -844,7 +844,12 @@ Let $x(t)$ be the inventory at time $t$ and suppose that $x(0)=0$ and to fill th
 
 \item We need to consider the cost of storing the produced units in inventory: assume that each unit has a cost of $c_2$ per unit time:
 \begin{itemize}
-	\item Inventory Cost $\displaystyle = \sum_{n=1}^N \Delta x_n (T-t_n) c_2$
+	\item Inventory Cost $\displaystyle \begin{aligned}[t]
+			& = \sum_{n=1}^N \Delta x_n (T-t_n) c_2 \\
+			& = \sum_{i=1}^N \sum_{j=1}^{n-1} \Delta x_j c_2
+		\end{aligned}
+		$
+	
 \end{itemize}
 
 \item If the production cost was: $\displaystyle\sum_{n=1}^N c \Delta x_n$, then $c=$ the cost of producing 1 unit in $\Delta t$ time.
